@@ -1,0 +1,1 @@
+INSERT INTO hotel_client (full_name, cpf , city, address, email, phone, cnpj) VALUES ('Cristian Tiago Dutkercz Rosa', '01161852018', 'Dom Pedrito', 'Bernardino Angelo 287', '@gmail.com', '55996450829', '000')
