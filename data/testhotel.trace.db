@@ -1,3 +1,0 @@
-2025-01-24 18:04:24.368200-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HOTEL_CLIENT" not found (this database is empty); SQL statement:
-insert into hotel_client (address,city,cnpj,cpf,email,full_name,phone,id) values (?,?,?,?,?,?,?,default) [42104-232]
