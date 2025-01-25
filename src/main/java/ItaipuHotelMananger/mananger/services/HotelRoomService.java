@@ -23,4 +23,8 @@ public class HotelRoomService {
     public HotelRoom saveRoom(HotelRoom o){
         return repository.save(o);
     }
+
+    public List<HotelRoom> listOfRoom(){
+        return repository.findAll();
+    }
 }

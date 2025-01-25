@@ -70,4 +70,10 @@ public class HotelRoom {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+    @Override
+    public String toString() {
+        return "Apartamento = " + roomNumber + "\n\tCama casal > " + doubleBeds +
+                "\n\tCama de solteiro > " + singleBeds+"\n";
+    }
 }
