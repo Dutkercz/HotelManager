@@ -1,10 +1,8 @@
 package ItaipuHotelMananger.mananger.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -16,6 +14,11 @@ public class HotelRoom {
     private String roomNumber;
     private Integer doubleBeds;
     private Integer singleBeds;
+
+
+    @OneToMany(mappedBy = "room") // 'client' é o atributo na entidade Booking
+    private List<Hosting> hostingList;
+
 
     public HotelRoom() {
     }

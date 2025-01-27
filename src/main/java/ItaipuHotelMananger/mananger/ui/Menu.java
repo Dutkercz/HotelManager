@@ -5,6 +5,7 @@ import ItaipuHotelMananger.mananger.entities.HotelRoom;
 import ItaipuHotelMananger.mananger.repositories.HotelRoomRepository;
 import ItaipuHotelMananger.mananger.services.HotelClientService;
 import ItaipuHotelMananger.mananger.services.HotelRoomService;
+import org.apache.catalina.webresources.StandardRoot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,34 +35,36 @@ public class Menu {
             System.out.println("Selecione uma opção no menu:" +
                     "\n	1 - Cadastro" +
                     "\n	2 - Consulta" +
-                    "\n	3 - Encerrar");
+                    "\n	3 - Hospedar" +
+                    "\n 4 - Sair");
             var escolha = scanner.nextLine();
             switch (escolha){
                 case "1":
                     System.out.println(" **** Entre com os seguintes dados. ****");
                     System.out.println("==========================================");
                     System.out.print("Nome completo: ");
-                    var name = scanner.nextLine();
+                    String name = scanner.nextLine();
                     System.out.print("CPF: ");
-                    var cpf = scanner.nextLine();
+                    String cpf = scanner.nextLine();
                     System.out.print("Endereço: ");
-                    var address = scanner.nextLine();
+                    String address = scanner.nextLine();
                     System.out.print("Cidade: ");
-                    var city = scanner.nextLine();
+                    String city = scanner.nextLine();
                     System.out.print("Telefone: ");
-                    var phone = scanner.nextLine();
+                    String phone = scanner.nextLine();
                     System.out.print("Email: ");
-                    var email = scanner.nextLine();
+                    String email = scanner.nextLine();
                     System.out.print("CNPJ: ");
-                    var cnpj = scanner.nextLine();
+                    String cnpj = scanner.nextLine();
                     clientService.insert(new HotelClient(null, name, cpf, city, address, email, phone, cnpj));
                     System.out.println("*** Cliente cadastrado com sucesso! ***");
                     break;
                 case "2":
                     System.out.println("O que deseja consultar: ");
                     System.out.println("1 - Lista de Apartamentos" +
-                            "2 - Apartamento ocupados");
+                            "\n2 - Apartamento ocupados");
                     var escolhaCase2 = scanner.nextInt();
+                    scanner.nextLine();
                     if (escolhaCase2 == 1){
                         List<HotelRoom> hotelRoomList = roomService.listOfRoom();
                         if (hotelRoomList.isEmpty()) {
@@ -75,8 +78,22 @@ public class Menu {
                         System.out.println("Em construção");
                     }
                     break;
-
                 case "3":
+                    System.out.print("Digite o CPF do cliente: ");
+                    var buscaCpf = scanner.nextLine();
+                    try {
+                        HotelClient client = clientService.findByCpf(buscaCpf);
+                        System.out.println("Cliente encontrado: " + client);
+                    } catch (RuntimeException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+
+
+
+                    break;
+
+                case "4":
                     System.out.println("Encerrando o sistema...");
                     return;
 

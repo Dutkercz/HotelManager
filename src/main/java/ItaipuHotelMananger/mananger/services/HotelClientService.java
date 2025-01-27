@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HotelClientService {
@@ -16,6 +17,14 @@ public class HotelClientService {
         List<HotelClient> list = hotelClientRepository.findAll();
         return list;
     }
+
+    public HotelClient findByCpf(String cpf){
+        Optional<HotelClient> client = hotelClientRepository.findByCpf(cpf);
+        return client.orElseThrow(() -> new RuntimeException("Cliente com cpf " + cpf + " não encontrado."));
+    }
+
+
+
     public HotelClient insert(HotelClient o){
         return hotelClientRepository.save(o);
     }

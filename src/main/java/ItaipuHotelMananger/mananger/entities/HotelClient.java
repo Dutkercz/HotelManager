@@ -2,6 +2,9 @@ package ItaipuHotelMananger.mananger.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+import java.util.Objects;
+
 @Entity
 @Table(name = "hotel_client")
 public class HotelClient {
@@ -17,6 +20,9 @@ public class HotelClient {
     private String email;
     private String phone;
     private String cnpj;
+
+    @OneToMany(mappedBy = "client")
+    private List<Hosting> hostingList;
 
     public HotelClient() {
     }
@@ -96,5 +102,25 @@ public class HotelClient {
 
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
+    }
+
+    public List<Hosting> getHostingList() {
+        return hostingList;
+    }
+
+    public void setHostingList(List<Hosting> hostingList) {
+        this.hostingList = hostingList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        HotelClient that = (HotelClient) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
