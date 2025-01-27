@@ -19,8 +19,7 @@ public class HotelClientService {
     }
 
     public HotelClient findByCpf(String cpf){
-        Optional<HotelClient> client = hotelClientRepository.findByCpf(cpf);
-        return client.orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        return hotelClientRepository.findByCpf(cpf);
     }
 
     public HotelClient insert(HotelClient o){

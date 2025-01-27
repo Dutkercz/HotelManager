@@ -75,7 +75,7 @@ public class Menu {
                     System.out.print("Digite o CPF do cliente: (somente dígitos) ");
                     var buscaCpf = scanner.nextLine();
                     try {
-                        client = clientService.searchByCpf(buscaCpf);
+                        client = clientService.findByCpf(buscaCpf);
                         System.out.println("Cliente encontrado: " + client);
                     } catch (RuntimeException e) {
                         System.out.println(e.getMessage());
