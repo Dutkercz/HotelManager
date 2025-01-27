@@ -3,11 +3,11 @@ package ItaipuHotelMananger.mananger.ui.utils;
 import ItaipuHotelMananger.mananger.entities.HotelClient;
 import ItaipuHotelMananger.mananger.entities.utils.CpfValidation;
 import ItaipuHotelMananger.mananger.services.HotelClientService;
+import org.apache.commons.text.WordUtils;
+import org.aspectj.weaver.World;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Scanner;
 
 
@@ -27,7 +27,6 @@ public class CaseOne {
             System.out.print("CPF: (somente dígitos) ");
             String cpf = scanner.nextLine();
 
-            // Verificar validade do CPF
             while (!CpfValidation.isValidCPF(cpf)) {
                 System.out.println("CPF inválido. Digite novamente.");
                 cpf = scanner.nextLine();
@@ -36,19 +35,19 @@ public class CaseOne {
             try{
                 if (clientService.findByCpf(cpf).getCpf().equals(cpf)) {
                     System.out.println("Cliente já cadastrado: ");
-                    break; // Sai do loop caso o cliente seja encontrado
+                    break;
                 }
             } catch (RuntimeException e) {
                 System.out.print("Nome completo: ");
-                String name = scanner.nextLine();
+                String name = WordUtils.capitalizeFully(scanner.nextLine()).strip();
                 System.out.print("Endereço com número: ");
-                String address = scanner.nextLine();
+                String address = WordUtils.capitalizeFully(scanner.nextLine());
                 System.out.print("Cidade: ");
-                String city = scanner.nextLine();
+                String city = WordUtils.capitalizeFully(scanner.nextLine());
                 System.out.print("Telefone: ");
                 String phone = scanner.nextLine();
                 System.out.print("Email: ");
-                String email = scanner.nextLine();
+                String email = scanner.nextLine().toLowerCase();
                 System.out.print("CNPJ: ");
                 String cnpj = scanner.nextLine();
 
