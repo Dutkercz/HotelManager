@@ -1,5 +1,6 @@
 package ItaipuHotelMananger.mananger.entities;
 
+import ItaipuHotelMananger.mananger.entities.utils.CpfValidation;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -122,5 +123,17 @@ public class HotelClient {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Nome = " + fullName + '\'' +
+                "\nCpf = " + cpf + '\'' +
+                "\nCidade = " + city + '\'' +
+                "\nEndereço = " + address + '\'' +
+                "\nEmail = " + email + '\'' +
+                "\nTelefone = " + phone + '\'' +
+                "\nCnpj = " + cnpj + '\''+
+                "\n Lista de hospedagens" + hostingList;
     }
 }

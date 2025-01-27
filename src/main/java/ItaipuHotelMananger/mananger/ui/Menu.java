@@ -2,10 +2,10 @@ package ItaipuHotelMananger.mananger.ui;
 
 import ItaipuHotelMananger.mananger.entities.HotelClient;
 import ItaipuHotelMananger.mananger.entities.HotelRoom;
+import ItaipuHotelMananger.mananger.entities.utils.CpfValidation;
 import ItaipuHotelMananger.mananger.repositories.HotelRoomRepository;
 import ItaipuHotelMananger.mananger.services.HotelClientService;
 import ItaipuHotelMananger.mananger.services.HotelRoomService;
-import org.apache.catalina.webresources.StandardRoot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,6 +46,12 @@ public class Menu {
                     String name = scanner.nextLine();
                     System.out.print("CPF: ");
                     String cpf = scanner.nextLine();
+                    boolean validade = CpfValidation.isValidCPF(cpf);
+                    while (!validade){
+                        System.out.println("Cpf inválido. Digite novamente.");
+                        cpf = scanner.nextLine();
+                        validade = CpfValidation.isValidCPF(cpf);
+                    }
                     System.out.print("Endereço: ");
                     String address = scanner.nextLine();
                     System.out.print("Cidade: ");
@@ -56,13 +62,18 @@ public class Menu {
                     String email = scanner.nextLine();
                     System.out.print("CNPJ: ");
                     String cnpj = scanner.nextLine();
-                    clientService.insert(new HotelClient(null, name, cpf, city, address, email, phone, cnpj));
-                    System.out.println("*** Cliente cadastrado com sucesso! ***");
+                    try {
+                        clientService.insert(new HotelClient(null, name, cpf, city, address, email, phone, cnpj));
+                        System.out.println("*** Cliente cadastrado com sucesso! ***");
+                    }catch (RuntimeException e){
+                        System.out.println("Há informações inválidas, verifique.");
+                    }
                     break;
                 case "2":
                     System.out.println("O que deseja consultar: ");
                     System.out.println("1 - Lista de Apartamentos" +
-                            "\n2 - Apartamento ocupados");
+                            "\n2 - Apartamento ocupados" +
+                            "\n3 - Voltar");
                     var escolhaCase2 = scanner.nextInt();
                     scanner.nextLine();
                     if (escolhaCase2 == 1){
