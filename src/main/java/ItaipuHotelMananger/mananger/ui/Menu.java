@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 @Component
@@ -74,7 +75,7 @@ public class Menu {
                     System.out.print("Digite o CPF do cliente: (somente dígitos) ");
                     var buscaCpf = scanner.nextLine();
                     try {
-                        client = clientService.findByCpf(buscaCpf);
+                        client = clientService.searchByCpf(buscaCpf);
                         System.out.println("Cliente encontrado: " + client);
                     } catch (RuntimeException e) {
                         System.out.println(e.getMessage());

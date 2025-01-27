@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface HotelClientRepository extends JpaRepository<HotelClient, Long> {
     Optional<HotelClient> findByCpf(String cpf);
+
 }

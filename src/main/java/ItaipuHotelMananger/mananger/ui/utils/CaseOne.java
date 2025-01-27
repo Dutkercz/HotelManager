@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Scanner;
 
 
@@ -16,59 +17,55 @@ public class CaseOne {
     @Autowired
     HotelClientService clientService;
 
-    public void showCaseOne(){
+    public void showCaseOne() {
         HotelClient client;
         Scanner scanner = new Scanner(System.in);
 
         System.out.println(" **** Entre com os seguintes dados. ****");
         System.out.println("==========================================");
-        System.out.print("CPF: (somente dígitos) ");
-        String cpf = scanner.nextLine();
         while (true) {
-            //verificar validade do cpf. // Check if the register is valid.
-            boolean validade = CpfValidation.isValidCPF(cpf);
-            while (!validade) {
-                System.out.println("Cpf inválido. Digite novamente.");
+            System.out.print("CPF: (somente dígitos) ");
+            String cpf = scanner.nextLine();
+
+            // Verificar validade do CPF
+            while (!CpfValidation.isValidCPF(cpf)) {
+                System.out.println("CPF inválido. Digite novamente.");
                 cpf = scanner.nextLine();
-                validade = CpfValidation.isValidCPF(cpf);
             }
-            try {// Tentar encontrar o cliente pelo CPF // try to find client by registration
 
-                client = clientService.findByCpf(cpf);
-                System.out.println("Cliente encontrado: " + client);
-                break; // Sai do loop se o cliente for encontrado // leave of the loop if guest have one.
-            } catch (RuntimeException e){
-                System.out.println(" **** Cliente não encontrado. ****");
-            }
-            System.out.print("Deseja realizar o cadastro?" +
-                    "\n[S] - Para continuar" +
-                    "\n[N] - Para sair" +
-                    "\n>> ");
-            char continuarCaseOne = scanner.nextLine().toUpperCase().charAt(0);
-
-            if (continuarCaseOne == 'S') {
-                System.out.print("Nome completo: ");
-                String name = scanner.nextLine();
-                System.out.print("Endereço com número: ");
-                String address = scanner.nextLine();
-                System.out.print("Cidade: ");
-                String city = scanner.nextLine();
-                System.out.print("Telefone: ");
-                String phone = scanner.nextLine();
-                System.out.print("Email: ");
-                String email = scanner.nextLine();
-                System.out.print("CNPJ: ");
-                String cnpj = scanner.nextLine();
-                try {
-                    clientService.insert(new HotelClient(null, name, cpf, city, address, email, phone, cnpj));
-                    System.out.println("*** Cliente cadastrado com sucesso! ***");
-                    break;
-                }catch (RuntimeException e){
-                    System.out.println("Há informações inválidas, verifique.");
+            try {
+                HotelClient clientFind = new HotelClient();
+                clientFind.setCpf(cpf);
+                if (clientService.findByCpf(cpf).getCpf().equals(clientFind.getCpf())) {
+                    System.out.println("Cliente já cadastrado: ");
+                    break; // Sai do loop caso o cliente seja encontrado
                 }
+                else {
+                    System.out.print("Nome completo: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Endereço com número: ");
+                    String address = scanner.nextLine();
+                    System.out.print("Cidade: ");
+                    String city = scanner.nextLine();
+                    System.out.print("Telefone: ");
+                    String phone = scanner.nextLine();
+                    System.out.print("Email: ");
+                    String email = scanner.nextLine();
+                    System.out.print("CNPJ: ");
+                    String cnpj = scanner.nextLine();
+
+                    try {
+                        // Inserir novo cliente no banco
+                        clientService.insert(new HotelClient(null, name, cpf, city, address, email, phone, cnpj));
+                        System.out.println("*** Cliente cadastrado com sucesso! ***");
+                        break; // Sai do loop após cadastro
+                    } catch (RuntimeException ex) {
+                        System.out.println("Erro ao cadastrar o cliente. Verifique as informações e tente novamente.");
+                    }
+                }
+            } catch (RuntimeException e) {
+                throw new RuntimeException(e);
             }
-            else {break;}
         }
     }
 }
-
