@@ -121,11 +121,9 @@ public class Hosting {
 
     @Override
     public String toString() {
-        return "Hosting{" +
-                "totalGuest=" + totalGuest +
-                ", basePrice=" + basePrice +
-                ", client=" + client.getFullName() +
-                ", room=" + room.getRoomNumber() +
-                '}';
+        return "\nHospede: " + client.getFullName() +
+                "\nNumero de pessoas: " + totalGuest +
+                "\nValor total: " + basePrice +
+                "\nApartamento nº: " + room.getRoomNumber();
     }
 }

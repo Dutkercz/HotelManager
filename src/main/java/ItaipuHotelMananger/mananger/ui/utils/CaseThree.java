@@ -41,7 +41,13 @@ public class CaseThree {
 
             Hosting hosting = new Hosting(null, totalGuests, room, client );
             hostingService.saveHosting(hosting);
+            System.out.println("=================================");
+            System.out.println(" **** Hospedagem concluida. ****");
+            System.out.println("=================================");
+            System.out.println("\t**** Resumo: ****");
             System.out.println(hosting);
+            System.out.println();
+            System.out.println("===============================");
 
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
