@@ -1,6 +1,7 @@
 package ItaipuHotelMananger.mananger.entities;
 
 import jakarta.persistence.*;
+import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -13,7 +14,7 @@ public class Hosting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer totalGuest;
-    private Double totalPrice;
+    private Double basePrice;
     private LocalDateTime checkIn;
     private LocalDateTime checkOut;
 
@@ -21,18 +22,17 @@ public class Hosting {
     @JoinColumn(name = "client_id")
     private HotelClient client;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id")
     private HotelRoom room;
 
     public Hosting() {
     }
 
-    public Hosting(Long id, Integer totalGuest, Double totalPrice, LocalDateTime checkIn, HotelClient client, HotelRoom room) {
+    public Hosting(Long id, Integer totalGuest, HotelRoom room, HotelClient client) {
         this.id = id;
         this.totalGuest = totalGuest;
-        this.totalPrice = totalPrice;
-        this.checkIn = checkIn;
+        this.basePrice = totalBasePrice();
         this.client = client;
         this.room = room;
     }
@@ -53,12 +53,12 @@ public class Hosting {
         this.totalGuest = totalGuest;
     }
 
-    public Double getTotalPrice() {
-        return totalPrice;
+    public Double getBasePrice() {
+        return basePrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setBasePrice(Double basePrice) {
+        this.basePrice = basePrice;
     }
 
     public LocalDateTime getCheckIn() {
@@ -93,6 +93,20 @@ public class Hosting {
         this.room = room;
     }
 
+
+    public Double totalBasePrice(){
+        if (totalGuest == 1 ){
+            return this.basePrice = 125.00;
+        } else if (totalGuest == 2) {
+            return this.basePrice = 220.00;
+        } else if (totalGuest == 3) {
+            return this.basePrice = 310.00;
+        } else if (totalGuest == 4) {
+            return this.basePrice = 400.00;
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -103,5 +117,15 @@ public class Hosting {
     @Override
     public int hashCode() {
         return Objects.hash(id, client, room);
+    }
+
+    @Override
+    public String toString() {
+        return "Hosting{" +
+                "totalGuest=" + totalGuest +
+                ", basePrice=" + basePrice +
+                ", client=" + client.getFullName() +
+                ", room=" + room.getRoomNumber() +
+                '}';
     }
 }

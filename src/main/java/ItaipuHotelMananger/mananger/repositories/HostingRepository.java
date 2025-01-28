@@ -1,10 +1,11 @@
 package ItaipuHotelMananger.mananger.repositories;
 
-import ItaipuHotelMananger.mananger.entities.HotelRoom;
+import ItaipuHotelMananger.mananger.entities.Hosting;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface HotelRoomRepository extends JpaRepository<HotelRoom, Long> {
-    HotelRoom findByRoomNumber(String room);
+public interface HostingRepository extends JpaRepository<Hosting, Long> {
+
+    public Double basePrice (double hosting);
 }

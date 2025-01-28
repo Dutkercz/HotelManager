@@ -12,6 +12,8 @@ import java.util.Scanner;
 
 @Component
 public class CaseOne {
+    // Opção 1 no menu -> CADASTRO DE CLIENTE;
+    // Option 1 in menu -> CLIENT REGISTRATION;
 
     @Autowired
     HotelClientService clientService;
@@ -26,14 +28,18 @@ public class CaseOne {
             System.out.print("CPF: (somente dígitos) ");
             String cpf = scanner.nextLine();
 
+            //Verifica se o CPF é válido.
+            //Check if the registration is valid.
             while (!CpfValidation.isValidCPF(cpf)) {
-                System.out.println("CPF inválido. Digite novamente.");
+                System.out.println(" **** CPF inválido. Digite novamente. ****");
                 cpf = scanner.nextLine();
             }
 
             try{
+                //Verifica se o cliente já possui cadastro;
+                //Check if client already has a registration;
                 if (clientService.findByCpf(cpf).getCpf().equals(cpf)) {
-                    System.out.println("Cliente já cadastrado: ");
+                    System.out.println(" **** Cliente já cadastrado. **** ");
                     break;
                 }
             } catch (RuntimeException e) {
@@ -51,10 +57,11 @@ public class CaseOne {
                 String cnpj = scanner.nextLine();
 
                 try {
-                    // Inserir novo cliente no banco
+                    // Inserir novo cliente no banco;
+                    // Insert new client in database;
                     clientService.insert(new HotelClient(null, name, cpf, city, address, email, phone, cnpj));
-                    System.out.println("*** Cliente cadastrado com sucesso! ***");
-                    break; // Sai do loop após cadastro
+                    System.out.println("**** Cliente cadastrado com sucesso! ****");
+                    break;
                 } catch (RuntimeException ex) {
                     System.out.println("Erro ao cadastrar o cliente. Verifique as informações e tente novamente.");
                 }

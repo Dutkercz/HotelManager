@@ -3,6 +3,7 @@ package ItaipuHotelMananger.mananger.services;
 import ItaipuHotelMananger.mananger.entities.HotelClient;
 import ItaipuHotelMananger.mananger.repositories.HotelClientRepository;
 import jakarta.transaction.Transactional;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,13 @@ public class HotelClientService {
         return hotelClientRepository.findAll();
     }
 
+    @Transactional
     public HotelClient findByCpf(String cpf){
-        return hotelClientRepository.findByCpf(cpf);
+        HotelClient client = hotelClientRepository.findByCpf(cpf);
+        if(client != null){
+            Hibernate.initialize(client);
+        }
+        return client;
     }
 
     public HotelClient insert(HotelClient o){

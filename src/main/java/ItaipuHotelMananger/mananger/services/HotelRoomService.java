@@ -27,4 +27,8 @@ public class HotelRoomService {
     public List<HotelRoom> listOfRoom(){
         return repository.findAll();
     }
+
+    public HotelRoom findByRoomNumber (String room){
+        return repository.findByRoomNumber(room);
+    }
 }
