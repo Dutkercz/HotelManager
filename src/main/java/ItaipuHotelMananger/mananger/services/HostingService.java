@@ -10,14 +10,14 @@ public class HostingService {
     @Autowired
     HostingRepository hostingRepository;
 
-    public Double hostingTotalPriceDebit(Hosting hosting){
-        return hostingRepository.basePrice(hosting.getBasePrice()*1.03);
+    public Double hostingTotalPriceDebit(Double valor){
+        return hostingRepository.basePrice(valor*1.03);
     }
-    public Double hostingTotalPriceCredit(Hosting hosting){
-        return hostingRepository.basePrice(hosting.getBasePrice()*1.05);
+    public Double hostingTotalPriceCredit(Double valor){
+        return hostingRepository.basePrice(valor*1.05);
     }
-    public Double hostingTotalPrice(Hosting hosting){
-        return hostingRepository.basePrice(hosting.getBasePrice());
+    public Double hostingTotalPrice(Double valor){
+        return hostingRepository.basePrice(valor);
     }
 
     public void saveHosting(Hosting hosting) {

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HostingRepository extends JpaRepository<Hosting, Long> {
 
-    public Double basePrice (double hosting);
+    public Double basePrice (double price);
 }

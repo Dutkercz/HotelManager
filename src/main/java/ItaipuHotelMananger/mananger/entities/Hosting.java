@@ -15,6 +15,7 @@ public class Hosting {
     private Long id;
     private Integer totalGuest;
     private Double basePrice;
+    private Integer dailyNumber;
     private LocalDateTime checkIn;
     private LocalDateTime checkOut;
 
@@ -29,12 +30,20 @@ public class Hosting {
     public Hosting() {
     }
 
-    public Hosting(Long id, Integer totalGuest, HotelRoom room, HotelClient client) {
+    public Hosting(Long id, Integer totalGuest, Integer dailyNumber, Double totalPrice, HotelRoom room,
+                   HotelClient client, LocalDateTime checkIn, LocalDateTime checkOut) {
         this.id = id;
         this.totalGuest = totalGuest;
-        this.basePrice = totalBasePrice();
+        this.dailyNumber = dailyNumber;
+        this.basePrice = totalPrice;
         this.client = client;
         this.room = room;
+        if (checkIn.getHour() == 0 && checkIn.getMinute() == 0){
+            this.checkIn = checkIn.minusDays(1);
+        }else {
+            this.checkIn = checkIn;
+        }
+        this.checkOut = checkOut;
     }
 
     public Long getId() {
@@ -93,16 +102,23 @@ public class Hosting {
         this.room = room;
     }
 
+    public Integer getDailyNumber() {
+        return dailyNumber;
+    }
+
+    public void setDailyNumber(Integer dailyNumber) {
+        this.dailyNumber = dailyNumber;
+    }
 
     public Double totalBasePrice(){
         if (totalGuest == 1 ){
-            return this.basePrice = 125.00;
+            return this.basePrice = 125.00 * dailyNumber;
         } else if (totalGuest == 2) {
-            return this.basePrice = 220.00;
+            return this.basePrice = 220.00 * dailyNumber;
         } else if (totalGuest == 3) {
-            return this.basePrice = 310.00;
+            return this.basePrice = 310.00 * dailyNumber;
         } else if (totalGuest == 4) {
-            return this.basePrice = 400.00;
+            return this.basePrice = 400.00 * dailyNumber;
         }
         return null;
     }
@@ -123,7 +139,9 @@ public class Hosting {
     public String toString() {
         return "\nHospede: " + client.getFullName() +
                 "\nNumero de pessoas: " + totalGuest +
-                "\nValor total: " + basePrice +
-                "\nApartamento nº: " + room.getRoomNumber();
+                "\nNumero de diárias: " + dailyNumber +
+                "\nSub Total: R$ " + basePrice +
+                "\nApartamento nº: " + room.getRoomNumber()+
+                "\nCheck-in: " + checkIn + " / Check-out: " + checkOut;
     }
 }
