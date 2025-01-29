@@ -1,8 +1,8 @@
-package ItaipuHotelMananger.mananger.ui.utils;
+package ItaipuHotelManager.manager.ui.utils;
 
-import ItaipuHotelMananger.mananger.entities.HotelClient;
-import ItaipuHotelMananger.mananger.entities.utils.CpfValidation;
-import ItaipuHotelMananger.mananger.services.HotelClientService;
+import ItaipuHotelManager.manager.entities.HotelClient;
+import ItaipuHotelManager.manager.entities.utils.CpfValidation;
+import ItaipuHotelManager.manager.services.HotelClientService;
 import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
-package ItaipuHotelMananger.mananger.services;
+package ItaipuHotelManager.manager.services;
 
-import ItaipuHotelMananger.mananger.entities.Hosting;
-import ItaipuHotelMananger.mananger.repositories.HostingRepository;
+import ItaipuHotelManager.manager.entities.Hosting;
+import ItaipuHotelManager.manager.repositories.HostingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

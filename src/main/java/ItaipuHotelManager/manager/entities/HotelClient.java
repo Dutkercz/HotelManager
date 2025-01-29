@@ -1,6 +1,5 @@
-package ItaipuHotelMananger.mananger.entities;
+package ItaipuHotelManager.manager.entities;
 
-import ItaipuHotelMananger.mananger.entities.utils.CpfValidation;
 import jakarta.persistence.*;
 
 import java.util.List;

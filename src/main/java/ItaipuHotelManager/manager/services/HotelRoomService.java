@@ -1,8 +1,8 @@
-package ItaipuHotelMananger.mananger.services;
+package ItaipuHotelManager.manager.services;
 
-import ItaipuHotelMananger.mananger.entities.HotelRoom;
-import ItaipuHotelMananger.mananger.entities.utils.RoomStatus;
-import ItaipuHotelMananger.mananger.repositories.HotelRoomRepository;
+import ItaipuHotelManager.manager.entities.HotelRoom;
+import ItaipuHotelManager.manager.entities.utils.RoomStatus;
+import ItaipuHotelManager.manager.repositories.HotelRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

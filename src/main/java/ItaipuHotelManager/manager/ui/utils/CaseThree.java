@@ -1,14 +1,14 @@
-package ItaipuHotelMananger.mananger.ui.utils;
+package ItaipuHotelManager.manager.ui.utils;
 
-import ItaipuHotelMananger.mananger.entities.Hosting;
-import ItaipuHotelMananger.mananger.entities.HotelClient;
-import ItaipuHotelMananger.mananger.entities.HotelPerson;
-import ItaipuHotelMananger.mananger.entities.HotelRoom;
-import ItaipuHotelMananger.mananger.entities.utils.RoomStatus;
-import ItaipuHotelMananger.mananger.repositories.HotelPersonRepository;
-import ItaipuHotelMananger.mananger.services.HostingService;
-import ItaipuHotelMananger.mananger.services.HotelClientService;
-import ItaipuHotelMananger.mananger.services.HotelRoomService;
+import ItaipuHotelManager.manager.entities.Hosting;
+import ItaipuHotelManager.manager.entities.HotelClient;
+import ItaipuHotelManager.manager.entities.HotelPerson;
+import ItaipuHotelManager.manager.entities.HotelRoom;
+import ItaipuHotelManager.manager.entities.utils.RoomStatus;
+import ItaipuHotelManager.manager.repositories.HotelPersonRepository;
+import ItaipuHotelManager.manager.services.HostingService;
+import ItaipuHotelManager.manager.services.HotelClientService;
+import ItaipuHotelManager.manager.services.HotelRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

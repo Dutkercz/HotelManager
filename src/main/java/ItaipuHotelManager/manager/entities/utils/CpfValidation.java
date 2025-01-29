@@ -1,4 +1,4 @@
-package ItaipuHotelMananger.mananger.entities.utils;
+package ItaipuHotelManager.manager.entities.utils;
 
 import org.springframework.stereotype.Component;
 

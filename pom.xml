@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ItaipuHotelMananger</groupId>
-	<artifactId>mananger.</artifactId>
+	<artifactId>manager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>hotelmananger.</name>
 	<description>Project test</description>

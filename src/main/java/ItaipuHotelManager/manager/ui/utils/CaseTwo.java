@@ -1,8 +1,8 @@
-package ItaipuHotelMananger.mananger.ui.utils;
+package ItaipuHotelManager.manager.ui.utils;
 
-import ItaipuHotelMananger.mananger.entities.HotelRoom;
-import ItaipuHotelMananger.mananger.services.HotelClientService;
-import ItaipuHotelMananger.mananger.services.HotelRoomService;
+import ItaipuHotelManager.manager.entities.HotelRoom;
+import ItaipuHotelManager.manager.services.HotelClientService;
+import ItaipuHotelManager.manager.services.HotelRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

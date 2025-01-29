@@ -1,7 +1,7 @@
-package ItaipuHotelMananger.mananger.repositories;
+package ItaipuHotelManager.manager.repositories;
 
-import ItaipuHotelMananger.mananger.entities.HotelRoom;
-import ItaipuHotelMananger.mananger.entities.utils.RoomStatus;
+import ItaipuHotelManager.manager.entities.HotelRoom;
+import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

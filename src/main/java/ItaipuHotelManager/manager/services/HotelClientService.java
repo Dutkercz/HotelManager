@@ -1,14 +1,13 @@
-package ItaipuHotelMananger.mananger.services;
+package ItaipuHotelManager.manager.services;
 
-import ItaipuHotelMananger.mananger.entities.HotelClient;
-import ItaipuHotelMananger.mananger.repositories.HotelClientRepository;
+import ItaipuHotelManager.manager.entities.HotelClient;
+import ItaipuHotelManager.manager.repositories.HotelClientRepository;
 import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class HotelClientService {

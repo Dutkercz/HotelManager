@@ -1,4 +1,4 @@
-package ItaipuHotelMananger.mananger.entities;
+package ItaipuHotelManager.manager.entities;
 
 import jakarta.persistence.*;
 

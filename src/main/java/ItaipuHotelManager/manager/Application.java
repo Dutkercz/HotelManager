@@ -1,6 +1,6 @@
-package ItaipuHotelMananger.mananger;
+package ItaipuHotelManager.manager;
 
-import ItaipuHotelMananger.mananger.ui.Menu;
+import ItaipuHotelManager.manager.ui.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

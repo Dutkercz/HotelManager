@@ -1,7 +1,6 @@
-package ItaipuHotelMananger.mananger.entities;
+package ItaipuHotelManager.manager.entities;
 
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

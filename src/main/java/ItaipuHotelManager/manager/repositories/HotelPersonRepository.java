@@ -1,6 +1,6 @@
-package ItaipuHotelMananger.mananger.repositories;
+package ItaipuHotelManager.manager.repositories;
 
-import ItaipuHotelMananger.mananger.entities.HotelPerson;
+import ItaipuHotelManager.manager.entities.HotelPerson;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface HotelPersonRepository extends JpaRepository<HotelPerson, Long> {

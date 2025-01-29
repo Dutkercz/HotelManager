@@ -1,7 +1,7 @@
-package ItaipuHotelMananger.mananger.controllers;
+package ItaipuHotelManager.manager.controllers;
 
-import ItaipuHotelMananger.mananger.entities.HotelClient;
-import ItaipuHotelMananger.mananger.services.HotelClientService;
+import ItaipuHotelManager.manager.entities.HotelClient;
+import ItaipuHotelManager.manager.services.HotelClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ public class HotelClientController {
     @Autowired
     HotelClientService hotelClientService;
 
-    @GetMapping
+    @GetMapping(value = "/all")
     public List<HotelClient> findAll(){
         List<HotelClient> list = hotelClientService.findAll();
         return list;

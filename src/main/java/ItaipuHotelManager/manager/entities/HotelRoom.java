@@ -1,6 +1,6 @@
-package ItaipuHotelMananger.mananger.entities;
+package ItaipuHotelManager.manager.entities;
 
-import ItaipuHotelMananger.mananger.entities.utils.RoomStatus;
+import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import jakarta.persistence.*;
 
 import java.util.List;
