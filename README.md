@@ -54,23 +54,22 @@ Senha: (vazia por padrão)
 Para popular o banco de dados com os apartamentos, execute uma unica vez com a aplicação,
 o arquivo seedroom que está na pasta test. fazendo a modificações a seus gosto,
 mas senguindo o padrão do arquivo.
-;
-;
+
 
 HotelManager/
-│── src/
-│   ├── main/java/com/hotel/
-│   │   ├── controllers/   # Controladores da API
-│   │   ├── entities/      # Lógica de negócios
-│   │   ├── repositories/   # Acesso ao banco de dados
-│   │   ├── services/       # Modelos de dados (JPA)
-│   │   ├── ui/            # Menu e sub menus
-│   │   ├── config/
-│   ├── resources/
-│   │   ├── application.properties  # defina como: spring.profiles.active=${APP_PROFILE:test}
-│   │   ├── application-test.properties # Configurações para test
-│── pom.xml  # Arquivo Maven com dependências
-│── README.md  # Documentação do projeto
+  │── src/
+  │   ├── main/java/com/hotel/
+  │   │   ├── controllers/   # Controladores da API
+  │   │   ├── entities/      # Lógica de negócios
+  │   │   ├── repositories/   # Acesso ao banco de dados
+  │   │   ├── services/       # Modelos de dados (JPA)
+  │   │   ├── ui/            # Menu e sub menus
+  │   │   ├── config/
+  │   ├── resources/
+  │   │   ├── application.properties  # defina como: spring.profiles.active=${APP_PROFILE:test}
+  │   │   ├── application-test.properties # Configurações para test
+  │── pom.xml  # Arquivo Maven com dependências
+  │── README.md  # Documentação do projeto
 
 
 
