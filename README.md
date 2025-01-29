@@ -57,7 +57,9 @@ mas senguindo o padrão do arquivo.
 
 
 HotelManager/
+
 │── src/
+
   │   ├── main/java/com/hotel/  
   │   │   ├── controllers/   # Controladores da API  
   │   │   ├── entities/      # Lógica de negócios  
