@@ -34,7 +34,6 @@ public class Menu {
     private HotelRoomRepository repository;
 
     public void showMenu(){
-
         System.out.println();
         System.out.println("===================================");
         System.out.println(" Bem vindo ao Sistema Hotel Itaipu");

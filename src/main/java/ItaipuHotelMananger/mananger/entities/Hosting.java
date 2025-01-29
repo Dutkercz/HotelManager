@@ -122,13 +122,13 @@ public class Hosting {
         this.dailyNumber = dailyNumber;
     }
 
-    public List<HotelPerson> getPersons() {
-        return persons;
-    }
-
-    public void setPersons(List<HotelPerson> persons) {
-        this.persons = persons;
-    }
+//    public List<HotelPerson> getPersons() {
+//        return persons;
+//    }
+//
+//    public void setPersons(List<HotelPerson> persons) {
+//        this.persons = persons;
+//    }
 
     public Double totalBasePrice(){
         if (totalGuest == 1 ){

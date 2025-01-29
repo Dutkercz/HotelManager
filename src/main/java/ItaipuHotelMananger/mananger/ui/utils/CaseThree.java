@@ -8,6 +8,7 @@ import ItaipuHotelMananger.mananger.repositories.HotelPersonRepository;
 import ItaipuHotelMananger.mananger.services.HostingService;
 import ItaipuHotelMananger.mananger.services.HotelClientService;
 import ItaipuHotelMananger.mananger.services.HotelRoomService;
+import ItaipuHotelMananger.mananger.ui.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,8 @@ public class CaseThree {
     private HostingService hostingService;
     @Autowired
     private HotelPersonRepository personRepository;
+    @Autowired
+    CaseOne one;
 
     public void showCaseThree(){
         Scanner scanner = new Scanner(System.in);
@@ -42,16 +45,17 @@ public class CaseThree {
         var buscaCpf = scanner.nextLine();
         try {
             client = clientService.findByCpf(buscaCpf);
-            System.out.println("**** Cliente encontrado! ****");
-            System.out.println("=========================");
-            System.out.print("Numero de pessoas: ");
-            Integer totalGuests = scanner.nextInt();
-            scanner.nextLine();
-            System.out.print("Numero de diárias: ");
-            int dailyNumber = scanner.nextInt();
-            scanner.nextLine();
-            System.out.print("Numero do Apartamento: ");
-            room = roomService.findByRoomNumber(scanner.nextLine());
+            if (client != null) {
+                System.out.println("**** Cliente encontrado! ****");
+                System.out.println("=========================");
+                System.out.print("Numero de pessoas: ");
+                Integer totalGuests = scanner.nextInt();
+                scanner.nextLine();
+                System.out.print("Numero de diárias: ");
+                int dailyNumber = scanner.nextInt();
+                scanner.nextLine();
+                System.out.print("Numero do Apartamento: ");
+                room = roomService.findByRoomNumber(scanner.nextLine());
 
 //            Double valor;
 //            while (true) {
@@ -74,30 +78,45 @@ public class CaseThree {
 //                    System.out.println("Escolha inválida");
 //                }
 //            }
-            if(totalGuests > 1){
-                System.out.print("Entre com o nome do(s) demais Hóspedes do Apartamento " + room +">>");
+                if (totalGuests > 1) {
+                    System.out.print("Entre com o nome do(s) demais Hóspedes do Apartamento " + room);
 
-                for (int i = 1; i < totalGuests; i++){
-                    personList.add(new HotelPerson(scanner.nextLine()));
-
+                    for (int i = 1; i < totalGuests; i++) {
+                        System.out.println(">> ");
+                        personList.add(new HotelPerson(scanner.nextLine()));
+                    }
+                    personRepository.saveAll(personList);
                 }
-                personRepository.saveAll(personList);
+
+                hosting = new Hosting(null, totalGuests, dailyNumber, room, client, time,
+                        time.plusDays(dailyNumber).withHour(12).withMinute(0), personList);
+                hostingService.saveHosting(hosting);
+                System.out.println("=================================");
+                System.out.println(" **** Hospedagem concluida! ****");
+                System.out.println("=================================");
+                System.out.println("\t**** Resumo: ****");
+                System.out.println(hosting);
+                System.out.println();
+                System.out.println("===============================");
+
+            }else {
+                System.out.println("Cliente não encontrado, faça o cadastro primeiro.");
+                System.out.println("Deseja cadastrar? ");
+                System.out.print("1 - Sim\n" +
+                        "2 - Não" +
+                        "\n >> ");
+                int escolhaCasdastrar = scanner.nextInt();
+                if(escolhaCasdastrar == 1){
+                    one.showCaseOne();
+                }else {
+                    System.out.println("Voltando ao menu principal...");
+                    Thread.sleep(2000);
+                }
             }
-
-            hosting = new Hosting(null, totalGuests, dailyNumber, room, client, time ,
-                    time.plusDays(dailyNumber).withHour(12).withMinute(0), personList);
-            hostingService.saveHosting(hosting);
-            System.out.println("=================================");
-            System.out.println(" **** Hospedagem concluida! ****");
-            System.out.println("=================================");
-            System.out.println("\t**** Resumo: ****");
-            System.out.println(hosting);
-            System.out.println();
-            System.out.println("===============================");
-
-
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
     }
