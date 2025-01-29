@@ -1,14 +1,17 @@
 package ItaipuHotelMananger.mananger.ui;
 
+import ItaipuHotelMananger.mananger.entities.HotelRoom;
 import ItaipuHotelMananger.mananger.repositories.HotelRoomRepository;
 import ItaipuHotelMananger.mananger.services.HotelClientService;
 import ItaipuHotelMananger.mananger.services.HotelRoomService;
 import ItaipuHotelMananger.mananger.ui.utils.CaseOne;
 import ItaipuHotelMananger.mananger.ui.utils.CaseThree;
 import ItaipuHotelMananger.mananger.ui.utils.CaseTwo;
+import jdk.dynalink.linker.LinkerServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Scanner;
 
 @Component
@@ -38,6 +41,13 @@ public class Menu {
         System.out.println("===================================");
         System.out.println(" Bem vindo ao Sistema Hotel Itaipu");
         System.out.println("===================================");
+        System.out.println("Apartamento disponiveis:");
+        List<HotelRoom> livres = roomService.getAvailableRooms();
+        livres.forEach(x -> System.out.println("Apartamento: "+ x.getRoomNumber()));
+        System.out.println("=====================================================");
+        System.out.println("Apartamento ocupados:");
+        List<HotelRoom> ocupados = roomService.getOccupiedRooms();
+        ocupados.forEach(x -> System.out.println("Apartamento: " +x.getRoomNumber()));
         System.out.println();
         while (true){
             System.out.println("Selecione uma opção no menu:" +

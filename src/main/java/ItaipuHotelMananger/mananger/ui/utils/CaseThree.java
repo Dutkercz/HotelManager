@@ -4,11 +4,11 @@ import ItaipuHotelMananger.mananger.entities.Hosting;
 import ItaipuHotelMananger.mananger.entities.HotelClient;
 import ItaipuHotelMananger.mananger.entities.HotelPerson;
 import ItaipuHotelMananger.mananger.entities.HotelRoom;
+import ItaipuHotelMananger.mananger.entities.utils.RoomStatus;
 import ItaipuHotelMananger.mananger.repositories.HotelPersonRepository;
 import ItaipuHotelMananger.mananger.services.HostingService;
 import ItaipuHotelMananger.mananger.services.HotelClientService;
 import ItaipuHotelMananger.mananger.services.HotelRoomService;
-import ItaipuHotelMananger.mananger.ui.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +31,7 @@ public class CaseThree {
     @Autowired
     private HotelPersonRepository personRepository;
     @Autowired
-    CaseOne one;
+    private CaseOne one;
 
     public void showCaseThree(){
         Scanner scanner = new Scanner(System.in);
@@ -49,13 +49,15 @@ public class CaseThree {
                 System.out.println("**** Cliente encontrado! ****");
                 System.out.println("=========================");
                 System.out.print("Numero de pessoas: ");
-                Integer totalGuests = scanner.nextInt();
+                int totalGuests = scanner.nextInt();
                 scanner.nextLine();
                 System.out.print("Numero de diárias: ");
                 int dailyNumber = scanner.nextInt();
                 scanner.nextLine();
                 System.out.print("Numero do Apartamento: ");
-                room = roomService.findByRoomNumber(scanner.nextLine());
+                room = roomService.findByRoomNumber(scanner.nextLine().strip());
+                RoomStatus status = RoomStatus.valueOf("OCUPADO");
+                roomService.updateRoomStatus(room.getRoomNumber(), status);
 
 //            Double valor;
 //            while (true) {

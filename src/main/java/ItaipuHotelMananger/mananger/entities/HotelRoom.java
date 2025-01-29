@@ -1,5 +1,6 @@
 package ItaipuHotelMananger.mananger.entities;
 
+import ItaipuHotelMananger.mananger.entities.utils.RoomStatus;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public class HotelRoom {
     private Integer doubleBeds;
     private Integer singleBeds;
 
+    @Enumerated(EnumType.STRING)
+    private RoomStatus status;
 
     @OneToMany(mappedBy = "room") // 'client' é o atributo na entidade Booking
     private List<Hosting> hostingList;
@@ -23,11 +26,12 @@ public class HotelRoom {
     public HotelRoom() {
     }
 
-    public HotelRoom(Long id, String roomNumber, Integer doubleBeds, Integer singleBeds) {
+    public HotelRoom(Long id, String roomNumber, Integer doubleBeds, Integer singleBeds, RoomStatus status) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.doubleBeds = doubleBeds;
         this.singleBeds = singleBeds;
+        this.status = status;
     }
 
     public Long getId() {
@@ -62,6 +66,14 @@ public class HotelRoom {
         this.singleBeds = singleBeds;
     }
 
+    public RoomStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RoomStatus status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -76,7 +88,7 @@ public class HotelRoom {
 
     @Override
     public String toString() {
-        return "Apartamento = " + roomNumber + "\n\tCama casal > " + doubleBeds +
+        return "Apartamento: " + roomNumber +" Situação: " + status+ "\n\tCama casal > " + doubleBeds +
                 "\n\tCama de solteiro > " + singleBeds+"\n";
     }
 }
