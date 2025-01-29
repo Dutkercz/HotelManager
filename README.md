@@ -57,18 +57,32 @@ mas senguindo o padrão do arquivo.
 
 
 HotelManager/
-  │── src/
+
+
+│── src/
+
   │   ├── main/java/com/hotel/
+  
   │   │   ├── controllers/   # Controladores da API
+  
   │   │   ├── entities/      # Lógica de negócios
+  
   │   │   ├── repositories/   # Acesso ao banco de dados
+  
   │   │   ├── services/       # Modelos de dados (JPA)
+  
   │   │   ├── ui/            # Menu e sub menus
+  
   │   │   ├── config/
+  
   │   ├── resources/
+  
   │   │   ├── application.properties  # defina como: spring.profiles.active=${APP_PROFILE:test}
+  
   │   │   ├── application-test.properties # Configurações para test
+  
   │── pom.xml  # Arquivo Maven com dependências
+  
   │── README.md  # Documentação do projeto
 
 
