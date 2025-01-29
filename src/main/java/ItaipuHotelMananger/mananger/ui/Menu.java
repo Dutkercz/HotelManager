@@ -43,8 +43,8 @@ public class Menu {
         while (true){
             System.out.println("Selecione uma opção no menu:" +
                     "\n	1 - Cadastro" +
-                    "\n	2 - Consulta" +
-                    "\n	3 - Hospedar" +
+                    "\n	2 - Consultas" +
+                    "\n	3 - Hospedgem (Check-in / Check-out)" +
                     "\n\t4 - Sair");
             var escolha = scanner.nextLine();
             switch (escolha){

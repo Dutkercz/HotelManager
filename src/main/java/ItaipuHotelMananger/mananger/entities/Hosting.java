@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +25,10 @@ public class Hosting {
     @JoinColumn(name = "client_id")
     private HotelClient client;
 
+    @OneToMany
+    @JoinColumn(name = "persons_id")
+    private List<HotelPerson> persons = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id")
     private HotelRoom room;
@@ -30,20 +36,26 @@ public class Hosting {
     public Hosting() {
     }
 
-    public Hosting(Long id, Integer totalGuest, Integer dailyNumber, Double totalPrice, HotelRoom room,
-                   HotelClient client, LocalDateTime checkIn, LocalDateTime checkOut) {
+    public Hosting(Long id, Integer totalGuest, Integer dailyNumber,  HotelRoom room,
+                   HotelClient client, LocalDateTime checkIn, LocalDateTime checkOut, List<HotelPerson> personList) {
         this.id = id;
         this.totalGuest = totalGuest;
         this.dailyNumber = dailyNumber;
-        this.basePrice = totalPrice;
+        this.basePrice = totalBasePrice();
         this.client = client;
         this.room = room;
+        //Nesse caso, as diárias começam 12h de um dia, até 12h do próximo dia.
+        // independete de chegar na madrugada do mesmo dia do chek-in. Por isso diminui um dia se chegar após 00:00
         if (checkIn.getHour() == 0 && checkIn.getMinute() == 0){
             this.checkIn = checkIn.minusDays(1);
         }else {
             this.checkIn = checkIn;
         }
         this.checkOut = checkOut;
+
+        if( totalGuest > 1){
+            this.persons = personList;
+        }
     }
 
     public Long getId() {
@@ -110,6 +122,14 @@ public class Hosting {
         this.dailyNumber = dailyNumber;
     }
 
+    public List<HotelPerson> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<HotelPerson> persons) {
+        this.persons = persons;
+    }
+
     public Double totalBasePrice(){
         if (totalGuest == 1 ){
             return this.basePrice = 125.00 * dailyNumber;
@@ -137,7 +157,8 @@ public class Hosting {
 
     @Override
     public String toString() {
-        return "\nHospede: " + client.getFullName() +
+        return "\nHospede Principal: " + client.getFullName() +
+                "\nDemais hospedes: " + persons +
                 "\nNumero de pessoas: " + totalGuest +
                 "\nNumero de diárias: " + dailyNumber +
                 "\nSub Total: R$ " + basePrice +
