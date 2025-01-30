@@ -22,15 +22,19 @@ public class HotelRoom {
     @OneToMany(mappedBy = "room")
     private List<Hosting> hostingList;
 
+    @OneToOne
+    private HotelClient client;
+
     public HotelRoom() {
     }
 
-    public HotelRoom(Long id, String roomNumber, Integer doubleBeds, Integer singleBeds, RoomStatus status) {
+    public HotelRoom(Long id, String roomNumber, Integer doubleBeds, Integer singleBeds, RoomStatus status, HotelClient client) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.doubleBeds = doubleBeds;
         this.singleBeds = singleBeds;
         this.status = status;
+        this.client = client;
     }
 
     public Long getId() {
@@ -71,6 +75,14 @@ public class HotelRoom {
 
     public void setStatus(RoomStatus status) {
         this.status = status;
+    }
+
+    public HotelClient getClient() {
+        return client;
+    }
+
+    public void setClient(HotelClient client) {
+        this.client = client;
     }
 
     @Override

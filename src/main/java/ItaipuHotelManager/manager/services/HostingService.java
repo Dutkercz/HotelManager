@@ -2,7 +2,6 @@ package ItaipuHotelManager.manager.services;
 
 import ItaipuHotelManager.manager.entities.Hosting;
 import ItaipuHotelManager.manager.entities.HotelClient;
-import ItaipuHotelManager.manager.entities.HotelPerson;
 import ItaipuHotelManager.manager.entities.HotelRoom;
 import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import ItaipuHotelManager.manager.repositories.HostingRepository;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class HostingService {
@@ -88,7 +86,7 @@ public class HostingService {
         hosting.setCheckOut(LocalDateTime.now());
         hostingRepository.save(hosting);
 
-        return "CheckOut realizado com sucesso! Total R$ ";
+        return "CheckOut realizado com sucesso! Total R$ " + hosting.getBasePrice();
 
     }
 }

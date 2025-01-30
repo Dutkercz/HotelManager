@@ -13,7 +13,7 @@ public class HotelPerson {
     private String name;
 
     @ManyToOne
-    Hosting hosting;
+    private Hosting hosting;
 
     public HotelPerson() {
     }
