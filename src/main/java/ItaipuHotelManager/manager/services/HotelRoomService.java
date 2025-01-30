@@ -40,7 +40,7 @@ public class HotelRoomService {
     }
 
     public List<HotelRoom> getAvailableRooms() {
-        return repository.findByStatus(RoomStatus.LIVRE);
+        return repository.findByStatus(RoomStatus.DISPONIVEL);
     }
 
     public List<HotelRoom> getOccupiedRooms() {

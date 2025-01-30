@@ -16,9 +16,9 @@ public class HotelClientController {
     HotelClientService hotelClientService;
 
     @GetMapping(value = "/all")
-    public List<HotelClient> findAll(){
+    public ResponseEntity<List<HotelClient>> findAll(){
         List<HotelClient> list = hotelClientService.findAll();
-        return list;
+        return ResponseEntity.ok().body(list);
     }
 
     @PostMapping

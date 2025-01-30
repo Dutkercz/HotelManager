@@ -19,9 +19,8 @@ public class HotelRoom {
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
 
-    @OneToMany(mappedBy = "room") // 'client' é o atributo na entidade Booking
+    @OneToMany(mappedBy = "room")
     private List<Hosting> hostingList;
-
 
     public HotelRoom() {
     }
@@ -88,7 +87,7 @@ public class HotelRoom {
 
     @Override
     public String toString() {
-        return "Apartamento: " + roomNumber +" Situação: " + status+ "\n\tCama casal > " + doubleBeds +
+        return "Apartamento: " + roomNumber + "\nSituação: " + status+ "\n\tCama casal > " + doubleBeds +
                 "\n\tCama de solteiro > " + singleBeds+"\n";
     }
 }

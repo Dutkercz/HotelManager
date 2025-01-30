@@ -19,8 +19,7 @@ import java.util.Scanner;
 
 @Component
 public class CaseThree {
-    //Hospedar
-    //Host
+    //Check-In
 
     @Autowired
     private HotelClientService clientService;
@@ -84,7 +83,7 @@ public class CaseThree {
                     System.out.print("Entre com o nome do(s) demais Hóspedes do Apartamento " + room);
 
                     for (int i = 1; i < totalGuests; i++) {
-                        System.out.println(">> ");
+                        System.out.print(">> ");
                         personList.add(new HotelPerson(scanner.nextLine()));
                     }
                     personRepository.saveAll(personList);

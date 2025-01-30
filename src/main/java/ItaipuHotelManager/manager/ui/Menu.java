@@ -1,9 +1,11 @@
 package ItaipuHotelManager.manager.ui;
 
 import ItaipuHotelManager.manager.entities.HotelRoom;
+import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import ItaipuHotelManager.manager.repositories.HotelRoomRepository;
 import ItaipuHotelManager.manager.services.HotelClientService;
 import ItaipuHotelManager.manager.services.HotelRoomService;
+import ItaipuHotelManager.manager.ui.utils.CaseFour;
 import ItaipuHotelManager.manager.ui.utils.CaseOne;
 import ItaipuHotelManager.manager.ui.utils.CaseThree;
 import ItaipuHotelManager.manager.ui.utils.CaseTwo;
@@ -27,6 +29,9 @@ public class Menu {
     private CaseThree three;
 
     @Autowired
+    private CaseFour four;
+
+    @Autowired
     private HotelRoomService roomService;
 
     @Autowired
@@ -46,14 +51,15 @@ public class Menu {
         System.out.println("=====================================================");
         System.out.println("Apartamento ocupados:");
         List<HotelRoom> ocupados = roomService.getOccupiedRooms();
-        ocupados.forEach(x -> System.out.println("Apartamento: " +x.getRoomNumber()));
+        ocupados.forEach(x -> System.out.println("Apartamento: " + x.getRoomNumber()));
         System.out.println();
         while (true){
             System.out.println("Selecione uma opção no menu:" +
                     "\n	1 - Cadastro" +
                     "\n	2 - Consultas" +
-                    "\n	3 - Hospedgem (Check-in / Check-out)" +
-                    "\n\t4 - Sair");
+                    "\n	3 - Check-in" +
+                    "\n\t4 - Check-out" +
+                    "\n 5 - Sair");
             var escolha = scanner.nextLine();
             switch (escolha){
                 case "1":
@@ -66,11 +72,12 @@ public class Menu {
                 case "3":
                     three.showCaseThree();
                     break;
-
                 case "4":
+                    four.showCaseFour();
+                    return;
+                case "5":
                     System.out.println("Encerrando o sistema...");
                     return;
-
                 default:
                     System.out.println("Opção inválida! Tente novamente.");
                     break;

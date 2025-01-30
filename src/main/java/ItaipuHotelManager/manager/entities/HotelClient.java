@@ -27,10 +27,6 @@ public class HotelClient {
     public HotelClient() {
     }
 
-    public HotelClient(String cpf) {
-        this.cpf = cpf;
-    }
-
     public HotelClient(Long id, String fullName, String cpf,
                        String city, String address, String email,
                        String phone, String cnpj) {
