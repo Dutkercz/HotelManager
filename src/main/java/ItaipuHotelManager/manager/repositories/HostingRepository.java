@@ -10,9 +10,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HostingRepository extends JpaRepository<Hosting, Long> {
 
-    Double basePrice (double price);
+   // Double basePrice (double price);
 
     Hosting findByRoomRoomNumber(String room);
 
     Hosting findByClientAndRoomStatus(HotelClient client, RoomStatus status);
+
 }
