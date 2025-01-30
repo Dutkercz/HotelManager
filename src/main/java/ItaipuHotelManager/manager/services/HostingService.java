@@ -24,16 +24,6 @@ public class HostingService {
     @Autowired
     private HotelClientService clientService;
 
-//    public Hosting findByRoomNumber (String room){
-//        Hosting hosting = new Hosting();
-//        return hostingRepository.findByRoomRoomNumber(room);
-//    }
-
-//    public Double findBasePrice (Hosting hosting){
-//        hostingRepository.findBasePrice(hosting);
-//        return hosting.getBasePrice();
-//    }
-
     public Double hostingTotalPriceDebit(Hosting hosting){
         return hosting.getBasePrice()*1.03;
     }
