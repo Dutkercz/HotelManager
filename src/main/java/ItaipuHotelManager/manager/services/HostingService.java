@@ -17,10 +17,8 @@ import java.time.LocalDateTime;
 public class HostingService {
     @Autowired
     private HostingRepository hostingRepository;
-
     @Autowired
     private HotelRoomRepository roomRepository;
-
     @Autowired
     private HotelClientService clientService;
 
@@ -50,7 +48,6 @@ public class HostingService {
 
         Hosting hosting = hostingRepository.findByClientAndRoomStatus(client, RoomStatus.OCUPADO);
         Hibernate.initialize(hosting);
-
 
         System.out.println(hosting);
         if (hosting == null){

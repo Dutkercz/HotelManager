@@ -1,5 +1,6 @@
 package ItaipuHotelManager.manager.entities;
 
+import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -32,6 +33,9 @@ public class Hosting {
     @JoinColumn(name = "room_id")
     private HotelRoom room;
 
+    @Enumerated(EnumType.STRING)
+    private RoomStatus status;
+
     public Hosting() {
     }
 
@@ -43,6 +47,7 @@ public class Hosting {
         this.basePrice = hostingPrices();
         this.client = client;
         this.room = room;
+        status = room.getStatus();
         //Nesse caso, as diárias começam 12h de um dia, até 12h do próximo dia.
         // independete de chegar na madrugada do mesmo dia do chek-in. Por isso diminui um dia se chegar após 00:00
         if (checkIn.getHour() == 0 && checkIn.getMinute() == 0){
@@ -127,6 +132,14 @@ public class Hosting {
 
     public void setPersons(List<HotelPerson> persons) {
         this.persons = persons;
+    }
+
+    public RoomStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RoomStatus status) {
+        this.status = status;
     }
 
     public Double hostingPrices(){
