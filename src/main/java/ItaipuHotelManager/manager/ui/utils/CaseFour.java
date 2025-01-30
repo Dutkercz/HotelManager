@@ -31,33 +31,27 @@ public class CaseFour {
     @Autowired
     private HotelPersonRepository personRepository;
 
-
     public void showCaseFour(){
-
         Scanner scanner = new Scanner(System.in);
-        HotelClient client;
-        HotelRoom room;
-        LocalDateTime time = LocalDateTime.now();
-        Hosting hosting = new Hosting();
-        List<HotelPerson> personList = new ArrayList<>();
 
-        System.out.print("Digite o numero do apartamento para check-out: ");
-        String roomToCheckout = scanner.nextLine();
-        RoomStatus roomStatus = RoomStatus.DISPONIVEL;
+        System.out.print("Digite o CPF do cliente para check-out: ");
+        String cpfCheckOut = scanner.nextLine();
 
-        roomService.updateRoomStatus(roomToCheckout, roomStatus);
 
-        System.out.println("Check-out apartamento ");
-        hosting = hostingService.findByRoomNumber(roomToCheckout);
-        System.out.println(hosting.getClient());
         System.out.println("Escolha a forma de pagamento" +
                 "\n 1 - Dinheiro / PIX" +
                 "\n 2 - Cartão de crédito" +
                 "\n 3 - Cartão de Debito");
-        int chosePaymenteMethod = scanner.nextInt();
-        if (chosePaymenteMethod == 1){
-            System.out.println("Dinheiro / PIX");
-            hostingService.hostingTotalPrice(hosting.getBasePrice());
+        String chosePaymentMethod = scanner.nextLine();
+
+        while (!chosePaymentMethod.matches("[1-3]")){
+            System.out.print("Escolha uma opção válida." +
+                    "\n 1 - Dinheiro / PIX" +
+                    "\n 2 - Cartão de crédito" +
+                    "\n 3 - Cartão de Debito" +
+                    ">>  ");
+            chosePaymentMethod = scanner.nextLine();
         }
+        System.out.println(hostingService.checkOut(cpfCheckOut, chosePaymentMethod));
     }
 }

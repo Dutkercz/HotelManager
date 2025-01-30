@@ -40,7 +40,7 @@ public class Hosting {
         this.id = id;
         this.totalGuest = totalGuest;
         this.dailyNumber = dailyNumber;
-        this.basePrice = totalBasePrice();
+        this.basePrice = hostingPrices();
         this.client = client;
         this.room = room;
         //Nesse caso, as diárias começam 12h de um dia, até 12h do próximo dia.
@@ -121,15 +121,15 @@ public class Hosting {
         this.dailyNumber = dailyNumber;
     }
 
-//    public List<HotelPerson> getPersons() {
-//        return persons;
-//    }
-//
-//    public void setPersons(List<HotelPerson> persons) {
-//        this.persons = persons;
-//    }
+    public List<HotelPerson> getPersons() {
+        return persons;
+    }
 
-    public Double totalBasePrice(){
+    public void setPersons(List<HotelPerson> persons) {
+        this.persons = persons;
+    }
+
+    public Double hostingPrices(){
         if (totalGuest == 1 ){
             return this.basePrice = 125.00 * dailyNumber;
         } else if (totalGuest == 2) {
