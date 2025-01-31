@@ -55,7 +55,15 @@ public class CaseThree {
                 scanner.nextLine();
                 System.out.print("Numero do Apartamento: ");
                 room = roomService.findByRoomNumber(scanner.nextLine().strip());
-                RoomStatus status = RoomStatus.valueOf("OCUPADO");
+                while(true){
+                    if (room.getStatus() == RoomStatus.OCUPADO){
+                        System.out.println("Apartamento ocupado, escolha outro.");
+                        room = roomService.findByRoomNumber(scanner.nextLine().strip());
+                    }else {
+                        break;
+                    }
+                }
+                RoomStatus status = RoomStatus.OCUPADO;
                 roomService.updateRoomStatus(room.getRoomNumber(), status);
 
                 if (totalGuests > 1) {
