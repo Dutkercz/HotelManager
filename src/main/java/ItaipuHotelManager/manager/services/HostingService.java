@@ -8,10 +8,12 @@ import ItaipuHotelManager.manager.repositories.HostingRepository;
 import ItaipuHotelManager.manager.repositories.HotelRoomRepository;
 import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 @Service
 public class HostingService {
@@ -47,33 +49,39 @@ public class HostingService {
         }
 
         Hosting hosting = hostingRepository.findByClientAndRoomStatus(client, RoomStatus.OCUPADO);
-        Hibernate.initialize(hosting);
+        try{
 
-        System.out.println(hosting);
-        if (hosting == null){
-            return "Nenhuma hospedagem ativa para este CPF.";
+
+            Hibernate.initialize(hosting);
+
+            System.out.println(hosting);
+            if (hosting == null){
+                return "Nenhuma hospedagem ativa para este CPF.";
+            }
+            System.out.println("=======================");
+            System.out.println("Hospedagem encontrada ");
+            System.out.println("=======================");
+
+            double totalPrice = 0.0;
+            if (paymentMethod.equals("1")){
+                totalPrice = hostingTotalPrice(hosting);
+            } else if (paymentMethod.equals("2")) {
+                totalPrice = hostingTotalPriceCredit(hosting);
+            } else if (paymentMethod.equals("3")) {
+                totalPrice = hostingTotalPriceDebit(hosting);
+            }
+            hosting.setBasePrice(totalPrice);
+            HotelRoom room = hosting.getRoom();
+            room.setStatus(RoomStatus.DISPONIVEL);
+            roomRepository.save(room);
+
+            hosting.setCheckOut(LocalDateTime.now());
+            hostingRepository.save(hosting);
+
+            return "CheckOut realizado com sucesso! Total R$ " + hosting.getBasePrice();
+        } catch (HibernateException | NoSuchElementException e) {
+            throw new RuntimeException(e);
         }
-        System.out.println("=======================");
-        System.out.println("Hospedagem encontrada ");
-        System.out.println("=======================");
-
-        double totalPrice = 0.0;
-        if (paymentMethod.equals("1")){
-            totalPrice = hostingTotalPrice(hosting);
-        } else if (paymentMethod.equals("2")) {
-           totalPrice = hostingTotalPriceCredit(hosting);
-        } else if (paymentMethod.equals("3")) {
-            totalPrice = hostingTotalPriceDebit(hosting);
-        }
-        hosting.setBasePrice(totalPrice);
-        HotelRoom room = hosting.getRoom();
-        room.setStatus(RoomStatus.DISPONIVEL);
-        roomRepository.save(room);
-
-        hosting.setCheckOut(LocalDateTime.now());
-        hostingRepository.save(hosting);
-
-        return "CheckOut realizado com sucesso! Total R$ " + hosting.getBasePrice();
 
     }
 }

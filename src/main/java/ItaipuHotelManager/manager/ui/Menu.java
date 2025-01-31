@@ -1,5 +1,6 @@
 package ItaipuHotelManager.manager.ui;
 
+import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.entities.HotelRoom;
 import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import ItaipuHotelManager.manager.repositories.HotelRoomRepository;
@@ -41,6 +42,7 @@ public class Menu {
     private HotelRoomRepository repository;
 
     public void showMenu(){
+
         System.out.println();
         System.out.println("===================================");
         System.out.println(" Bem vindo ao Sistema Hotel Itaipu");
@@ -74,7 +76,7 @@ public class Menu {
                     break;
                 case "4":
                     four.showCaseFour();
-                    return;
+                    break;
                 case "5":
                     System.out.println("Encerrando o sistema...");
                     return;

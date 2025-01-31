@@ -58,27 +58,6 @@ public class CaseThree {
                 RoomStatus status = RoomStatus.valueOf("OCUPADO");
                 roomService.updateRoomStatus(room.getRoomNumber(), status);
 
-//            Double valor;
-//            while (true) {
-//                System.out.println("Forma de pagamento:" +
-//                        "\n1 - Dinheiro/Pix" +
-//                        "\n2 - Cartão Crédito" +
-//                        "\n3 - Cartão Débito" +
-//                        "\n >> ");
-//                int escolhaFormaDePagamento = scanner.nextInt();
-//                if (escolhaFormaDePagamento == 1){
-//                    valor = hostingService.hostingTotalPrice(hosting.getBasePrice());
-//                    break;
-//                } else if (escolhaFormaDePagamento == 2) {
-//                    valor = hostingService.hostingTotalPriceCredit(hosting.getBasePrice());
-//                    break;
-//                }else if ( escolhaFormaDePagamento == 3) {
-//                    valor = hostingService.hostingTotalPriceDebit(hosting.getBasePrice());
-//                    break;
-//                }else {
-//                    System.out.println("Escolha inválida");
-//                }
-//            }
                 if (totalGuests > 1) {
                     System.out.print("Entre com o nome do(s) demais Hóspedes do Apartamento " + room);
 

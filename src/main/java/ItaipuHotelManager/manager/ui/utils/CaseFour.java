@@ -34,24 +34,29 @@ public class CaseFour {
     public void showCaseFour(){
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Digite o CPF do cliente para check-out: ");
-        String cpfCheckOut = scanner.nextLine();
+        try{
+            System.out.print("Digite o CPF do cliente para check-out: ");
+            String cpfCheckOut = scanner.nextLine();
 
 
-        System.out.println("Escolha a forma de pagamento" +
-                "\n 1 - Dinheiro / PIX" +
-                "\n 2 - Cartão de crédito" +
-                "\n 3 - Cartão de Debito");
-        String chosePaymentMethod = scanner.nextLine();
-
-        while (!chosePaymentMethod.matches("[1-3]")){
-            System.out.print("Escolha uma opção válida." +
+            System.out.println("Escolha a forma de pagamento" +
                     "\n 1 - Dinheiro / PIX" +
                     "\n 2 - Cartão de crédito" +
-                    "\n 3 - Cartão de Debito" +
-                    ">>  ");
-            chosePaymentMethod = scanner.nextLine();
+                    "\n 3 - Cartão de Debito");
+            String chosePaymentMethod = scanner.nextLine();
+
+            while (!chosePaymentMethod.matches("[1-3]")){
+                System.out.print("Escolha uma opção válida." +
+                        "\n 1 - Dinheiro / PIX" +
+                        "\n 2 - Cartão de crédito" +
+                        "\n 3 - Cartão de Debito" +
+                        ">>  ");
+                chosePaymentMethod = scanner.nextLine();
+            }
+            System.out.println(hostingService.checkOut(cpfCheckOut, chosePaymentMethod));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        System.out.println(hostingService.checkOut(cpfCheckOut, chosePaymentMethod));
+
     }
 }

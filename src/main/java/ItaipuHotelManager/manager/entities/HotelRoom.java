@@ -28,13 +28,13 @@ public class HotelRoom {
     public HotelRoom() {
     }
 
-    public HotelRoom(Long id, String roomNumber, Integer doubleBeds, Integer singleBeds, RoomStatus status, HotelClient client) {
+    public HotelRoom(Long id, String roomNumber, Integer doubleBeds, Integer singleBeds, RoomStatus status) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.doubleBeds = doubleBeds;
         this.singleBeds = singleBeds;
         this.status = status;
-        this.client = client;
+      //  this.client = client;
     }
 
     public Long getId() {
