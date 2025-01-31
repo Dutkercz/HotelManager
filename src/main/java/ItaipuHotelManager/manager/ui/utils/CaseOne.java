@@ -19,10 +19,9 @@ public class CaseOne {
     HotelClientService clientService;
 
     public void showCaseOne() {
-        HotelClient client;
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println(" **** Entre com os seguintes dados. ****");
+        System.out.println("=**** Entre com os seguintes dados ****=");
         System.out.println("==========================================");
         while (true) {
             System.out.print("CPF: (somente dígitos) ");
@@ -39,7 +38,9 @@ public class CaseOne {
                 //Verifica se o cliente já possui cadastro;
                 //Check if client already has a registration;
                 if (clientService.findByCpf(cpf).getCpf().equals(cpf)) {
-                    System.out.println(" **** Cliente já cadastrado. **** ");
+                    System.out.println("==========================================\n" +
+                            "     **** Cliente já cadastrado. **** " +
+                            "\n==========================================\n");
                     break;
                 }
             } catch (RuntimeException e) {

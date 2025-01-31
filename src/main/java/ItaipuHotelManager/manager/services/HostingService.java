@@ -47,20 +47,18 @@ public class HostingService {
 
         HotelClient client = clientService.findByCpf(cpfCheckOut);
         if (client == null){
-            return "Cliente não encontrado.";
+            return "**** Cliente não encontrado. ****\n" +
+                    "===================================";
         }
 
         try{
             List<Hosting> hosting = hostingRepository.findByClientAndRoomStatus(client, RoomStatus.OCUPADO);
             Hosting hostingToCheckOut = hosting.stream()
                     .filter(x -> x.getStatus() == RoomStatus.OCUPADO)
-                    .findFirst().orElseThrow(() -> new RuntimeException("Nenhuma "));
+                    .findFirst().orElseThrow();
 
             Hibernate.initialize(hostingToCheckOut);
 
-            if (hostingToCheckOut == null){
-                return "Nenhuma hospedagem ativa para este CPF.";
-            }
             System.out.println("=======================");
             System.out.println("Hospedagem encontrada ");
             System.out.println("=======================");
@@ -84,7 +82,9 @@ public class HostingService {
                     + hostingToCheckOut.getBasePrice()+" ****\n";
 
         } catch (HibernateException | NoSuchElementException e) {
-            throw new RuntimeException(e);
+            return "==================================================" +
+                    "\n**** Nenhuma hospedagem ativa para este CPF. ****" +
+                    "\n==================================================\n";
         }
     }
 
