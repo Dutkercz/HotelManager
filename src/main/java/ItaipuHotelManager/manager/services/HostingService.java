@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class HostingService {
@@ -85,5 +86,14 @@ public class HostingService {
         } catch (HibernateException | NoSuchElementException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Transactional
+    public List<Hosting> findAllHostings (String cpf){
+        HotelClient client = clientService.findByCpf(cpf);
+        if (client == null){
+            System.out.println("Cliente não encontrado.");
+        }
+        return hostingRepository.findByClient(client);
     }
 }

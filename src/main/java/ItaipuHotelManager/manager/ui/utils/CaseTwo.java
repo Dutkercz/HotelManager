@@ -1,6 +1,9 @@
 package ItaipuHotelManager.manager.ui.utils;
 
+import ItaipuHotelManager.manager.entities.Hosting;
+import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.entities.HotelRoom;
+import ItaipuHotelManager.manager.services.HostingService;
 import ItaipuHotelManager.manager.services.HotelClientService;
 import ItaipuHotelManager.manager.services.HotelRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +15,11 @@ import java.util.Scanner;
 @Component
 public class CaseTwo {
     @Autowired
-    HotelClientService clientService;
-
+    private HotelClientService clientService;
     @Autowired
-    HotelRoomService roomService;
+    private HotelRoomService roomService;
+    @Autowired
+    private HostingService hostingService;
 
     public void showCaseTwo(){
 
@@ -23,9 +27,14 @@ public class CaseTwo {
 
 
         System.out.println("O que deseja consultar: ");
-        System.out.println("1 - Lista de Apartamentos" +
-                "\n2 - Apartamento ocupados" +
-                "\n3 - Voltar");
+        System.out.print("""
+                1 - Lista de Apartamentos\
+                
+                2 - Apartamento ocupados.\
+                
+                3 - Histórico de cliente.\
+                
+                >>\s""");
         var escolhaCase2 = scanner.nextInt();
         scanner.nextLine();
         if (escolhaCase2 == 1){
@@ -37,8 +46,24 @@ public class CaseTwo {
                 hotelRoomList.forEach(System.out::println);
             }
         }
-        if (escolhaCase2 == 2){
+        else if (escolhaCase2 == 2){
             System.out.println("Em construção");
+
+        } else if (escolhaCase2 == 3) {
+            System.out.println("**** Historico de hospedagem de clientes ****");
+            System.out.print("Digite o cpf: ");
+            try {
+                String cpfToConsulting = scanner.nextLine();
+                List<Hosting> hostingList = hostingService.findAllHostings(cpfToConsulting);
+                if (hostingList.isEmpty()){
+                    System.out.println("**** Nenhuma hospedagem encontrada. ****");
+                }
+                hostingList.forEach(System.out::println);
+                System.out.println();
+            } catch (RuntimeException e) {
+                throw new RuntimeException(e);
+            }
+
         }
 
 

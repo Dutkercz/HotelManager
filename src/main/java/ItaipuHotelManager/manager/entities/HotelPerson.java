@@ -13,6 +13,7 @@ public class HotelPerson {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "hosting_id")
     private Hosting hosting;
 
     public HotelPerson() {

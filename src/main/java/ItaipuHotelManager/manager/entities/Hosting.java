@@ -25,8 +25,7 @@ public class Hosting {
     @JoinColumn(name = "client_id")
     private HotelClient client;
 
-    @OneToMany
-    @JoinColumn(name = "persons_id")
+    @OneToMany(mappedBy = "hosting", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<HotelPerson> persons = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)

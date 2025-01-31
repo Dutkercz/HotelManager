@@ -15,4 +15,6 @@ public interface HostingRepository extends JpaRepository<Hosting, Long> {
 
     List<Hosting> findByClientAndRoomStatus(HotelClient client, RoomStatus status);
 
+    List<Hosting> findByClient (HotelClient client);
+
 }
