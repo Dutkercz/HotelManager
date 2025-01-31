@@ -42,7 +42,8 @@ public class CaseFour {
             System.out.println("Escolha a forma de pagamento" +
                     "\n 1 - Dinheiro / PIX" +
                     "\n 2 - Cartão de crédito" +
-                    "\n 3 - Cartão de Debito");
+                    "\n 3 - Cartão de Debito" +
+                    "\n >> ");
             String chosePaymentMethod = scanner.nextLine();
 
             while (!chosePaymentMethod.matches("[1-3]")){

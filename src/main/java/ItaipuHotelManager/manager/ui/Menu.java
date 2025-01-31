@@ -43,20 +43,6 @@ public class Menu {
 
     public void showMenu(){
 
-        roomService.saveRoom(repository.save(new HotelRoom(null, "01", 1, 1, RoomStatus.DISPONIVEL)));
-        roomService.saveRoom(repository.save(new HotelRoom(null, "02", 1, 0, RoomStatus.DISPONIVEL)));
-        roomService.saveRoom(repository.save(new HotelRoom(null, "03", 1, 1, RoomStatus.DISPONIVEL)));
-        roomService.saveRoom(repository.save(new HotelRoom(null, "04", 1, 2, RoomStatus.DISPONIVEL)));
-        roomService.saveRoom(repository.save(new HotelRoom(null, "05", 0, 2, RoomStatus.DISPONIVEL)));
-        roomService.saveRoom(repository.save(new HotelRoom(null, "06", 0, 2, RoomStatus.DISPONIVEL)));
-        roomService.saveRoom(repository.save(new HotelRoom(null, "07", 1, 2, RoomStatus.DISPONIVEL)));
-        roomService.saveRoom(repository.save(new HotelRoom(null, "08", 1, 1, RoomStatus.DISPONIVEL)));
-        roomService.saveRoom(repository.save(new HotelRoom(null, "09", 0, 2, RoomStatus.DISPONIVEL)));
-        roomService.saveRoom(repository.save(new HotelRoom(null, "10", 0, 2, RoomStatus.DISPONIVEL)));
-        roomService.saveRoom(repository.save(new HotelRoom(null, "11", 0, 2, RoomStatus.DISPONIVEL)));
-        roomService.saveRoom(repository.save(new HotelRoom(null, "12", 0, 2, RoomStatus.DISPONIVEL)));
-        roomService.saveRoom(repository.save(new HotelRoom(null, "13", 0, 3, RoomStatus.DISPONIVEL)));
-
         System.out.println();
         System.out.println("===================================");
         System.out.println(" Bem vindo ao Sistema Hotel Itaipu");
@@ -70,13 +56,20 @@ public class Menu {
         ocupados.forEach(x -> System.out.println("Apartamento: " + x.getRoomNumber()));
         System.out.println();
         while (true){
-            System.out.print("Selecione uma opção no menu:" +
-                    "\n	1 - Cadastro" +
-                    "\n	2 - Consultas" +
-                    "\n	3 - Check-in" +
-                    "\n\t4 - Check-out" +
-                    "\n    5 - Sair" +
-                    "\n    => ");
+            System.out.print("""
+                    Selecione uma opção no menu:\
+                    
+                    	1 - Cadastro\
+                    
+                    	2 - Consultas\
+                    
+                    	3 - Check-in\
+                    
+                    \t4 - Check-out\
+                    
+                    \t5 - Sair\
+                    
+                    \t>>\s""");
             var escolha = scanner.nextLine();
             switch (escolha){
                 case "1":

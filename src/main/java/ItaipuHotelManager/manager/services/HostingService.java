@@ -64,16 +64,12 @@ public class HostingService {
             System.out.println("Hospedagem encontrada ");
             System.out.println("=======================");
 
-
-
-            double totalPrice = 0.0;
-            if (paymentMethod.equals("1")){
-                totalPrice = hostingTotalPrice(hostingToCheckOut);
-            } else if (paymentMethod.equals("2")) {
-                totalPrice = hostingTotalPriceCredit(hostingToCheckOut);
-            } else if (paymentMethod.equals("3")) {
-                totalPrice = hostingTotalPriceDebit(hostingToCheckOut);
-            }
+            double totalPrice = switch (paymentMethod) {
+                case "1" -> hostingTotalPrice(hostingToCheckOut);
+                case "2" -> hostingTotalPriceCredit(hostingToCheckOut);
+                case "3" -> hostingTotalPriceDebit(hostingToCheckOut);
+                default -> 0.0;
+            };
             hostingToCheckOut.setBasePrice(totalPrice);
 
             HotelRoom room = hostingToCheckOut.getRoom();
@@ -82,11 +78,12 @@ public class HostingService {
             hostingToCheckOut.setCheckOut(LocalDateTime.now());
             roomRepository.save(room);
             hostingRepository.save(hostingToCheckOut);
+            System.out.println(hostingToCheckOut);
+            return "**** CheckOut realizado com sucesso! Total R$ "
+                    + hostingToCheckOut.getBasePrice()+" ****\n";
 
-            return "CheckOut realizado com sucesso! Total R$ " + hostingToCheckOut.getBasePrice();
         } catch (HibernateException | NoSuchElementException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
