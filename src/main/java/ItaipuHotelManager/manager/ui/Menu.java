@@ -56,12 +56,13 @@ public class Menu {
         ocupados.forEach(x -> System.out.println("Apartamento: " + x.getRoomNumber()));
         System.out.println();
         while (true){
-            System.out.println("Selecione uma opção no menu:" +
+            System.out.print("Selecione uma opção no menu:" +
                     "\n	1 - Cadastro" +
                     "\n	2 - Consultas" +
                     "\n	3 - Check-in" +
                     "\n\t4 - Check-out" +
-                    "\n 5 - Sair");
+                    "\n    5 - Sair" +
+                    "\n    => ");
             var escolha = scanner.nextLine();
             switch (escolha){
                 case "1":
