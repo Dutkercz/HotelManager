@@ -47,7 +47,7 @@ public class Hosting {
         this.basePrice = hostingPrices();
         this.client = client;
         this.room = room;
-        status = room.getStatus();
+        status = RoomStatus.OCUPADO;
         //Nesse caso, as diárias começam 12h de um dia, até 12h do próximo dia.
         // independete de chegar na madrugada do mesmo dia do chek-in. Por isso diminui um dia se chegar após 00:00
         if (checkIn.getHour() == 0 && checkIn.getMinute() == 0){

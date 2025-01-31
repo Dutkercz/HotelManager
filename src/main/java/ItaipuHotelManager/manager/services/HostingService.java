@@ -51,7 +51,11 @@ public class HostingService {
 
         try{
             List<Hosting> hosting = hostingRepository.findByClientAndRoomStatus(client, RoomStatus.OCUPADO);
-            Hosting hostingToCheckOut = (Hosting) hosting.stream().filter(x -> x.getStatus() == RoomStatus.OCUPADO);
+            Hosting hostingToCheckOut = hosting.stream()
+                    .filter(x -> x.getStatus() == RoomStatus.OCUPADO)
+                    .findFirst().orElseThrow(() -> new RuntimeException("Nenhuma "));
+
+            Hibernate.initialize(hostingToCheckOut);
 
             if (hostingToCheckOut == null){
                 return "Nenhuma hospedagem ativa para este CPF.";
@@ -60,9 +64,7 @@ public class HostingService {
             System.out.println("Hospedagem encontrada ");
             System.out.println("=======================");
 
-            Hibernate.initialize(hosting);
-            HotelRoom room = hostingToCheckOut.getRoom();
-            room.setStatus(RoomStatus.DISPONIVEL);
+
 
             double totalPrice = 0.0;
             if (paymentMethod.equals("1")){
@@ -74,9 +76,11 @@ public class HostingService {
             }
             hostingToCheckOut.setBasePrice(totalPrice);
 
-            roomRepository.save(room);
-
+            HotelRoom room = hostingToCheckOut.getRoom();
+            room.setStatus(RoomStatus.DISPONIVEL);
+            hostingToCheckOut.setStatus(RoomStatus.FINALIZADO);
             hostingToCheckOut.setCheckOut(LocalDateTime.now());
+            roomRepository.save(room);
             hostingRepository.save(hostingToCheckOut);
 
             return "CheckOut realizado com sucesso! Total R$ " + hostingToCheckOut.getBasePrice();
