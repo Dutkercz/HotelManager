@@ -53,7 +53,7 @@ public class Menu {
         System.out.println("=====================================================");
         System.out.println("Apartamento ocupados:");
         List<HotelRoom> ocupados = roomService.getOccupiedRooms();
-        ocupados.forEach(x -> System.out.println("Apartamento: " + x.getRoomNumber()));
+        ocupados.forEach(x -> System.out.println("Apartamento: " + x.getRoomNumber() ));
         System.out.println();
         while (true){
             System.out.print("""

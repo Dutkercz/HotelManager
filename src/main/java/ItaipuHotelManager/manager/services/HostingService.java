@@ -58,6 +58,7 @@ public class HostingService {
                     .findFirst().orElseThrow();
 
             Hibernate.initialize(hostingToCheckOut);
+            Hibernate.initialize(hostingToCheckOut.getPersons());
 
             System.out.println("=======================");
             System.out.println("Hospedagem encontrada ");

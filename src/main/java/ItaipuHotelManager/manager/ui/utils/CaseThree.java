@@ -63,19 +63,19 @@ public class CaseThree {
                         break;
                     }
                 }
-                RoomStatus status = RoomStatus.OCUPADO;
-                roomService.updateRoomStatus(room.getRoomNumber(), status);
-
                 if (totalGuests > 1) {
                     System.out.print("Entre com o nome do(s) demais Hóspedes do Apartamento " + room);
 
                     for (int i = 1; i < totalGuests; i++) {
                         System.out.print(">> ");
-                        personList.add(new HotelPerson(scanner.nextLine()));
+                        HotelPerson person = new HotelPerson(scanner.nextLine());
+                        personRepository.save(person);
+                        personList.add(person);
                     }
                     personRepository.saveAll(personList);
                 }
-
+                RoomStatus status = RoomStatus.OCUPADO;
+                roomService.updateRoomStatus(room.getRoomNumber(), status);
                 hosting = new Hosting(null, totalGuests, dailyNumber, room, client, time,
                         time.plusDays(dailyNumber).withHour(12).withMinute(0), personList);
                 hostingService.saveHosting(hosting);

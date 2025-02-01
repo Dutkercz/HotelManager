@@ -2,6 +2,8 @@ package ItaipuHotelManager.manager.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "others_guests")
 public class HotelPerson {
@@ -19,6 +21,20 @@ public class HotelPerson {
     public HotelPerson() {
     }
 
+    public HotelPerson(Long id, String name, Hosting hosting) {
+        this.id = id;
+        this.name = name;
+        this.hosting = hosting;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public HotelPerson(String name) {
         this.name = name;
     }
@@ -31,8 +47,31 @@ public class HotelPerson {
         this.name = name;
     }
 
+    public Hosting getHosting() {
+        return hosting;
+    }
+
+    public void setHosting(Hosting hosting) {
+        this.hosting = hosting;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        HotelPerson person = (HotelPerson) o;
+        return Objects.equals(id, person.id) && Objects.equals(hosting, person.hosting);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, hosting);
+    }
+
     @Override
     public String toString() {
         return "" + name + " ";
     }
+
+
+
 }
