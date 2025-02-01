@@ -3,6 +3,7 @@ package ItaipuHotelManager.manager.ui.utils;
 import ItaipuHotelManager.manager.entities.Hosting;
 import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.entities.HotelRoom;
+import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import ItaipuHotelManager.manager.services.HostingService;
 import ItaipuHotelManager.manager.services.HotelClientService;
 import ItaipuHotelManager.manager.services.HotelRoomService;
@@ -47,7 +48,9 @@ public class CaseTwo {
             }
         }
         else if (escolhaCase2 == 2){
-            System.out.println("Em construção");
+            List<HotelRoom> room = roomService.findAll();
+            room = room.stream().filter(x -> x.getStatus() == RoomStatus.OCUPADO).toList();
+            room.forEach(System.out::println);
 
         } else if (escolhaCase2 == 3) {
             System.out.println("**** Historico de hospedagem de clientes ****");

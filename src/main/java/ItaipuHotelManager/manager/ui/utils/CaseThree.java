@@ -70,12 +70,16 @@ public class CaseThree {
                         System.out.print(">> ");
                         HotelPerson person = new HotelPerson(scanner.nextLine());
                         personRepository.save(person);
+                        personRepository.save(person);
                         personList.add(person);
+
                     }
                     personRepository.saveAll(personList);
                 }
+
                 RoomStatus status = RoomStatus.OCUPADO;
                 roomService.updateRoomStatus(room.getRoomNumber(), status);
+
                 hosting = new Hosting(null, totalGuests, dailyNumber, room, client, time,
                         time.plusDays(dailyNumber).withHour(12).withMinute(0), personList);
                 hostingService.saveHosting(hosting);

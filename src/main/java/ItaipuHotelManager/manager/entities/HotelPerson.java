@@ -69,7 +69,7 @@ public class HotelPerson {
 
     @Override
     public String toString() {
-        return "" + name + " ";
+        return name + " ";
     }
 
 

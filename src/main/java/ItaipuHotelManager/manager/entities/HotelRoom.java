@@ -34,7 +34,7 @@ public class HotelRoom {
         this.doubleBeds = doubleBeds;
         this.singleBeds = singleBeds;
         this.status = status;
-      //  this.client = client;
+        //  this.client = client;
     }
 
     public Long getId() {
@@ -100,6 +100,7 @@ public class HotelRoom {
     @Override
     public String toString() {
         return "Apartamento: " + roomNumber + "\nSituação: " + status+ "\n\tCama casal > " + doubleBeds +
-                "\n\tCama de solteiro > " + singleBeds+"\n";
+                "\n\tCama de solteiro > " + singleBeds+"\n" + (client != null ? "Cliente " + client : "\n");
     }
 }
+

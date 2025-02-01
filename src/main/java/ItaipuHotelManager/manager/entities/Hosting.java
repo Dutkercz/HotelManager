@@ -25,7 +25,7 @@ public class Hosting {
     @JoinColumn(name = "client_id")
     private HotelClient client;
 
-    @OneToMany(mappedBy = "hosting")
+    @OneToMany(mappedBy = "hosting", fetch = FetchType.EAGER)
     private List<HotelPerson> persons = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -174,6 +174,7 @@ public class Hosting {
                 "\nNumero de diárias: " + dailyNumber +
                 "\nSub Total: R$ " + basePrice +
                 "\nApartamento nº: " + room.getRoomNumber()+
-                "\nCheck-in: " + checkIn + " / Check-out: " + checkOut;
+                "\nCheck-in: " + checkIn + " / Check-out: " + checkOut+
+                "\nStatus da diária: " + status;
     }
 }
