@@ -4,6 +4,8 @@ import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.entities.utils.CpfValidation;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.swing.*;
@@ -17,6 +19,7 @@ public class ClientUi {
     private final JButton btnCarregar;
     private final JButton btnCadastrar;
     private final JTable clienteTable;
+
 
     public ClientUi() {
         frame = new JFrame("Clientes");
@@ -81,6 +84,7 @@ public class ClientUi {
     }
 
     private void abrirCadastro() {
+
         JDialog cadastroDialog = new JDialog(frame, "Cadastro de Cliente", true);
         JPanel cadastroPanel = new JPanel();
         cadastroPanel.setLayout(new GridLayout(8, 2)); // Ajustado para caber todos os campos
@@ -132,7 +136,6 @@ public class ClientUi {
 
         // Adicionando eventos aos botões ANTES de exibir o diálogo
         btnSalvar.addActionListener(e -> {
-            JOptionPane.showMessageDialog(cadastroDialog, "Botão Salvar clicado!");
 
             String nome = txtFullName.getText();
             String cpf = txtCpf.getText();
@@ -166,19 +169,23 @@ public class ClientUi {
                 ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.POST, request, HotelClient.class);
 
                 if (response.getStatusCode().is2xxSuccessful()) {
-                    JOptionPane.showMessageDialog(cadastroDialog, "Cliente cadastrado com sucesso! Status: " + response.getStatusCode());
+                    JOptionPane.showMessageDialog(cadastroDialog, "Cliente cadastrado com sucesso!");
                     cadastroDialog.dispose();
                     carregarClientes((DefaultTableModel) clienteTable.getModel());
-                } else {
+                }
+                else {
                     JOptionPane.showMessageDialog(cadastroDialog, "Erro inesperado ao cadastrar cliente. Status: " + response.getStatusCode(), "Erro", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(cadastroDialog, "Erro ao cadastrar cliente: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (HttpStatusCodeException ee){
+                JOptionPane.showMessageDialog(cadastroDialog, "Cliente já cadastrado.");
+
+            }
+            catch (Exception eee) {
+                JOptionPane.showMessageDialog(cadastroDialog, "Erro ao cadastrar cliente: " + eee.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         });
 
         btnCancelar.addActionListener(e -> {
-            JOptionPane.showMessageDialog(cadastroDialog, "Botão Cancelar clicado!");
             cadastroDialog.dispose();
         });
 
