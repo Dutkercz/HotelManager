@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/clients")
+@RequestMapping("/clients")
 public class HotelClientController {
 
     @Autowired
     HotelClientService hotelClientService;
 
-    @GetMapping(value = "/all")
+    @GetMapping
     public ResponseEntity<List<HotelClient>> findAll(){
         List<HotelClient> list = hotelClientService.findAll();
         return ResponseEntity.ok().body(list);

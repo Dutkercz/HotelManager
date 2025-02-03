@@ -14,6 +14,7 @@ public class HotelClientService {
     @Autowired
     HotelClientRepository hotelClientRepository;
 
+    @Transactional
     public List<HotelClient> findAll(){
         return hotelClientRepository.findAll();
     }

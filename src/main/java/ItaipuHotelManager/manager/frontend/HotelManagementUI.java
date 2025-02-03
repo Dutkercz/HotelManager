@@ -1,4 +1,4 @@
-package ItaipuHotelManager.manager.ui;
+package ItaipuHotelManager.manager.frontend;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +18,7 @@ public class HotelManagementUI {
         JButton gerenciarApartamentos = new JButton("Gerenciar Apartamentos");
         JButton gerenciarHospedagens = new JButton("Gerenciar Hospedagens");
 
-        btnClientes.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Abrir tela de clientes"));
+        btnClientes.addActionListener(e -> btnClientes.addActionListener(f -> new ClientUi()));
         gerenciarApartamentos.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Abrir tela de apartamento"));
         gerenciarHospedagens.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Abrir tela de hospedagens"));
 

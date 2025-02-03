@@ -1,5 +1,6 @@
 package ItaipuHotelManager.manager.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -21,7 +22,8 @@ public class HotelClient {
     private String phone;
     private String cnpj;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Hosting> hostingList;
 
     public HotelClient() {
