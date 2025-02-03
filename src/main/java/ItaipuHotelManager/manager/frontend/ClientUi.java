@@ -2,6 +2,7 @@ package ItaipuHotelManager.manager.frontend;
 
 import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.entities.utils.CpfValidation;
+import org.apache.commons.text.WordUtils;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,8 @@ public class ClientUi {
     private final JButton btnCarregar;
     private final JButton btnCadastrar;
     private final JTable clienteTable;
+    private JTextField txtBuscarCpf;
+    private JButton btnBuscar;
 
 
     public ClientUi() {
@@ -32,6 +35,9 @@ public class ClientUi {
 
         btnCarregar = new JButton("Carregar Clientes");
         btnCadastrar = new JButton("Cadastrar Cliente");
+
+        txtBuscarCpf = new JTextField(15);
+        btnBuscar = new JButton("Buscar por CPF");
 
         // Criando a tabela
         String[] columnNames = {"ID", "Nome", "CPF", "Endereço"};
@@ -49,6 +55,48 @@ public class ClientUi {
         // Adicionando o painel de botões e a tabela
         panel.add(buttonPanel, BorderLayout.NORTH);
         panel.add(new JScrollPane(clienteTable), BorderLayout.CENTER);
+
+        JPanel buscarPanel = new JPanel();
+        buscarPanel.add(new JLabel("CPF:"));
+        buscarPanel.add(txtBuscarCpf);
+        buscarPanel.add(btnBuscar);
+        panel.add(buscarPanel, BorderLayout.SOUTH);
+
+        btnBuscar.addActionListener(e -> {
+            String cpf = txtBuscarCpf.getText().trim();
+
+            if (cpf.isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "Digite um CPF para buscar!", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            RestTemplate restTemplate = new RestTemplate();
+            String url = "http://localhost:8080/clients/" + cpf;
+
+            try {
+                ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.GET, null, HotelClient.class);
+
+                if (response.getStatusCode() == HttpStatus.OK) {
+                    HotelClient cliente = response.getBody();
+
+                    // Exibir os detalhes do cliente
+                    JOptionPane.showMessageDialog(frame,
+                            "Nome: " + cliente.getFullName() + "\n" +
+                                    "CPF: " + cliente.getCpf() + "\n" +
+                                    "Endereço: " + cliente.getAddress() + "\n" +
+                                    "Cidade: " + cliente.getCity() + "\n" +
+                                    "Telefone: " + cliente.getPhone() + "\n" +
+                                    "Email: " + cliente.getEmail() + "\n" +
+                                    "CNPJ: " + cliente.getCnpj(),
+                            "Cliente Encontrado", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Cliente não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frame, "Erro ao buscar cliente: " + ex.getMessage(),
+                        "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        });
 
         // Configurações da janela
         frame.add(panel);
@@ -157,7 +205,7 @@ public class ClientUi {
                 return;
             }
 
-            HotelClient novoCliente = new HotelClient(null, nome, cpf, cidade, endereco, email, telefone, cnpj);
+            HotelClient novoCliente = new HotelClient(null, WordUtils.capitalizeFully(nome) , cpf, WordUtils.capitalizeFully(cidade), WordUtils.capitalizeFully(endereco), email, telefone, cnpj);
 
             RestTemplate restTemplate = new RestTemplate();
             String url = "http://localhost:8080/clients";

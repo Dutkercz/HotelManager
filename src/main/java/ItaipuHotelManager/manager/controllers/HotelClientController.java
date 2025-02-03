@@ -8,8 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-@RestController
+@RestController()
 @RequestMapping(value = "/clients")
 public class HotelClientController {
 
@@ -29,6 +30,13 @@ public class HotelClientController {
         }
         HotelClient obj = clientService.insert(client);
         return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping(value = "/{cpf}")
+    public ResponseEntity<HotelClient> findByCpf(@PathVariable String cpf){
+        HotelClient client = clientService.findByCpf(cpf);
+        return ResponseEntity.ok(client);
+
     }
 
 }
