@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -96,5 +97,9 @@ public class HostingService {
             System.out.println("Cliente não encontrado.");
         }
         return hostingRepository.findByClient(client);
+    }
+
+    public List<Hosting> findAll() {
+        return hostingRepository.findAll();
     }
 }
