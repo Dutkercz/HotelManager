@@ -39,7 +39,7 @@ public class CaseTwo {
         var escolhaCase2 = scanner.nextInt();
         scanner.nextLine();
         if (escolhaCase2 == 1){
-            List<HotelRoom> hotelRoomList = roomService.listOfRoom();
+            List<HotelRoom> hotelRoomList = roomService.findAll();
             if (hotelRoomList.isEmpty()) {
                 System.out.println("Nenhum quarto encontrado.");
             } else {

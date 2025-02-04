@@ -3,9 +3,11 @@ package ItaipuHotelManager.manager.services;
 import ItaipuHotelManager.manager.entities.HotelRoom;
 import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import ItaipuHotelManager.manager.repositories.HotelRoomRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.plaf.PanelUI;
 import java.util.List;
 
 @Service
@@ -14,9 +16,11 @@ public class HotelRoomService {
     @Autowired
     private HotelRoomRepository repository;
 
+    @Transactional
     public List<HotelRoom> findAll(){
         return repository.findAll();
     }
+
     public HotelRoom findRoom(Long id){
         return repository.findById(id).orElseThrow();
     }
@@ -25,14 +29,11 @@ public class HotelRoomService {
         return repository.save(o);
     }
 
-    public List<HotelRoom> listOfRoom(){
-        return repository.findAll();
-    }
-
     public HotelRoom findByRoomNumber (String room){
         return repository.findByRoomNumber(room);
     }
 
+    @Transactional
     public void updateRoomStatus(String aptoNumber, RoomStatus status){
         HotelRoom room = repository.findByRoomNumber(aptoNumber);
         room.setStatus(status);
@@ -45,5 +46,9 @@ public class HotelRoomService {
 
     public List<HotelRoom> getOccupiedRooms() {
         return repository.findByStatus(RoomStatus.OCUPADO);
+    }
+
+    public List<HotelRoom> findByStatus(RoomStatus status){
+        return repository.findByStatus(status);
     }
 }

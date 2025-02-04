@@ -29,7 +29,6 @@ public class ClientUi {
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        // Painel para os botões
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -39,20 +38,16 @@ public class ClientUi {
         txtBuscarCpf = new JTextField(15);
         btnBuscar = new JButton("Buscar por CPF");
 
-        // Criando a tabela
         String[] columnNames = {"ID", "Nome", "CPF", "Endereço"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
         clienteTable = new JTable(model);
 
-        // Adicionando os botões ao painel
         buttonPanel.add(btnCarregar);
         buttonPanel.add(btnCadastrar);
 
-        // Ações dos botões
         btnCarregar.addActionListener(e -> carregarClientes(model));
         btnCadastrar.addActionListener(e -> abrirCadastro());
 
-        // Adicionando o painel de botões e a tabela
         panel.add(buttonPanel, BorderLayout.NORTH);
         panel.add(new JScrollPane(clienteTable), BorderLayout.CENTER);
 
@@ -182,7 +177,6 @@ public class ClientUi {
         cadastroDialog.pack();
         cadastroDialog.setLocationRelativeTo(frame);
 
-        // Adicionando eventos aos botões ANTES de exibir o diálogo
         btnSalvar.addActionListener(e -> {
 
             String nome = txtFullName.getText();
