@@ -6,6 +6,7 @@ import ItaipuHotelManager.manager.services.HostingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,12 @@ public class HostingController {
     @GetMapping
     public ResponseEntity<List<Hosting>> findAllHosting (){
         List<Hosting> hostingList = hostingService.findAll();
+        return ResponseEntity.ok().body(hostingList);
+    }
+
+    @GetMapping(value = "/{cpf}/all")
+    public ResponseEntity<List<Hosting>> findHostingByClient(@PathVariable String cpf){
+        List<Hosting> hostingList = hostingService.findAllHostings(cpf);
         return ResponseEntity.ok().body(hostingList);
     }
 }
