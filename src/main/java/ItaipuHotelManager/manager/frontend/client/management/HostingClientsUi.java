@@ -28,6 +28,8 @@ public class HostingClientsUi {
 
         txtCpf = new JTextField(15);
         btnBuscar = new JButton("Buscar");
+        btnBuscar.setBackground(new Color(42, 60, 72));
+        btnBuscar.setForeground(Color.white);
 
         panel.add(txtCpf);
         panel.add(btnBuscar);

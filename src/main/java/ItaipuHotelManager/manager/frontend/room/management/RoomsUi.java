@@ -26,6 +26,8 @@ public class RoomsUi {
 
         btnCarregarApartamentos = new JButton("Carregar Apartamentos");
         table = new JTable();
+        btnCarregarApartamentos.setBackground(new Color(42, 60, 72));
+        btnCarregarApartamentos.setForeground(Color.white);
 
         DefaultTableModel model = new DefaultTableModel(new Object[]{"Apartamento nº", "Cliente", "Status"}, 0);
         table.setModel(model);

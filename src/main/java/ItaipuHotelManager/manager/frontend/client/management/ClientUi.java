@@ -33,12 +33,22 @@ public class ClientUi {
         buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         btnCarregar = new JButton("Carregar Clientes");
+        btnCarregar.setBackground(new Color(42, 60, 72));
+        btnCarregar.setForeground(Color.white);
+
         btnCadastrar = new JButton("Cadastrar Cliente");
+        btnCadastrar.setBackground(new Color(42, 60, 72));
+        btnCadastrar.setForeground(Color.white);
+
         btnHospedagens = new JButton("Ver Hospedagens");
+        btnHospedagens.setBackground(new Color(42, 60, 72));
+        btnHospedagens.setForeground(Color.white);
 
 
         txtBuscarCpf = new JTextField(15);
         btnBuscar = new JButton("Buscar por CPF");
+        btnBuscar.setBackground(new Color(42, 60, 72));
+        btnBuscar.setForeground(Color.white);
 
         String[] columnNames = {"ID", "Nome", "CPF", "Endereço"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
@@ -159,7 +169,11 @@ public class ClientUi {
         JTextField txtCnpj = new JTextField(20);
 
         JButton btnSalvar = new JButton("Salvar");
+        btnSalvar.setBackground(new Color(42, 60, 72));
+        btnSalvar.setForeground(Color.white);
         JButton btnCancelar = new JButton("Cancelar");
+        btnCancelar.setBackground(new Color(42, 60, 72));
+        btnCancelar.setForeground(Color.white);
 
         cadastroPanel.add(lblFullName);
         cadastroPanel.add(txtFullName);

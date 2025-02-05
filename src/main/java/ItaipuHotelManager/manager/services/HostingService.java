@@ -2,6 +2,7 @@ package ItaipuHotelManager.manager.services;
 
 import ItaipuHotelManager.manager.entities.Hosting;
 import ItaipuHotelManager.manager.entities.HotelClient;
+import ItaipuHotelManager.manager.entities.HotelPerson;
 import ItaipuHotelManager.manager.entities.HotelRoom;
 import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import ItaipuHotelManager.manager.repositories.HostingRepository;
@@ -10,13 +11,11 @@ import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class HostingService {
@@ -37,10 +36,6 @@ public class HostingService {
 
     public Double hostingTotalPrice(Hosting hosting){
         return hosting.getBasePrice();
-    }
-
-    public void saveHosting(Hosting hosting) {
-        hostingRepository.save(hosting);
     }
 
     @Transactional
@@ -72,7 +67,6 @@ public class HostingService {
                 default -> 0.0;
             };
             hostingToCheckOut.setBasePrice(totalPrice);
-
             HotelRoom room = hostingToCheckOut.getRoom();
             room.setStatus(RoomStatus.DISPONIVEL);
             room.setClient(null);
@@ -102,5 +96,13 @@ public class HostingService {
 
     public List<Hosting> findAll() {
         return hostingRepository.findAll();
+    }
+
+    @Transactional
+    public Hosting checkIn(int totalGuests, int dailyNumber, HotelRoom room, HotelClient client, LocalDateTime time, List<HotelPerson> personList, RoomStatus status) {
+
+        Hosting hosting = new Hosting(null, totalGuests, dailyNumber, room, client, time,
+                time.plusDays(dailyNumber).withHour(12).withMinute(0), personList, RoomStatus.OCUPADO);
+        return hostingRepository.save(hosting);
     }
 }
