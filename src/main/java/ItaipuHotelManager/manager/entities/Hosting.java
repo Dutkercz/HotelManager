@@ -22,7 +22,7 @@ public class Hosting {
     private LocalDateTime checkIn;
     private LocalDateTime checkOut;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
     @JsonIgnore
     private HotelClient client;
@@ -42,16 +42,14 @@ public class Hosting {
     }
 
     public Hosting(Long id, Integer totalGuest, Integer dailyNumber,  HotelRoom room,
-                   HotelClient client, LocalDateTime checkIn, LocalDateTime checkOut, List<HotelPerson> personList) {
+                   HotelClient client, LocalDateTime checkIn, LocalDateTime checkOut, List<HotelPerson> personList, RoomStatus status) {
         this.id = id;
         this.totalGuest = totalGuest;
         this.dailyNumber = dailyNumber;
         this.basePrice = hostingPrices();
         this.client = client;
         this.room = room;
-        status = RoomStatus.OCUPADO;
-        //Nesse caso, as diárias começam 12h de um dia, até 12h do próximo dia.
-        // independete de chegar na madrugada do mesmo dia do chek-in. Por isso diminui um dia se chegar após 00:00
+        this.status = status;
         if (checkIn.getHour() == 0 && checkIn.getMinute() == 0){
             this.checkIn = checkIn.minusDays(1);
         }else {
@@ -155,10 +153,6 @@ public class Hosting {
             return this.basePrice = 400.00 * dailyNumber;
         }
         return null;
-    }
-
-    public boolean isActive() {
-        return checkOut == null;
     }
 
     @Override

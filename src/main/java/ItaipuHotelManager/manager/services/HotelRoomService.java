@@ -1,5 +1,6 @@
 package ItaipuHotelManager.manager.services;
 
+import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.entities.HotelRoom;
 import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import ItaipuHotelManager.manager.repositories.HotelRoomRepository;
@@ -34,9 +35,10 @@ public class HotelRoomService {
     }
 
     @Transactional
-    public void updateRoomStatus(String aptoNumber, RoomStatus status){
+    public void updateRoomStatus(String aptoNumber, HotelClient client){
         HotelRoom room = repository.findByRoomNumber(aptoNumber);
-        room.setStatus(status);
+        room.setClient(client);
+        room.setStatus(RoomStatus.OCUPADO);
         repository.save(room);
     }
 

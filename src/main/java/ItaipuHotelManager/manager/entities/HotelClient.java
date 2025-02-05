@@ -22,7 +22,8 @@ public class HotelClient {
     private String phone;
     private String cnpj;
 
-    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "client")
+    @JsonIgnore
     private List<Hosting> hostingList;
 
     public HotelClient() {

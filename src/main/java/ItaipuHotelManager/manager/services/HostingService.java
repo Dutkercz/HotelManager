@@ -75,6 +75,7 @@ public class HostingService {
 
             HotelRoom room = hostingToCheckOut.getRoom();
             room.setStatus(RoomStatus.DISPONIVEL);
+            room.setClient(null);
             hostingToCheckOut.setStatus(RoomStatus.FINALIZADO);
             hostingToCheckOut.setCheckOut(LocalDateTime.now());
             roomRepository.save(room);

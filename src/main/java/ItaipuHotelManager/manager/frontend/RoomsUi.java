@@ -1,5 +1,6 @@
 package ItaipuHotelManager.manager.frontend;
 
+import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.entities.HotelRoom;
 import ItaipuHotelManager.manager.services.HotelRoomService;
 import org.springframework.core.ParameterizedTypeReference;
@@ -68,7 +69,7 @@ public class RoomsUi {
             }
 
             for (HotelRoom room : apartamentosOcupados) {
-                String clienteNome = room.getHostings().getFirst() != null ? room.getClient().getFullName() : "Indisponível";
+                String clienteNome = room.getClient() != null ? room.getClient().getFullName() : "Indisponível";
                 model.addRow(new Object[]{room.getRoomNumber(), clienteNome, "Ocupado"});
             }
 

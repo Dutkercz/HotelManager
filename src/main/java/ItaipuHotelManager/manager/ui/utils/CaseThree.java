@@ -78,10 +78,10 @@ public class CaseThree {
                 }
 
                 RoomStatus status = RoomStatus.OCUPADO;
-                roomService.updateRoomStatus(room.getRoomNumber(), status);
+                roomService.updateRoomStatus(room.getRoomNumber(), client);
 
                 hosting = new Hosting(null, totalGuests, dailyNumber, room, client, time,
-                        time.plusDays(dailyNumber).withHour(12).withMinute(0), personList);
+                        time.plusDays(dailyNumber).withHour(12).withMinute(0), personList, status);
                 hostingService.saveHosting(hosting);
                 System.out.println("=================================");
                 System.out.println(" **** Hospedagem concluida! ****");
