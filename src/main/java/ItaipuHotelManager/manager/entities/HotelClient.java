@@ -23,7 +23,6 @@ public class HotelClient {
     private String cnpj;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-    @JsonIgnore
     private List<Hosting> hostingList;
 
     public HotelClient() {

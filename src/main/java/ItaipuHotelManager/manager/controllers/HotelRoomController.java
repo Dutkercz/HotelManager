@@ -28,8 +28,8 @@ public class HotelRoomController {
 
     @GetMapping
     public ResponseEntity<Map<String, List<HotelRoom>>> getRoomByStatus(){
-        List<HotelRoom> availableRooms = roomService.findByStatus(RoomStatus.DISPONIVEL);
-        List<HotelRoom> occupiedRooms = roomService.findByStatus(RoomStatus.OCUPADO);
+        List<HotelRoom> availableRooms = roomService.getAvailableRooms();
+        List<HotelRoom> occupiedRooms = roomService.getOccupiedRooms();
 
         Map<String, List<HotelRoom>> response = new HashMap<>();
         response.put("Livres", availableRooms);

@@ -1,6 +1,7 @@
 package ItaipuHotelManager.manager.entities;
 
 import ItaipuHotelManager.manager.entities.utils.RoomStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -23,12 +24,14 @@ public class Hosting {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
+    @JsonIgnore
     private HotelClient client;
 
-    @OneToMany(mappedBy = "hosting", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hosting", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<HotelPerson> persons = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "room_id")
     private HotelRoom room;
 
@@ -152,6 +155,10 @@ public class Hosting {
             return this.basePrice = 400.00 * dailyNumber;
         }
         return null;
+    }
+
+    public boolean isActive() {
+        return checkOut == null;
     }
 
     @Override

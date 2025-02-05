@@ -27,7 +27,7 @@ public class RoomsUi {
         btnCarregarApartamentos = new JButton("Carregar Apartamentos");
         table = new JTable();
 
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"ID", "Cliente", "Status"}, 0);
+        DefaultTableModel model = new DefaultTableModel(new Object[]{"Apartamento nº", "Cliente", "Status"}, 0);
         table.setModel(model);
 
         btnCarregarApartamentos.addActionListener(e -> carregarApartamentos(model));
@@ -64,12 +64,12 @@ public class RoomsUi {
 
 
             for (HotelRoom room : apartamentosLivres) {
-                model.addRow(new Object[]{room.getId(), "Livre", "Disponível"});
+                model.addRow(new Object[]{room.getRoomNumber(), "----", "Disponível"});
             }
 
             for (HotelRoom room : apartamentosOcupados) {
-                String clienteNome = room.getClient() != null ? room.getClient().getFullName() : "Indisponível";
-                model.addRow(new Object[]{room.getId(), clienteNome, "Ocupado"});
+                String clienteNome = room.getHostings().getFirst() != null ? room.getClient().getFullName() : "Indisponível";
+                model.addRow(new Object[]{room.getRoomNumber(), clienteNome, "Ocupado"});
             }
 
         } catch (Exception e) {

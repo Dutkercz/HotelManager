@@ -1,8 +1,10 @@
 package ItaipuHotelManager.manager.entities;
 
 import ItaipuHotelManager.manager.entities.utils.RoomStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,22 +21,24 @@ public class HotelRoom {
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
 
-    @OneToMany(mappedBy = "room")
-    private List<Hosting> hostingList;
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<Hosting> hostings = new ArrayList<>();
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id")
     private HotelClient client;
 
     public HotelRoom() {
     }
 
-    public HotelRoom(Long id, String roomNumber, Integer doubleBeds, Integer singleBeds, RoomStatus status) {
+    public HotelRoom(Long id, String roomNumber, Integer doubleBeds, Integer singleBeds, RoomStatus status, List<Hosting> hostings) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.doubleBeds = doubleBeds;
         this.singleBeds = singleBeds;
         this.status = status;
-        //  this.client = client;
+        this.hostings = hostings;
     }
 
     public Long getId() {
@@ -83,6 +87,14 @@ public class HotelRoom {
 
     public void setClient(HotelClient client) {
         this.client = client;
+    }
+
+    public boolean isOccupied() {
+        return status == RoomStatus.OCUPADO;
+    }
+
+    public List<Hosting> getHostings() {
+        return hostings;
     }
 
     @Override
