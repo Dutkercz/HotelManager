@@ -24,7 +24,7 @@ public class Hosting {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
-    @JsonIgnore
+    //@JsonIgnore
     private HotelClient client;
 
     @OneToMany(mappedBy = "hosting", fetch = FetchType.LAZY)

@@ -1,16 +1,15 @@
-package ItaipuHotelManager.manager.frontend;
+package ItaipuHotelManager.manager.frontend.client.management;
 
 import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.entities.utils.CpfValidation;
 import org.apache.commons.text.WordUtils;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
@@ -22,6 +21,7 @@ public class ClientUi {
     private final JTable clienteTable;
     private JTextField txtBuscarCpf;
     private JButton btnBuscar;
+    private JButton btnHospedagens;
 
 
     public ClientUi() {
@@ -34,6 +34,8 @@ public class ClientUi {
 
         btnCarregar = new JButton("Carregar Clientes");
         btnCadastrar = new JButton("Cadastrar Cliente");
+        btnHospedagens = new JButton("Ver Hospedagens");
+
 
         txtBuscarCpf = new JTextField(15);
         btnBuscar = new JButton("Buscar por CPF");
@@ -44,9 +46,13 @@ public class ClientUi {
 
         buttonPanel.add(btnCarregar);
         buttonPanel.add(btnCadastrar);
+        buttonPanel.add(btnHospedagens);
+
 
         btnCarregar.addActionListener(e -> carregarClientes(model));
         btnCadastrar.addActionListener(e -> abrirCadastro());
+        btnHospedagens.addActionListener(e -> new HostingClientsUi());
+
 
         panel.add(buttonPanel, BorderLayout.NORTH);
         panel.add(new JScrollPane(clienteTable), BorderLayout.CENTER);
@@ -74,7 +80,7 @@ public class ClientUi {
                 if (response.getStatusCode() == HttpStatus.OK) {
                     HotelClient cliente = response.getBody();
 
-                    // Exibir os detalhes do cliente
+                    assert cliente != null;
                     JOptionPane.showMessageDialog(frame,
                             "Nome: " + cliente.getFullName() + "\n" +
                                     "CPF: " + cliente.getCpf() + "\n" +
@@ -93,7 +99,6 @@ public class ClientUi {
             }
         });
 
-        // Configurações da janela
         frame.add(panel);
         frame.setSize(600, 400);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -233,6 +238,7 @@ public class ClientUi {
 
         cadastroDialog.setVisible(true);
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(ClientUi::new);

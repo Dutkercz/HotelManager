@@ -6,35 +6,51 @@ import org.springframework.stereotype.Component;
 public class CpfValidation {
 
     public static boolean isValidCPF(String cpf) {
-        // Remove non-numeric characters // Removendo caracteres não numéricos.
-        cpf = cpf.replaceAll("\\D", "");
+        // Remove espaços em branco
+        cpf = cpf.trim();
 
-        // Check length and invalid sequences // Check no tamanho da sequência e se ela é válida.
-        if (cpf.length() != 11 || cpf.matches("(\\d)\\1{10}")) {
+        // Verifica se contém "." ou "-"
+        if (cpf.contains(".") || cpf.contains("-")) {
             return false;
         }
 
-        try {
-            int sum1 = 0, sum2 = 0;
-            for (int i = 0; i < 9; i++) {
-                int digit = Character.getNumericValue(cpf.charAt(i));
-                sum1 += digit * (10 - i);
-                sum2 += digit * (11 - i);
-            }
-
-            // Calculate verification digits / Calcular dígitos verificadores.
-            int dv1 = (sum1 * 10) % 11;
-            dv1 = (dv1 == 10) ? 0 : dv1;
-
-            sum2 += dv1 * 2;
-            int dv2 = (sum2 * 10) % 11;
-            dv2 = (dv2 == 10) ? 0 : dv2;
-
-            // Compare verification digits // comprando digitos verificadores.
-            return dv1 == Character.getNumericValue(cpf.charAt(9))
-                    && dv2 == Character.getNumericValue(cpf.charAt(10));
-        } catch (Exception e) {
+        // Verifica se tem exatamente 11 dígitos numéricos
+        if (!cpf.matches("\\d{11}")) {
             return false;
         }
+
+        // Verifica se todos os números são iguais (ex: 11111111111 -> inválido)
+        if (cpf.matches("(\\d)\\1{10}")) {
+            return false;
+        }
+
+        // Validação do dígito verificador
+        return validateDigits(cpf);
+    }
+
+    private static boolean validateDigits(String cpf) {
+        int sum = 0;
+        int weight = 10;
+
+        // Calcula o primeiro dígito verificador
+        for (int i = 0; i < 9; i++) {
+            sum += (cpf.charAt(i) - '0') * weight--;
+        }
+
+        int firstDigit = (sum * 10) % 11;
+        if (firstDigit == 10) firstDigit = 0;
+        if (firstDigit != (cpf.charAt(9) - '0')) return false;
+
+        // Calcula o segundo dígito verificador
+        sum = 0;
+        weight = 11;
+        for (int i = 0; i < 10; i++) {
+            sum += (cpf.charAt(i) - '0') * weight--;
+        }
+
+        int secondDigit = (sum * 10) % 11;
+        if (secondDigit == 10) secondDigit = 0;
+
+        return secondDigit == (cpf.charAt(10) - '0');
     }
 }
