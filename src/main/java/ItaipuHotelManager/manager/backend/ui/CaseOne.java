@@ -1,4 +1,4 @@
-package ItaipuHotelManager.manager.ui.utils;
+package ItaipuHotelManager.manager.backend.ui;
 
 import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.entities.utils.CpfValidation;

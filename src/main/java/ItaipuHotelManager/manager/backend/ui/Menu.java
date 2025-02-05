@@ -1,15 +1,9 @@
-package ItaipuHotelManager.manager.ui;
+package ItaipuHotelManager.manager.backend.ui;
 
-import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.entities.HotelRoom;
-import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import ItaipuHotelManager.manager.repositories.HotelRoomRepository;
 import ItaipuHotelManager.manager.services.HotelClientService;
 import ItaipuHotelManager.manager.services.HotelRoomService;
-import ItaipuHotelManager.manager.ui.utils.CaseFour;
-import ItaipuHotelManager.manager.ui.utils.CaseOne;
-import ItaipuHotelManager.manager.ui.utils.CaseThree;
-import ItaipuHotelManager.manager.ui.utils.CaseTwo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +36,6 @@ public class Menu {
     private HotelRoomRepository repository;
 
     public void showMenu(){
-
         System.out.println();
         System.out.println("===================================");
         System.out.println(" Bem vindo ao Sistema Hotel Itaipu");

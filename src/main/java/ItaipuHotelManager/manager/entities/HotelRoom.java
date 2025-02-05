@@ -32,13 +32,12 @@ public class HotelRoom {
     public HotelRoom() {
     }
 
-    public HotelRoom(Long id, String roomNumber, Integer doubleBeds, Integer singleBeds, RoomStatus status, List<Hosting> hostings, HotelClient client) {
+    public HotelRoom(Long id, String roomNumber, Integer doubleBeds, Integer singleBeds, RoomStatus status, HotelClient client) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.doubleBeds = doubleBeds;
         this.singleBeds = singleBeds;
         this.status = status;
-        this.hostings = hostings;
         this.client = client;
     }
 
