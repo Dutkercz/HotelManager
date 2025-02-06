@@ -24,9 +24,8 @@ public class HotelClientService {
         HotelClient client = hotelClientRepository.findByCpf(cpf);
         if(client != null){
             Hibernate.initialize(client);
-            return client;
         }
-        return null;
+        return client;
     }
 
     public HotelClient insert(HotelClient o){

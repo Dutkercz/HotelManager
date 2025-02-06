@@ -2,7 +2,6 @@ package ItaipuHotelManager.manager.services;
 
 import ItaipuHotelManager.manager.entities.Hosting;
 import ItaipuHotelManager.manager.entities.HotelClient;
-import ItaipuHotelManager.manager.entities.HotelPerson;
 import ItaipuHotelManager.manager.entities.HotelRoom;
 import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import ItaipuHotelManager.manager.repositories.HostingRepository;
@@ -99,10 +98,6 @@ public class HostingService {
     }
 
     @Transactional
-    public Hosting checkIn(int totalGuests, int dailyNumber, HotelRoom room, HotelClient client, LocalDateTime time, List<HotelPerson> personList, RoomStatus status) {
-
-        Hosting hosting = new Hosting(null, totalGuests, dailyNumber, room, client, time,
-                time.plusDays(dailyNumber).withHour(12).withMinute(0), personList, RoomStatus.OCUPADO);
-        return hostingRepository.save(hosting);
+    public void checkIn(HotelClient selectedClient, HotelRoom selectedRoom) {
     }
 }

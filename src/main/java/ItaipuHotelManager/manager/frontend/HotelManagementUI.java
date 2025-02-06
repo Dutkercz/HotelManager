@@ -1,7 +1,10 @@
 package ItaipuHotelManager.manager.frontend;
 
+import ItaipuHotelManager.manager.frontend.checkin.CheckInUi;
 import ItaipuHotelManager.manager.frontend.client.management.ClientUi;
 import ItaipuHotelManager.manager.frontend.room.management.RoomsUi;
+import ItaipuHotelManager.manager.services.HostingService;
+import ItaipuHotelManager.manager.services.HotelClientService;
 import ItaipuHotelManager.manager.services.HotelRoomService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -42,11 +45,16 @@ public class HotelManagementUI {
         btnCheckOut.setForeground(Color.white);
 
         btnClientes.addActionListener(e -> {
-            SwingUtilities.invokeLater(ClientUi::new); // Executa na thread do Swing
+            SwingUtilities.invokeLater(ClientUi::new);
         });
 
         btnApartamentos.addActionListener(e -> {
             SwingUtilities.invokeLater(() -> new RoomsUi(context.getBean(HotelRoomService.class)));
+        });
+
+        btnCheckIn.addActionListener(e -> {
+            SwingUtilities.invokeLater(() -> new CheckInUi(frame, context.getBean(HotelRoomService.class),
+                    context.getBean(HotelClientService.class), context.getBean(HostingService.class) ));
         });
 
         panel.add(btnClientes);
