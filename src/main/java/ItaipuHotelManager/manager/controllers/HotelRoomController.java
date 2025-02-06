@@ -37,4 +37,9 @@ public class HotelRoomController {
 
         return ResponseEntity.ok().body(response);
     }
+
+    @GetMapping(value = "/available")
+    public ResponseEntity<List<HotelRoom>> getAvailableRooms(){
+        return ResponseEntity.ok().body(roomService.getAvailableRooms());
+    }
 }
