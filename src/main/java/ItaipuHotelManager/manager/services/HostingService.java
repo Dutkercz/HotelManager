@@ -100,8 +100,8 @@ public class HostingService {
     }
 
     @Transactional
-    public void checkIn(HotelClient selectedClient, HotelRoom selectedRoom) {
-        Hosting hosting = new Hosting(null, null, 1, selectedRoom, selectedClient, LocalDateTime.now(), LocalDateTime.now(), null, RoomStatus.OCUPADO);
+    public void checkIn(Hosting hosting, HotelClient selectedClient, HotelRoom selectedRoom) {
+        hostingRepository.save(hosting);
         roomService.updateRoomStatusOccupied(selectedRoom.getRoomNumber(), selectedClient);
     }
 }

@@ -1,7 +1,9 @@
 package ItaipuHotelManager.manager.frontend.checkin;
 
+import ItaipuHotelManager.manager.entities.Hosting;
 import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.entities.HotelRoom;
+import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import ItaipuHotelManager.manager.services.HostingService;
 import ItaipuHotelManager.manager.services.HotelClientService;
 import ItaipuHotelManager.manager.services.HotelRoomService;
@@ -15,6 +17,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CheckInUi {
@@ -115,7 +119,26 @@ public class CheckInUi {
 
         private void confirmarCheckIn() {
             if (selectedClient != null && selectedRoom != null) {
-                hostingService.checkIn(selectedClient, selectedRoom);
+
+                int totalGuest = 1;
+                int dailyNumber = 1;
+                LocalDateTime checkIn = LocalDateTime.now();
+                LocalDateTime checkOut = checkIn.plusDays(dailyNumber);
+
+
+                Hosting newHosting = new Hosting(
+                        null,
+                        totalGuest,
+                        dailyNumber,
+                        selectedRoom,
+                        selectedClient,
+                        checkIn,
+                        checkOut,
+                        new ArrayList<>(),
+                        RoomStatus.OCUPADO
+                );
+
+                hostingService.checkIn(newHosting, selectedClient, selectedRoom);
 
                 JOptionPane.showMessageDialog(dialog, "Check-in realizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 dialog.dispose();
