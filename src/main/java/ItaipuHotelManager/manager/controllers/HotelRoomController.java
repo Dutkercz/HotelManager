@@ -6,6 +6,7 @@ import ItaipuHotelManager.manager.services.HotelRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,11 +21,6 @@ public class HotelRoomController {
     @Autowired
     private HotelRoomService roomService;
 
-    @GetMapping(value = "/all")
-    public ResponseEntity<List<HotelRoom>> findAll(){
-        List<HotelRoom> hotelRooms = roomService.findAll();
-        return ResponseEntity.ok().body(hotelRooms);
-    }
 
     @GetMapping
     public ResponseEntity<Map<String, List<HotelRoom>>> getRoomByStatus(){
@@ -38,8 +34,20 @@ public class HotelRoomController {
         return ResponseEntity.ok().body(response);
     }
 
+    @GetMapping(value = "/all")
+    public ResponseEntity<List<HotelRoom>> findAll(){
+        List<HotelRoom> hotelRooms = roomService.findAll();
+        return ResponseEntity.ok().body(hotelRooms);
+    }
+
     @GetMapping(value = "/available")
     public ResponseEntity<List<HotelRoom>> getAvailableRooms(){
         return ResponseEntity.ok().body(roomService.getAvailableRooms());
     }
+
+    @GetMapping(value = "/{roomNumber}")
+    public ResponseEntity<HotelRoom> findByRoomNumber(@PathVariable String roomNumber){
+        return ResponseEntity.ok().body(roomService.findByRoomNumber(roomNumber));
+    }
+
 }

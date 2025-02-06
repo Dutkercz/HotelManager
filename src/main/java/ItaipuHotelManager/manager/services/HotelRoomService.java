@@ -8,7 +8,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.plaf.PanelUI;
 import java.util.List;
 
 @Service
@@ -35,8 +34,8 @@ public class HotelRoomService {
     }
 
     @Transactional
-    public void updateRoomStatus(String aptoNumber, HotelClient client){
-        HotelRoom room = repository.findByRoomNumber(aptoNumber);
+    public void updateRoomStatusOccupied(String roomNumber, HotelClient client){
+        HotelRoom room = repository.findByRoomNumber(roomNumber);
         room.setClient(client);
         room.setStatus(RoomStatus.OCUPADO);
         repository.save(room);

@@ -24,6 +24,8 @@ public class HostingService {
     private HotelRoomRepository roomRepository;
     @Autowired
     private HotelClientService clientService;
+    @Autowired
+    HotelRoomService roomService;
 
     public Double hostingTotalPriceDebit(Hosting hosting){
         return hosting.getBasePrice()*1.03;
@@ -99,5 +101,7 @@ public class HostingService {
 
     @Transactional
     public void checkIn(HotelClient selectedClient, HotelRoom selectedRoom) {
+        Hosting hosting = new Hosting(null, null, 1, selectedRoom, selectedClient, LocalDateTime.now(), LocalDateTime.now(), null, RoomStatus.OCUPADO);
+        roomService.updateRoomStatusOccupied(selectedRoom.getRoomNumber(), selectedClient);
     }
 }

@@ -103,7 +103,12 @@ public class CheckInUi {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
                 String roomNumber = (String) tableModel.getValueAt(selectedRow, 0);
-                selectedRoom = roomService.findByRoomNumber(roomNumber);
+
+                RestTemplate restTemplate = new RestTemplate();
+                String url = "http://localhost:8080/rooms/"+roomNumber;
+
+                ResponseEntity<HotelRoom> getRoom = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<HotelRoom>(){});
+                selectedRoom = getRoom.getBody();
                 btnConfirm.setEnabled(true);
             }
         }
@@ -111,6 +116,7 @@ public class CheckInUi {
         private void confirmarCheckIn() {
             if (selectedClient != null && selectedRoom != null) {
                 hostingService.checkIn(selectedClient, selectedRoom);
+
                 JOptionPane.showMessageDialog(dialog, "Check-in realizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 dialog.dispose();
             } else {
