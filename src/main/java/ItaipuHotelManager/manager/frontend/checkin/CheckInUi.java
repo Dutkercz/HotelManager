@@ -2,8 +2,10 @@ package ItaipuHotelManager.manager.frontend.checkin;
 
 import ItaipuHotelManager.manager.entities.Hosting;
 import ItaipuHotelManager.manager.entities.HotelClient;
+import ItaipuHotelManager.manager.entities.HotelPerson;
 import ItaipuHotelManager.manager.entities.HotelRoom;
 import ItaipuHotelManager.manager.entities.utils.RoomStatus;
+import org.apache.commons.text.WordUtils;
 import org.hibernate.Hibernate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -43,6 +45,7 @@ public class CheckInUi {
         txtCpf = new JTextField(15);
         JButton btnSearch = new JButton("Buscar.");
         lblClientName = new JLabel("Nome do Cliente: ");
+
         topPanel.add(txtCpf);
         topPanel.add(btnSearch);
         topPanel.add(panelClient);
@@ -134,15 +137,15 @@ public class CheckInUi {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
-            int totalGuest = 1;
-            int dailyNumber = 1;
+
+
             LocalDateTime checkIn = LocalDateTime.now();
-            LocalDateTime checkOut = checkIn.plusDays(dailyNumber);
+            LocalDateTime checkOut = checkIn.plusDays(1);
 
             Hosting newHosting = new Hosting(
                     null,
-                    totalGuest,
-                    dailyNumber,
+                    1,
+                    1,
                     selectedRoom,
                     selectedClient,
                     checkIn,
