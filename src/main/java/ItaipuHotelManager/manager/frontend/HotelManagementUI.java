@@ -53,8 +53,7 @@ public class HotelManagementUI {
         });
 
         btnCheckIn.addActionListener(e -> {
-            SwingUtilities.invokeLater(() -> new CheckInUi(frame, context.getBean(HotelRoomService.class),
-                    context.getBean(HotelClientService.class), context.getBean(HostingService.class) ));
+            SwingUtilities.invokeLater(() -> new CheckInUi(frame));
         });
 
         panel.add(btnClientes);

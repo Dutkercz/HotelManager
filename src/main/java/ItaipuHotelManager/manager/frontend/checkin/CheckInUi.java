@@ -4,59 +4,57 @@ import ItaipuHotelManager.manager.entities.Hosting;
 import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.entities.HotelRoom;
 import ItaipuHotelManager.manager.entities.utils.RoomStatus;
-import ItaipuHotelManager.manager.services.HostingService;
-import ItaipuHotelManager.manager.services.HotelClientService;
-import ItaipuHotelManager.manager.services.HotelRoomService;
 import org.hibernate.Hibernate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CheckInUi {
-    private JDialog dialog;
-    private JTextField txtCpf;
-    private JButton btnSearch, btnConfirm;
-    private JTable table;
-    private DefaultTableModel tableModel;
+    private final JDialog dialog;
+    private final JTextField txtCpf;
+    private final JButton btnConfirm;
+    private final JTable table;
+    private final DefaultTableModel tableModel;
     private HotelClient selectedClient;
     private HotelRoom selectedRoom;
-    private HotelRoomService roomService;
-    private HostingService hostingService;
-    private JLabel lblClientName;
+    private final JLabel lblClientName;
 
-    public CheckInUi(JFrame parent, HotelRoomService roomService, HotelClientService clientService, HostingService hostingService) {
-        this.roomService = roomService;
-        this.hostingService = hostingService;
+    public CheckInUi(JFrame parent) {
 
-        dialog = new JDialog(parent, "Realizar Check-in", true);
+        dialog = new JDialog(parent, "Realizar Check-in.", true);
         dialog.setLayout(new BorderLayout());
-        dialog.setSize(700, 580);
+        dialog.setSize(850, 500);
         dialog.setLocationRelativeTo(parent);
 
         JPanel topPanel = new JPanel(new FlowLayout());
+        JPanel panelClient = new JPanel();
         topPanel.add(new JLabel("CPF do Cliente:"));
         txtCpf = new JTextField(15);
-        btnSearch = new JButton("Buscar");
+        JButton btnSearch = new JButton("Buscar.");
         lblClientName = new JLabel("Nome do Cliente: ");
         topPanel.add(txtCpf);
         topPanel.add(btnSearch);
-
+        topPanel.add(panelClient);
         dialog.add(topPanel, BorderLayout.NORTH);
+        panelClient.add(lblClientName);
 
         tableModel = new DefaultTableModel(new Object[]{"Número", "Status"}, 0);
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
         dialog.add(scrollPane, BorderLayout.CENTER);
 
-        btnConfirm = new JButton("Confirmar Check-in");
+        btnConfirm = new JButton("Confirmar Check-in.");
         btnConfirm.setEnabled(false);
         dialog.add(btnConfirm, BorderLayout.SOUTH);
 
@@ -70,7 +68,7 @@ public class CheckInUi {
     private void buscarCliente(ActionEvent e) {
         String cpf = txtCpf.getText().trim();
         if (cpf.isEmpty()) {
-            JOptionPane.showMessageDialog(dialog, "Digite um CPF.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(dialog, "Digite um CPF.", "Aviso!", JOptionPane.WARNING_MESSAGE);
             return;
         }
         RestTemplate restTemplate = new RestTemplate();
@@ -82,11 +80,20 @@ public class CheckInUi {
         tableModel.setRowCount(0);
 
         if (selectedClient == null) {
-            JOptionPane.showMessageDialog(dialog, "Cliente não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(dialog, "Cliente não encontrado!", "Erro!", JOptionPane.ERROR_MESSAGE);
             return;
         }
         Hibernate.initialize(selectedClient);
         carregarApartamentosDisponiveis();
+        lblClientName   .setText("Nome do Cliente: " + selectedClient.getFullName());
+        txtCpf.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (txtCpf.getText().trim().isEmpty()) {
+                    lblClientName.setText("Nome do Cliente: ");
+                }
+            }
+        });
     }
 
     private void carregarApartamentosDisponiveis() {
@@ -143,17 +150,20 @@ public class CheckInUi {
                     new ArrayList<>(),
                     RoomStatus.OCUPADO
             );
-            HttpEntity<Hosting> request = new HttpEntity<>(newHosting, headers);
-            ResponseEntity<Hosting> response = restTemplate.exchange(url, HttpMethod.POST, request, Hosting.class);
+            try{
+                HttpEntity<Hosting> request = new HttpEntity<>(newHosting, headers);
+                ResponseEntity<Hosting> response = restTemplate.exchange(url, HttpMethod.POST, request, Hosting.class);
 
-            //hostingService.checkIn(newHosting, selectedClient, selectedRoom);
-
-            if (response.getStatusCode().is2xxSuccessful()) {
-                JOptionPane.showMessageDialog(dialog, "Check-in realizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                dialog.dispose();
-            } else {
-                JOptionPane.showMessageDialog(dialog, "Erro ao realizar check-in.", "Erro", JOptionPane.ERROR_MESSAGE);
+                if (response.getStatusCode().is2xxSuccessful()) {
+                    JOptionPane.showMessageDialog(dialog, "Check-in realizado com sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
+                    dialog.dispose();
+                }else {
+                    JOptionPane.showMessageDialog(dialog, "Erro ao realizar check-in.", "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }catch (HttpServerErrorException e){
+                JOptionPane.showMessageDialog(dialog, "Verifique o servidor ou se há uma hopedagem ativa para este CPF.", "Erro!", JOptionPane.ERROR_MESSAGE);
             }
+
         }
     }
 }
