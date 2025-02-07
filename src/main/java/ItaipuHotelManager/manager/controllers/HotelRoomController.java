@@ -1,7 +1,6 @@
 package ItaipuHotelManager.manager.controllers;
 
 import ItaipuHotelManager.manager.entities.HotelRoom;
-import ItaipuHotelManager.manager.entities.utils.RoomStatus;
 import ItaipuHotelManager.manager.services.HotelRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

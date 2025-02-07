@@ -9,8 +9,7 @@ import ItaipuHotelManager.manager.services.HotelClientService;
 import ItaipuHotelManager.manager.services.HotelRoomService;
 import org.hibernate.Hibernate;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.swing.*;
@@ -85,61 +84,71 @@ public class CheckInUi {
         if (selectedClient == null) {
             JOptionPane.showMessageDialog(dialog, "Cliente não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
-            }
+        }
         Hibernate.initialize(selectedClient);
         carregarApartamentosDisponiveis();
+    }
+
+    private void carregarApartamentosDisponiveis() {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:8080/rooms/available";
+        ResponseEntity<List<HotelRoom>> getAvailableRooms = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<HotelRoom>>() {
+        });
+        List<HotelRoom> availableRooms = getAvailableRooms.getBody();
+
+        tableModel.setRowCount(0);
+
+        assert availableRooms != null;
+        for (HotelRoom room : availableRooms) {
+            tableModel.addRow(new Object[]{room.getRoomNumber(), room.getStatus()});
         }
-        private void carregarApartamentosDisponiveis() {
+    }
+
+    private void selectRoom() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow != -1) {
+            String roomNumber = (String) tableModel.getValueAt(selectedRow, 0);
+
             RestTemplate restTemplate = new RestTemplate();
-            String url = "http://localhost:8080/rooms/available";
-            ResponseEntity<List<HotelRoom>> getAvailableRooms = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<HotelRoom>>(){});
-            List<HotelRoom> availableRooms = getAvailableRooms.getBody();
+            String url = "http://localhost:8080/rooms/" + roomNumber;
 
-            tableModel.setRowCount(0);
-
-            assert availableRooms != null;
-            for (HotelRoom room : availableRooms) {
-                tableModel.addRow(new Object[]{room.getRoomNumber(), room.getStatus()});
-            }
+            ResponseEntity<HotelRoom> getRoom = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<HotelRoom>() {
+            });
+            selectedRoom = getRoom.getBody();
+            btnConfirm.setEnabled(true);
         }
+    }
 
-        private void selectRoom() {
-            int selectedRow = table.getSelectedRow();
-            if (selectedRow != -1) {
-                String roomNumber = (String) tableModel.getValueAt(selectedRow, 0);
+    private void confirmarCheckIn() {
+        if (selectedClient != null && selectedRoom != null) {
 
-                RestTemplate restTemplate = new RestTemplate();
-                String url = "http://localhost:8080/rooms/"+roomNumber;
+            RestTemplate restTemplate = new RestTemplate();
+            String url = "http://localhost:8080/hosting/checkin";
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
-                ResponseEntity<HotelRoom> getRoom = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<HotelRoom>(){});
-                selectedRoom = getRoom.getBody();
-                btnConfirm.setEnabled(true);
-            }
-        }
+            int totalGuest = 1;
+            int dailyNumber = 1;
+            LocalDateTime checkIn = LocalDateTime.now();
+            LocalDateTime checkOut = checkIn.plusDays(dailyNumber);
 
-        private void confirmarCheckIn() {
-            if (selectedClient != null && selectedRoom != null) {
+            Hosting newHosting = new Hosting(
+                    null,
+                    totalGuest,
+                    dailyNumber,
+                    selectedRoom,
+                    selectedClient,
+                    checkIn,
+                    checkOut,
+                    new ArrayList<>(),
+                    RoomStatus.OCUPADO
+            );
+            HttpEntity<Hosting> request = new HttpEntity<>(newHosting, headers);
+            ResponseEntity<Hosting> response = restTemplate.exchange(url, HttpMethod.POST, request, Hosting.class);
 
-                int totalGuest = 1;
-                int dailyNumber = 1;
-                LocalDateTime checkIn = LocalDateTime.now();
-                LocalDateTime checkOut = checkIn.plusDays(dailyNumber);
+            //hostingService.checkIn(newHosting, selectedClient, selectedRoom);
 
-
-                Hosting newHosting = new Hosting(
-                        null,
-                        totalGuest,
-                        dailyNumber,
-                        selectedRoom,
-                        selectedClient,
-                        checkIn,
-                        checkOut,
-                        new ArrayList<>(),
-                        RoomStatus.OCUPADO
-                );
-
-                hostingService.checkIn(newHosting, selectedClient, selectedRoom);
-
+            if (response.getStatusCode().is2xxSuccessful()) {
                 JOptionPane.showMessageDialog(dialog, "Check-in realizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 dialog.dispose();
             } else {
@@ -147,3 +156,4 @@ public class CheckInUi {
             }
         }
     }
+}

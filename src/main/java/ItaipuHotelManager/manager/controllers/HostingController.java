@@ -1,19 +1,15 @@
 package ItaipuHotelManager.manager.controllers;
 
 import ItaipuHotelManager.manager.entities.Hosting;
-import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.services.HostingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "hosting")
+@RequestMapping(value = "/hosting")
 public class HostingController {
 
     @Autowired
@@ -30,4 +26,11 @@ public class HostingController {
         List<Hosting> hostingList = hostingService.findAllHostings(cpf);
         return ResponseEntity.ok().body(hostingList);
     }
+
+    @PostMapping(value = "/checkin")
+    public ResponseEntity<Hosting> checkIn(@RequestBody Hosting hosting){
+        hostingService.checkIn(hosting, hosting.getClient(), hosting.getRoom());
+        return ResponseEntity.ok().body(hosting);
+    }
+
 }
