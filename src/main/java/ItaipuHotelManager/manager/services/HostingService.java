@@ -108,4 +108,8 @@ public class HostingService {
     public List<Hosting> findActiveHosting() {
         return hostingRepository.findByRoomStatus(RoomStatus.OCUPADO);
     }
+
+    public Hosting findByRoomNumber(String roomNumber){
+        return hostingRepository.findByRoomRoomNumber(roomNumber);
+    }
 }

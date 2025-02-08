@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Comparator;
 import java.util.List;
 
@@ -47,17 +48,26 @@ public class CheckOutUi {
         bottomPanel.add(lblTotalAmount);
 
         JButton btnConfirm = new JButton("Confirmar Check-out");
-        //btnConfirm.addActionListener(this::confirmarCheckOut);
+        btnConfirm.addActionListener(this::confirmCheckOut);
         bottomPanel.add(btnConfirm);
 
         dialog.add(bottomPanel, BorderLayout.SOUTH);
 
-        carregarHospedagensOcupadas();
+        loadHostingByOccupiedStatus();
         table.getSelectionModel().addListSelectionListener(e -> selectRoom());
+
+        paymentMethod.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selectedHosting != null) {
+                    calculateTotalValue();
+                }
+            }
+        });
 
         dialog.setVisible(true);
     }
-    private void carregarHospedagensOcupadas() {
+    private void loadHostingByOccupiedStatus() {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8080/hosting/active";
         ResponseEntity<List<Hosting>> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Hosting>>() {});
@@ -71,12 +81,35 @@ public class CheckOutUi {
         }
     }
     private void selectRoom() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow != -1){
+            String roomNumber = (String) tableModel.getValueAt(selectedRow, 0);
+            RestTemplate restTemplate = new RestTemplate();
+            String url = "http://localhost:8080/hosting/room/"+roomNumber;
+            ResponseEntity<Hosting> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<Hosting>() {});
+            selectedHosting = response.getBody();
+            assert selectedHosting != null;
+            selectedRoom = selectedHosting.getRoom();
+            calculateTotalValue();
+        }
 
     }
-    private void calcularValorTotal() {
-
+    private void calculateTotalValue() {
+        String paymentMethodSelectedItem = (String) paymentMethod.getSelectedItem();
+        assert paymentMethodSelectedItem != null;
+        if (paymentMethodSelectedItem.equals("Crédito")){
+            selectedHosting.setTotalPrice(selectedHosting.getBasePrice()*1.05);
+        } else if (paymentMethodSelectedItem.equals("Débito")) {
+            selectedHosting.setTotalPrice(selectedHosting.getBasePrice()*1.03);
+        }else {
+            selectedHosting.setTotalPrice(selectedHosting.getBasePrice());
+        }
+        double total = selectedHosting.getTotalPrice();
+        lblTotalAmount.setText("Total: R$" + String.format("%.2f", total));
     }
-    private void confirmarCheckOut(ActionEvent e) {
+    private void confirmCheckOut(ActionEvent e) {
+
+
 
     }
 

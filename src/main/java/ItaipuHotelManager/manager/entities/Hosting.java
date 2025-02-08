@@ -21,6 +21,7 @@ public class Hosting {
     private Integer dailyNumber;
     private LocalDateTime checkIn;
     private LocalDateTime checkOut;
+    private Double totalPrice;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
@@ -134,6 +135,14 @@ public class Hosting {
         this.persons = persons;
     }
 
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public RoomStatus getStatus() {
         return status;
     }
@@ -154,6 +163,7 @@ public class Hosting {
         }
         return null;
     }
+
 
     @Override
     public boolean equals(Object o) {

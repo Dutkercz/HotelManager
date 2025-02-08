@@ -39,4 +39,9 @@ public class HostingController {
         return ResponseEntity.ok().body(hostingList);
     }
 
+    @GetMapping(value = "/room/{roomNumber}")
+    public ResponseEntity<Hosting> getByRoomNumber(@PathVariable String roomNumber){
+        return ResponseEntity.ok().body(hostingService.findByRoomNumber(roomNumber));
+    }
+
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface HostingRepository extends JpaRepository<Hosting, Long> {
 
-    Hosting findByRoomRoomNumber(String room);
+    Hosting findByRoomRoomNumber(String roomNumber);
 
     List<Hosting> findByClientAndRoomStatus(HotelClient client, RoomStatus status);
 
