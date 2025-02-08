@@ -5,7 +5,6 @@ import ItaipuHotelManager.manager.entities.HotelClient;
 import ItaipuHotelManager.manager.entities.HotelPerson;
 import ItaipuHotelManager.manager.entities.HotelRoom;
 import ItaipuHotelManager.manager.entities.utils.RoomStatus;
-import org.apache.commons.text.WordUtils;
 import org.hibernate.Hibernate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -16,10 +15,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CheckInUi {
@@ -31,33 +29,34 @@ public class CheckInUi {
     private HotelClient selectedClient;
     private HotelRoom selectedRoom;
     private final JLabel lblClientName;
+    private JSpinner spinnerNumDiarias;
+    private JSpinner spinnerNumPessoas;
+    private JTextArea txtPessoasAdicionais;
 
     public CheckInUi(JFrame parent) {
-
-        dialog = new JDialog(parent, "Realizar Check-in.", true);
+        dialog = new JDialog(parent, "Realizar Check-in", true);
         dialog.setLayout(new BorderLayout());
-        dialog.setSize(850, 500);
+        dialog.setSize(900, 550);
         dialog.setLocationRelativeTo(parent);
 
         JPanel topPanel = new JPanel(new FlowLayout());
-        JPanel panelClient = new JPanel();
         topPanel.add(new JLabel("CPF do Cliente:"));
         txtCpf = new JTextField(15);
-        JButton btnSearch = new JButton("Buscar.");
+        JButton btnSearch = new JButton("Buscar");
         lblClientName = new JLabel("Nome do Cliente: ");
 
         topPanel.add(txtCpf);
         topPanel.add(btnSearch);
-        topPanel.add(panelClient);
+        topPanel.add(lblClientName);
         dialog.add(topPanel, BorderLayout.NORTH);
-        panelClient.add(lblClientName);
 
         tableModel = new DefaultTableModel(new Object[]{"Número", "Status"}, 0);
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
         dialog.add(scrollPane, BorderLayout.CENTER);
+        setupAdditionalFields();
 
-        btnConfirm = new JButton("Confirmar Check-in.");
+        btnConfirm = new JButton("Confirmar Check-in");
         btnConfirm.setEnabled(false);
         dialog.add(btnConfirm, BorderLayout.SOUTH);
 
@@ -68,16 +67,34 @@ public class CheckInUi {
         dialog.setVisible(true);
     }
 
+    private void setupAdditionalFields() {
+        JPanel extraPanel = new JPanel(new GridLayout(3, 2, 5, 5));
+
+        spinnerNumDiarias = new JSpinner(new SpinnerNumberModel(1, 1, 30, 1));
+        spinnerNumPessoas = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
+        txtPessoasAdicionais = new JTextArea(3, 20);
+        txtPessoasAdicionais.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+
+        extraPanel.add(new JLabel("Número de Diárias:"));
+        extraPanel.add(spinnerNumDiarias);
+        extraPanel.add(new JLabel("Número de Pessoas Adicionais:"));
+        extraPanel.add(spinnerNumPessoas);
+        extraPanel.add(new JLabel("Nome dos hospedes adicionais (se houver):"));
+        extraPanel.add(new JScrollPane(txtPessoasAdicionais));
+
+        dialog.add(extraPanel, BorderLayout.EAST);
+    }
+
     private void buscarCliente(ActionEvent e) {
         String cpf = txtCpf.getText().trim();
         if (cpf.isEmpty()) {
             JOptionPane.showMessageDialog(dialog, "Digite um CPF.", "Aviso!", JOptionPane.WARNING_MESSAGE);
             return;
         }
+
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8080/clients/" + cpf;
-        ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<HotelClient>() {
-        });
+        ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<HotelClient>() {});
 
         selectedClient = response.getBody();
         tableModel.setRowCount(0);
@@ -86,31 +103,23 @@ public class CheckInUi {
             JOptionPane.showMessageDialog(dialog, "Cliente não encontrado!", "Erro!", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
         Hibernate.initialize(selectedClient);
         carregarApartamentosDisponiveis();
-        lblClientName   .setText("Nome do Cliente: " + selectedClient.getFullName());
-        txtCpf.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if (txtCpf.getText().trim().isEmpty()) {
-                    lblClientName.setText("Nome do Cliente: ");
-                }
-            }
-        });
+        lblClientName.setText("Nome do Cliente: " + selectedClient.getFullName());
     }
 
     private void carregarApartamentosDisponiveis() {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8080/rooms/available";
-        ResponseEntity<List<HotelRoom>> getAvailableRooms = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<HotelRoom>>() {
-        });
+        ResponseEntity<List<HotelRoom>> getAvailableRooms = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<HotelRoom>>() {});
         List<HotelRoom> availableRooms = getAvailableRooms.getBody();
 
         tableModel.setRowCount(0);
-
-        assert availableRooms != null;
-        for (HotelRoom room : availableRooms) {
-            tableModel.addRow(new Object[]{room.getRoomNumber(), room.getStatus()});
+        if (availableRooms != null) {
+            for (HotelRoom room : availableRooms) {
+                tableModel.addRow(new Object[]{room.getRoomNumber(), room.getStatus()});
+            }
         }
     }
 
@@ -122,8 +131,7 @@ public class CheckInUi {
             RestTemplate restTemplate = new RestTemplate();
             String url = "http://localhost:8080/rooms/" + roomNumber;
 
-            ResponseEntity<HotelRoom> getRoom = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<HotelRoom>() {
-            });
+            ResponseEntity<HotelRoom> getRoom = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<HotelRoom>() {});
             selectedRoom = getRoom.getBody();
             btnConfirm.setEnabled(true);
         }
@@ -131,42 +139,49 @@ public class CheckInUi {
 
     private void confirmarCheckIn() {
         if (selectedClient != null && selectedRoom != null) {
-
             RestTemplate restTemplate = new RestTemplate();
             String url = "http://localhost:8080/hosting/checkin";
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
+            int numDiarias = (int) spinnerNumDiarias.getValue();
+            int numPessoas = (int) spinnerNumPessoas.getValue();
+            String nomesAdicionaisStr = txtPessoasAdicionais.getText().trim();
 
+            List<HotelPerson> personsList = new ArrayList<>();
+
+            if (!nomesAdicionaisStr.isEmpty()) {
+                String[] nomesAdicionais = nomesAdicionaisStr.split("\n");
+                for (String names : nomesAdicionais) {
+                    personsList.add(new HotelPerson(names.trim()));
+                }
+            }
+            if (personsList.size() != numPessoas) {
+                JOptionPane.showMessageDialog(dialog,
+                        "Número de pessoas não corresponde à quantidade informada!",
+                        "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             LocalDateTime checkIn = LocalDateTime.now();
-            LocalDateTime checkOut = checkIn.plusDays(1);
+            LocalDateTime checkOut = checkIn.plusDays(numDiarias);
 
-            Hosting newHosting = new Hosting(
-                    null,
-                    1,
-                    1,
-                    selectedRoom,
-                    selectedClient,
-                    checkIn,
-                    checkOut,
-                    new ArrayList<>(),
-                    RoomStatus.OCUPADO
-            );
-            try{
+            Hosting newHosting = new Hosting(null, numPessoas, numDiarias, selectedRoom, selectedClient,
+                    checkIn, checkOut, personsList, RoomStatus.OCUPADO);
+
+            try {
                 HttpEntity<Hosting> request = new HttpEntity<>(newHosting, headers);
                 ResponseEntity<Hosting> response = restTemplate.exchange(url, HttpMethod.POST, request, Hosting.class);
 
                 if (response.getStatusCode().is2xxSuccessful()) {
-                    JOptionPane.showMessageDialog(dialog, "Check-in realizado com sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(dialog, "Check-in realizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                     dialog.dispose();
-                }else {
-                    JOptionPane.showMessageDialog(dialog, "Erro ao realizar check-in.", "Erro!", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(dialog, "Erro ao realizar check-in.", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
-            }catch (HttpServerErrorException e){
-                JOptionPane.showMessageDialog(dialog, "Verifique o servidor ou se há uma hopedagem ativa para este CPF.", "Erro!", JOptionPane.ERROR_MESSAGE);
+            } catch (HttpServerErrorException e) {
+                JOptionPane.showMessageDialog(dialog, "Verifique o servidor ou se há uma hospedagem ativa para este CPF.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
-
         }
     }
 }
