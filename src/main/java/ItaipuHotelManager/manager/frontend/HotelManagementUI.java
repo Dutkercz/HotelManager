@@ -36,13 +36,13 @@ public class HotelManagementUI {
         JButton btnCheckIn = new JButton("Check-In", iconButton);
         JButton btnCheckOut = new JButton("Check-Out", iconButton);
 
-        btnClientes.setBackground(new Color(42, 60, 72));
+        btnClientes.setBackground(new Color(2, 36 , 52));
         btnClientes.setForeground(Color.white);
-        btnApartamentos.setBackground(new Color(42, 60, 72));
+        btnApartamentos.setBackground(new Color(2, 36 , 52));
         btnApartamentos.setForeground(Color.white);
-        btnCheckIn.setBackground(new Color(42, 60, 72));
+        btnCheckIn.setBackground(new Color(2, 36 , 52));
         btnCheckIn.setForeground(Color.white);
-        btnCheckOut.setBackground(new Color(42, 60, 72));
+        btnCheckOut.setBackground(new Color(2, 36 , 52));
         btnCheckOut.setForeground(Color.white);
 
         btnClientes.addActionListener(e -> {

@@ -2,11 +2,16 @@ package ItaipuHotelManager.manager.frontend.checkout;
 
 import ItaipuHotelManager.manager.entities.Hosting;
 import ItaipuHotelManager.manager.entities.HotelRoom;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 public class CheckOutUi {
     private final JDialog dialog;
@@ -51,6 +56,15 @@ public class CheckOutUi {
         dialog.setVisible(true);
     }
     private void carregarHospedagensOcupadas() {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:8080/rooms/occupied";
+        ResponseEntity<List<HotelRoom>> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<HotelRoom>>() {});
+        List<HotelRoom> occupiedRooms = response.getBody();
+        tableModel.setRowCount(0);
+        assert occupiedRooms != null;
+        for (HotelRoom h : occupiedRooms){
+            tableModel.addRow(new Object[]{h.getRoomNumber(), h.getClient().getFullName()});
+        }
     }
     private void selectRoom() {
 

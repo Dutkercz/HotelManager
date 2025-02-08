@@ -43,6 +43,10 @@ public class HotelRoomController {
     public ResponseEntity<List<HotelRoom>> getAvailableRooms(){
         return ResponseEntity.ok().body(roomService.getAvailableRooms());
     }
+    @GetMapping(value = "/occupied")
+    ResponseEntity<List<HotelRoom>> getOccupiedRooms(){
+        return ResponseEntity.ok().body(roomService.getOccupiedRooms());
+    }
 
     @GetMapping(value = "/{roomNumber}")
     public ResponseEntity<HotelRoom> findByRoomNumber(@PathVariable String roomNumber){
