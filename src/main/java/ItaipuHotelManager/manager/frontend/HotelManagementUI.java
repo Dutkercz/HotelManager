@@ -1,6 +1,7 @@
 package ItaipuHotelManager.manager.frontend;
 
 import ItaipuHotelManager.manager.frontend.checkin.CheckInUi;
+import ItaipuHotelManager.manager.frontend.checkout.CheckOutUi;
 import ItaipuHotelManager.manager.frontend.client.management.ClientUi;
 import ItaipuHotelManager.manager.frontend.room.management.RoomsUi;
 import ItaipuHotelManager.manager.services.HostingService;
@@ -55,6 +56,9 @@ public class HotelManagementUI {
         btnCheckIn.addActionListener(e -> {
             SwingUtilities.invokeLater(() -> new CheckInUi(frame));
         });
+        btnCheckOut.addActionListener(e -> {
+            SwingUtilities.invokeLater(() -> new CheckOutUi(frame));
+        });
 
         panel.add(btnClientes);
         panel.add(btnApartamentos);
@@ -63,7 +67,7 @@ public class HotelManagementUI {
 
         frame.add(panel, BorderLayout.CENTER);
 
-        JLabel logo = new JLabel(new ImageIcon("C:\\Users\\cris_\\Desktop\\java\\hi.png"));
+        JLabel logo = new JLabel(new ImageIcon("C:\\Users\\Dell\\Downloads\\hi.png"));
         frame.add(logo, BorderLayout.NORTH);
 
         frame.setLocationRelativeTo(null);
