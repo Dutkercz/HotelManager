@@ -77,9 +77,9 @@ public class CheckInUi {
 
         extraPanel.add(new JLabel("Número de Diárias:"));
         extraPanel.add(spinnerNumDiarias);
-        extraPanel.add(new JLabel("Número de Pessoas Adicionais:"));
+        extraPanel.add(new JLabel("Número de Pessoas:"));
         extraPanel.add(spinnerNumPessoas);
-        extraPanel.add(new JLabel("Nome dos hospedes adicionais (se houver):"));
+        extraPanel.add(new JLabel("Nome dos hóspedes adicionais (se houver):"));
         extraPanel.add(new JScrollPane(txtPessoasAdicionais));
 
         dialog.add(extraPanel, BorderLayout.EAST);
@@ -140,7 +140,7 @@ public class CheckInUi {
     private void confirmarCheckIn() {
         if (selectedClient != null && selectedRoom != null) {
             RestTemplate restTemplate = new RestTemplate();
-            String url = "http://localhost:8080/hosting/checkin";
+            String url = "http://localhost:8080/allhosting/checkin";
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -156,7 +156,7 @@ public class CheckInUi {
                     personsList.add(new HotelPerson(names.trim()));
                 }
             }
-            if (personsList.size() != numPessoas) {
+            if (personsList.size()+1 != numPessoas) {
                 JOptionPane.showMessageDialog(dialog,
                         "Número de pessoas não corresponde à quantidade informada!",
                         "Erro", JOptionPane.ERROR_MESSAGE);

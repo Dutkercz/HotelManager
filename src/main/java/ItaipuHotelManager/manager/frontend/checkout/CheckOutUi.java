@@ -111,8 +111,6 @@ public class CheckOutUi {
         if (selectedRoom != null && selectedHosting != null) {
 
             try {
-
-
                 RestTemplate restTemplate = new RestTemplate();
                 String url = "http://localhost:8080/allhosting/checkout";
                 HttpHeaders headers = new HttpHeaders();
