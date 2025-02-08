@@ -40,50 +40,15 @@ public class HostingService {
     }
 
     @Transactional
-    public String checkOut(String cpfCheckOut, String paymentMethod) {
+    public void checkOut(Hosting hosting) {
+        HotelRoom room = hosting.getRoom();
+        room.setStatus(RoomStatus.DISPONIVEL);
+        room.setClient(null);
+        roomService.saveRoom(room);
 
-        HotelClient client = clientService.findByCpf(cpfCheckOut);
-        if (client == null){
-            return "**** Cliente não encontrado. ****\n" +
-                    "===================================";
-        }
-
-        try{
-            List<Hosting> hosting = hostingRepository.findByClientAndRoomStatus(client, RoomStatus.OCUPADO);
-            Hosting hostingToCheckOut = hosting.stream()
-                    .filter(x -> x.getStatus() == RoomStatus.OCUPADO)
-                    .findFirst().orElseThrow();
-
-            Hibernate.initialize(hostingToCheckOut);
-            Hibernate.initialize(hostingToCheckOut.getPersons());
-
-            System.out.println("=======================");
-            System.out.println("Hospedagem encontrada ");
-            System.out.println("=======================");
-
-            double totalPrice = switch (paymentMethod) {
-                case "1" -> hostingTotalPrice(hostingToCheckOut);
-                case "2" -> hostingTotalPriceCredit(hostingToCheckOut);
-                case "3" -> hostingTotalPriceDebit(hostingToCheckOut);
-                default -> 0.0;
-            };
-            hostingToCheckOut.setBasePrice(totalPrice);
-            HotelRoom room = hostingToCheckOut.getRoom();
-            room.setStatus(RoomStatus.DISPONIVEL);
-            room.setClient(null);
-            hostingToCheckOut.setStatus(RoomStatus.FINALIZADO);
-            hostingToCheckOut.setCheckOut(LocalDateTime.now());
-            roomRepository.save(room);
-            hostingRepository.save(hostingToCheckOut);
-            System.out.println(hostingToCheckOut);
-            return "**** CheckOut realizado com sucesso! Total R$ "
-                    + hostingToCheckOut.getBasePrice()+" ****\n";
-
-        } catch (HibernateException | NoSuchElementException e) {
-            return "==================================================" +
-                    "\n**** Nenhuma hospedagem ativa para este CPF. ****" +
-                    "\n==================================================\n";
-        }
+        hosting.setStatus(RoomStatus.FINALIZADO);
+        hosting.setCheckOut(LocalDateTime.now());
+        hostingRepository.save(hosting);
     }
 
     @Transactional

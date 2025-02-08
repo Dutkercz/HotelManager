@@ -9,11 +9,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/hosting")
+@RequestMapping(value = "/allhosting")
 public class HostingController {
 
     @Autowired
     HostingService hostingService;
+
+    @PostMapping(value = "/checkin")
+    public ResponseEntity<Hosting> checkIn(@RequestBody Hosting hosting){
+        hostingService.checkIn(hosting, hosting.getClient(), hosting.getRoom());
+        return ResponseEntity.ok().body(hosting);
+    }
+
+    @PostMapping(value = "/checkout")
+    public ResponseEntity<Hosting> checkOut(@RequestBody Hosting hosting){
+        hostingService.checkOut(hosting);
+        return ResponseEntity.ok().body(hosting);
+    }
 
     @GetMapping
     public ResponseEntity<List<Hosting>> findAllHosting (){
@@ -25,12 +37,6 @@ public class HostingController {
     public ResponseEntity<List<Hosting>> findHostingByClient(@PathVariable String cpf){
         List<Hosting> hostingList = hostingService.findAllHostings(cpf);
         return ResponseEntity.ok().body(hostingList);
-    }
-
-    @PostMapping(value = "/checkin")
-    public ResponseEntity<Hosting> checkIn(@RequestBody Hosting hosting){
-        hostingService.checkIn(hosting, hosting.getClient(), hosting.getRoom());
-        return ResponseEntity.ok().body(hosting);
     }
 
     @GetMapping(value = "/active")

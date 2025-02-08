@@ -3,8 +3,8 @@ package ItaipuHotelManager.manager.frontend.checkout;
 import ItaipuHotelManager.manager.entities.Hosting;
 import ItaipuHotelManager.manager.entities.HotelRoom;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.swing.*;
@@ -69,7 +69,7 @@ public class CheckOutUi {
     }
     private void loadHostingByOccupiedStatus() {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8080/hosting/active";
+        String url = "http://localhost:8080/allhosting/active";
         ResponseEntity<List<Hosting>> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Hosting>>() {});
         List<Hosting> hostingList = response.getBody();
         assert hostingList != null;
@@ -85,7 +85,7 @@ public class CheckOutUi {
         if (selectedRow != -1){
             String roomNumber = (String) tableModel.getValueAt(selectedRow, 0);
             RestTemplate restTemplate = new RestTemplate();
-            String url = "http://localhost:8080/hosting/room/"+roomNumber;
+            String url = "http://localhost:8080/allhosting/room/"+roomNumber;
             ResponseEntity<Hosting> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<Hosting>() {});
             selectedHosting = response.getBody();
             assert selectedHosting != null;
@@ -108,11 +108,25 @@ public class CheckOutUi {
         lblTotalAmount.setText("Total: R$" + String.format("%.2f", total));
     }
     private void confirmCheckOut(ActionEvent e) {
+        if (selectedRoom != null && selectedHosting != null) {
+
+            try {
 
 
+                RestTemplate restTemplate = new RestTemplate();
+                String url = "http://localhost:8080/allhosting/checkout";
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                HttpEntity<Hosting> request = new HttpEntity<>(selectedHosting, headers);
+                ResponseEntity<Void> response = restTemplate.exchange(url, HttpMethod.POST, request, Void.class);
 
+                if (response.getStatusCode().is2xxSuccessful()) {
+                    JOptionPane.showMessageDialog(dialog, "Check-out realizado com sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
+                    dialog.dispose();
+                }
+            }catch (HttpServerErrorException ee){
+                JOptionPane.showMessageDialog(dialog, "Erro ao realizar check-out. Verifique o servidor.", "Erro!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
-
-
-
 }
