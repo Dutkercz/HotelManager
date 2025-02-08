@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Comparator;
 import java.util.List;
 
 public class CheckOutUi {
@@ -31,7 +32,8 @@ public class CheckOutUi {
         JPanel topPanel = new JPanel(new FlowLayout());
         topPanel.add(new JLabel("Selecione um apartamento ocupado:"));
 
-        tableModel = new DefaultTableModel(new Object[]{"Número", "Hóspede"}, 0);
+        tableModel = new DefaultTableModel(new Object[]{"Apartamento Nº", "Hóspede", "Num. de Hospedes",
+                "Total de Diárias", "Sub Total"}, 0);
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
         dialog.add(scrollPane, BorderLayout.CENTER);
@@ -57,13 +59,15 @@ public class CheckOutUi {
     }
     private void carregarHospedagensOcupadas() {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8080/rooms/occupied";
-        ResponseEntity<List<HotelRoom>> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<HotelRoom>>() {});
-        List<HotelRoom> occupiedRooms = response.getBody();
+        String url = "http://localhost:8080/hosting/active";
+        ResponseEntity<List<Hosting>> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Hosting>>() {});
+        List<Hosting> hostingList = response.getBody();
+        assert hostingList != null;
+        hostingList.sort(Comparator.comparing(x -> x.getRoom().getRoomNumber()));
         tableModel.setRowCount(0);
-        assert occupiedRooms != null;
-        for (HotelRoom h : occupiedRooms){
-            tableModel.addRow(new Object[]{h.getRoomNumber(), h.getClient().getFullName()});
+        for (Hosting h : hostingList){
+            tableModel.addRow(new Object[]{h.getRoom().getRoomNumber(),
+                    h.getClient().getFullName(), h.getTotalGuest(), h.getDailyNumber(), h.getBasePrice()});
         }
     }
     private void selectRoom() {

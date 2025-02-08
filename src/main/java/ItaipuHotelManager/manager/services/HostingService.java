@@ -104,4 +104,8 @@ public class HostingService {
         hostingRepository.save(hosting);
         roomService.updateRoomStatusOccupied(selectedRoom.getRoomNumber(), selectedClient);
     }
+
+    public List<Hosting> findActiveHosting() {
+        return hostingRepository.findByRoomStatus(RoomStatus.OCUPADO);
+    }
 }

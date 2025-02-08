@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.Comparator;
 import java.util.List;
 
 public class HostingClientsUi {
@@ -61,11 +62,13 @@ public class HostingClientsUi {
         try {
             ResponseEntity<List<Hosting>> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Hosting>>() {});
 
-            List<Hosting> hospedagens = response.getBody();
+            List<Hosting> hosting = response.getBody();
+            assert hosting != null;
+            hosting.sort(Comparator.comparing(x -> x.getRoom().getRoomNumber()));
             tableModel.setRowCount(0);
 
-            if (hospedagens != null && !hospedagens.isEmpty()) {
-                for (Hosting h : hospedagens) {
+            if (!hosting.isEmpty()) {
+                for (Hosting h : hosting) {
                     Hibernate.initialize(h.getClient());
                     tableModel.addRow(new Object[]{
                             h.getClient().getFullName(),

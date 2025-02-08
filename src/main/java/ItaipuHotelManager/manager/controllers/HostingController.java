@@ -33,4 +33,10 @@ public class HostingController {
         return ResponseEntity.ok().body(hosting);
     }
 
+    @GetMapping(value = "/active")
+    public ResponseEntity<List<Hosting>> getActiveHostig(){
+        List<Hosting> hostingList = hostingService.findActiveHosting();
+        return ResponseEntity.ok().body(hostingList);
+    }
+
 }
