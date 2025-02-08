@@ -17,7 +17,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CheckInUi {
@@ -29,14 +28,14 @@ public class CheckInUi {
     private HotelClient selectedClient;
     private HotelRoom selectedRoom;
     private final JLabel lblClientName;
-    private JSpinner spinnerNumDiarias;
-    private JSpinner spinnerNumPessoas;
-    private JTextArea txtPessoasAdicionais;
+    private JSpinner spinnerNumberDaily;
+    private JSpinner spinnerNumberPeClients;
+    private JTextArea txtAdditionalClients;
 
     public CheckInUi(JFrame parent) {
         dialog = new JDialog(parent, "Realizar Check-in", true);
         dialog.setLayout(new BorderLayout());
-        dialog.setSize(900, 550);
+        dialog.setSize(800, 600);
         dialog.setLocationRelativeTo(parent);
 
         JPanel topPanel = new JPanel(new FlowLayout());
@@ -60,9 +59,9 @@ public class CheckInUi {
         btnConfirm.setEnabled(false);
         dialog.add(btnConfirm, BorderLayout.SOUTH);
 
-        btnSearch.addActionListener(this::buscarCliente);
+        btnSearch.addActionListener(this::searchClients);
         table.getSelectionModel().addListSelectionListener(e -> selectRoom());
-        btnConfirm.addActionListener(e -> confirmarCheckIn());
+        btnConfirm.addActionListener(e -> confirmCheckIn());
 
         dialog.setVisible(true);
     }
@@ -70,22 +69,22 @@ public class CheckInUi {
     private void setupAdditionalFields() {
         JPanel extraPanel = new JPanel(new GridLayout(3, 2, 5, 5));
 
-        spinnerNumDiarias = new JSpinner(new SpinnerNumberModel(1, 1, 30, 1));
-        spinnerNumPessoas = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
-        txtPessoasAdicionais = new JTextArea(3, 20);
-        txtPessoasAdicionais.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        spinnerNumberDaily = new JSpinner(new SpinnerNumberModel(1, 1, 30, 1));
+        spinnerNumberPeClients = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
+        txtAdditionalClients = new JTextArea(3, 20);
+        txtAdditionalClients.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         extraPanel.add(new JLabel("Número de Diárias:"));
-        extraPanel.add(spinnerNumDiarias);
+        extraPanel.add(spinnerNumberDaily);
         extraPanel.add(new JLabel("Número de Pessoas:"));
-        extraPanel.add(spinnerNumPessoas);
+        extraPanel.add(spinnerNumberPeClients);
         extraPanel.add(new JLabel("Nome dos hóspedes adicionais (se houver):"));
-        extraPanel.add(new JScrollPane(txtPessoasAdicionais));
+        extraPanel.add(new JScrollPane(txtAdditionalClients));
 
         dialog.add(extraPanel, BorderLayout.EAST);
     }
 
-    private void buscarCliente(ActionEvent e) {
+    private void searchClients(ActionEvent e) {
         String cpf = txtCpf.getText().trim();
         if (cpf.isEmpty()) {
             JOptionPane.showMessageDialog(dialog, "Digite um CPF.", "Aviso!", JOptionPane.WARNING_MESSAGE);
@@ -103,13 +102,12 @@ public class CheckInUi {
             JOptionPane.showMessageDialog(dialog, "Cliente não encontrado!", "Erro!", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
         Hibernate.initialize(selectedClient);
-        carregarApartamentosDisponiveis();
+        loadAvailableRooms();
         lblClientName.setText("Nome do Cliente: " + selectedClient.getFullName());
     }
 
-    private void carregarApartamentosDisponiveis() {
+    private void loadAvailableRooms() {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8080/rooms/available";
         ResponseEntity<List<HotelRoom>> getAvailableRooms = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<HotelRoom>>() {});
@@ -137,16 +135,16 @@ public class CheckInUi {
         }
     }
 
-    private void confirmarCheckIn() {
+    private void confirmCheckIn() {
         if (selectedClient != null && selectedRoom != null) {
             RestTemplate restTemplate = new RestTemplate();
             String url = "http://localhost:8080/allhosting/checkin";
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
-            int numDiarias = (int) spinnerNumDiarias.getValue();
-            int numPessoas = (int) spinnerNumPessoas.getValue();
-            String nomesAdicionaisStr = txtPessoasAdicionais.getText().trim();
+            int numDiarias = (int) spinnerNumberDaily.getValue();
+            int numPessoas = (int) spinnerNumberPeClients.getValue();
+            String nomesAdicionaisStr = txtAdditionalClients.getText().trim();
 
             List<HotelPerson> personsList = new ArrayList<>();
 

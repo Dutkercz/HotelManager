@@ -23,7 +23,6 @@ public class ClientUi {
     private JButton btnBuscar;
     private JButton btnHospedagens;
 
-
     public ClientUi() {
         frame = new JFrame("Clientes");
         panel = new JPanel();
@@ -44,7 +43,6 @@ public class ClientUi {
         btnHospedagens.setBackground(new Color(42, 60, 72));
         btnHospedagens.setForeground(Color.white);
 
-
         txtBuscarCpf = new JTextField(15);
         btnBuscar = new JButton("Buscar por CPF");
         btnBuscar.setBackground(new Color(42, 60, 72));
@@ -58,11 +56,9 @@ public class ClientUi {
         buttonPanel.add(btnCadastrar);
         buttonPanel.add(btnHospedagens);
 
-
         btnCarregar.addActionListener(e -> carregarClientes(model));
         btnCadastrar.addActionListener(e -> abrirCadastro());
         btnHospedagens.addActionListener(e -> new HostingClientsUi());
-
 
         panel.add(buttonPanel, BorderLayout.NORTH);
         panel.add(new JScrollPane(clienteTable), BorderLayout.CENTER);
@@ -108,9 +104,8 @@ public class ClientUi {
                         "Erro", JOptionPane.ERROR_MESSAGE);
             }
         });
-
         frame.add(panel);
-        frame.setSize(600, 400);
+        frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -121,14 +116,12 @@ public class ClientUi {
         String url = "http://localhost:8080/clients";
 
         try {
-            ResponseEntity<java.util.List<HotelClient>> response = restTemplate.exchange(url,
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<java.util.List<HotelClient>>() {}
+            ResponseEntity<List<HotelClient>> response = restTemplate.exchange(url,
+                    HttpMethod.GET, null, new ParameterizedTypeReference<List<HotelClient>>() {}
             );
 
             List<HotelClient> clientes = response.getBody();
-            model.setRowCount(0); // Limpa a tabela antes de preencher
+            model.setRowCount(0);
 
             if (clientes != null) {
                 for (HotelClient cliente : clientes) {
@@ -140,12 +133,10 @@ public class ClientUi {
             JOptionPane.showMessageDialog(frame, "Erro ao buscar clientes: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-
     private void abrirCadastro() {
-
         JDialog cadastroDialog = new JDialog(frame, "Cadastro de Cliente", true);
         JPanel cadastroPanel = new JPanel();
-        cadastroPanel.setLayout(new GridLayout(8, 2)); // Ajustado para caber todos os campos
+        cadastroPanel.setLayout(new GridLayout(8, 2));
 
         JLabel lblFullName = new JLabel("Nome Completo:");
         JTextField txtFullName = new JTextField(20);
@@ -191,13 +182,11 @@ public class ClientUi {
         cadastroPanel.add(txtCnpj);
         cadastroPanel.add(btnSalvar);
         cadastroPanel.add(btnCancelar);
-
         cadastroDialog.add(cadastroPanel);
         cadastroDialog.pack();
         cadastroDialog.setLocationRelativeTo(frame);
 
         btnSalvar.addActionListener(e -> {
-
             String nome = txtFullName.getText();
             String cpf = txtCpf.getText();
             String endereco = txtAddress.getText();
@@ -205,7 +194,6 @@ public class ClientUi {
             String telefone = txtPhone.getText();
             String email = txtEmail.getText();
             String cnpj = txtCnpj.getText();
-
             if (nome.isEmpty() || cpf.isEmpty() || endereco.isEmpty()) {
                 JOptionPane.showMessageDialog(cadastroDialog, "Os campos CPF, Nome e Endereço são obrigatórios",
                         "Erro", JOptionPane.ERROR_MESSAGE);
@@ -218,7 +206,9 @@ public class ClientUi {
                 return;
             }
 
-            HotelClient novoCliente = new HotelClient(null, WordUtils.capitalizeFully(nome) , cpf, WordUtils.capitalizeFully(cidade), WordUtils.capitalizeFully(endereco), email, telefone, cnpj);
+            HotelClient novoCliente = new HotelClient(null, WordUtils.capitalizeFully(nome) ,
+                    cpf, WordUtils.capitalizeFully(cidade),
+                    WordUtils.capitalizeFully(endereco), email, telefone, cnpj);
 
             RestTemplate restTemplate = new RestTemplate();
             String url = "http://localhost:8080/clients";
@@ -249,11 +239,8 @@ public class ClientUi {
         btnCancelar.addActionListener(e -> {
             cadastroDialog.dispose();
         });
-
         cadastroDialog.setVisible(true);
     }
-
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(ClientUi::new);
     }

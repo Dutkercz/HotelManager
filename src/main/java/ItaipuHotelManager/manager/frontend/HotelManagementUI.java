@@ -4,8 +4,6 @@ import ItaipuHotelManager.manager.frontend.checkin.CheckInUi;
 import ItaipuHotelManager.manager.frontend.checkout.CheckOutUi;
 import ItaipuHotelManager.manager.frontend.client.management.ClientUi;
 import ItaipuHotelManager.manager.frontend.room.management.RoomsUi;
-import ItaipuHotelManager.manager.services.HostingService;
-import ItaipuHotelManager.manager.services.HotelClientService;
 import ItaipuHotelManager.manager.services.HotelRoomService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -15,12 +13,11 @@ import java.awt.*;
 
 public class HotelManagementUI {
     public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext("ItaipuHotelManager.manager");
 
-        SwingUtilities.invokeLater(() -> createAndShowGUI(context));
+        SwingUtilities.invokeLater(HotelManagementUI::createAndShowGUI);
     }
 
-    private static void createAndShowGUI(ApplicationContext context) {
+    private static void createAndShowGUI() {
         JFrame frame = new JFrame("Gerenciamento Hotel Itaipu");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 650);
@@ -50,7 +47,7 @@ public class HotelManagementUI {
         });
 
         btnApartamentos.addActionListener(e -> {
-            SwingUtilities.invokeLater(() -> new RoomsUi(context.getBean(HotelRoomService.class)));
+            SwingUtilities.invokeLater(() -> new RoomsUi(frame));
         });
 
         btnCheckIn.addActionListener(e -> {

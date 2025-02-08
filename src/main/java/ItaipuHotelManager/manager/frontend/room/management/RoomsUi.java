@@ -15,17 +15,14 @@ import java.util.Map;
 
 public class RoomsUi {
     private final JFrame frame;
-    private final JPanel panel;
-    private final JTable table;
-    private final JButton btnCarregarApartamentos;
 
-    public RoomsUi(HotelRoomService service) {
+    public RoomsUi(JFrame parent) {
         frame = new JFrame("Apartamentos");
-        panel = new JPanel();
+        JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        btnCarregarApartamentos = new JButton("Carregar Apartamentos");
-        table = new JTable();
+        JButton btnCarregarApartamentos = new JButton("Carregar Apartamentos");
+        JTable table = new JTable();
         btnCarregarApartamentos.setBackground(new Color(42, 60, 72));
         btnCarregarApartamentos.setForeground(Color.white);
 
@@ -38,7 +35,7 @@ public class RoomsUi {
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
 
         frame.add(panel);
-        frame.setSize(600, 400);
+        frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -61,14 +58,11 @@ public class RoomsUi {
             assert response != null;
             List<HotelRoom> apartamentosLivres = response.get("Livres");
             List<HotelRoom> apartamentosOcupados = response.get("Ocupados");
-
             model.setRowCount(0);
-
 
             for (HotelRoom room : apartamentosLivres) {
                 model.addRow(new Object[]{room.getRoomNumber(), "----", "Disponível"});
             }
-
             for (HotelRoom room : apartamentosOcupados) {
                 String clienteNome = room.getClient() != null ? room.getClient().getFullName() : "Indisponível";
                 model.addRow(new Object[]{room.getRoomNumber(), clienteNome, "Ocupado"});

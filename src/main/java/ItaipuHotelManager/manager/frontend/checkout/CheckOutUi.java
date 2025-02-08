@@ -27,7 +27,7 @@ public class CheckOutUi {
     public CheckOutUi(JFrame parent) {
         dialog = new JDialog(parent, "Realizar Check-out", true);
         dialog.setLayout(new BorderLayout());
-        dialog.setSize(850, 500);
+        dialog.setSize(800, 600);
         dialog.setLocationRelativeTo(parent);
 
         JPanel topPanel = new JPanel(new FlowLayout());
