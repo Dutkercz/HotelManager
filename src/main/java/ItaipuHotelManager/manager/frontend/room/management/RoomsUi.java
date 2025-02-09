@@ -61,7 +61,7 @@ public class RoomsUi {
             model.setRowCount(0);
 
             for (HotelRoom room : apartamentosLivres) {
-                model.addRow(new Object[]{room.getRoomNumber(), "----", "Disponível"});
+                model.addRow(new Object[]{room.getRoomNumber(), "LIVRE", "Disponível"});
             }
             for (HotelRoom room : apartamentosOcupados) {
                 String clienteNome = room.getClient() != null ? room.getClient().getFullName() : "Indisponível";

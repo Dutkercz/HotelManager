@@ -35,7 +35,7 @@ public class HostingController {
 
     @GetMapping(value = "/{cpf}/all")
     public ResponseEntity<List<Hosting>> findHostingByClient(@PathVariable String cpf){
-        List<Hosting> hostingList = hostingService.findAllHostings(cpf);
+        List<Hosting> hostingList = hostingService.findAllHosting(cpf);
         return ResponseEntity.ok().body(hostingList);
     }
 

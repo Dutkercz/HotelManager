@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 
@@ -34,13 +35,13 @@ public class HostingClientsUi {
         panel.add(btnBuscar);
         frame.add(panel, BorderLayout.NORTH);
 
-        tableModel = new DefaultTableModel(new Object[]{"Nome", "Apartamento", "Data Check-in", "Data Check-out"}, 0);
+        tableModel = new DefaultTableModel(new Object[]{"Nome", "Apartamento", "Data Check-in", "Data Check-out", "Valor Total"}, 0);
         JTable table = new JTable(tableModel);
         frame.add(new JScrollPane(table), BorderLayout.CENTER);
 
         btnBuscar.addActionListener(e -> carregarHospedagens());
 
-        frame.setSize(500, 300);
+        frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
@@ -52,7 +53,7 @@ public class HostingClientsUi {
             return;
         }
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8080/hosting/" + cpf + "/all";
+        String url = "http://localhost:8080/allhosting/" + cpf + "/all";
 
         try {
             ResponseEntity<List<Hosting>> response = restTemplate.exchange(url, HttpMethod.GET,
@@ -60,17 +61,21 @@ public class HostingClientsUi {
 
             List<Hosting> hosting = response.getBody();
             assert hosting != null;
-            hosting.sort(Comparator.comparing(x -> x.getRoom().getRoomNumber()));
             tableModel.setRowCount(0);
-
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            String checkInString;
+            String checkOutString;
             if (!hosting.isEmpty()) {
                 for (Hosting h : hosting) {
                     Hibernate.initialize(h.getClient());
+                    checkInString = dtf.format(h.getCheckIn());
+                    checkOutString = dtf.format(h.getCheckOut());
                     tableModel.addRow(new Object[]{
                             h.getClient().getFullName(),
                             h.getRoom().getRoomNumber(),
-                            h.getCheckIn(),
-                            h.getCheckOut()
+                            checkInString,
+                            checkOutString,
+                            h.getTotalPrice()
                     });
                 }
             } else {

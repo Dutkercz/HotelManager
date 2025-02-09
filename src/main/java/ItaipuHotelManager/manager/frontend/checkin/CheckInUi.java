@@ -49,15 +49,15 @@ public class CheckInUi {
         topPanel.add(lblClientName);
         dialog.add(topPanel, BorderLayout.NORTH);
 
-        tableModel = new DefaultTableModel(new Object[]{"Número", "Status"}, 0);
+        tableModel = new DefaultTableModel(new Object[]{"Número", "Status", "Camas Casal", "Camas Solteiro"}, 0);
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
-        dialog.add(scrollPane, BorderLayout.CENTER);
+        dialog.add(scrollPane, BorderLayout.SOUTH);
         setupAdditionalFields();
 
         btnConfirm = new JButton("Confirmar Check-in");
         btnConfirm.setEnabled(false);
-        dialog.add(btnConfirm, BorderLayout.SOUTH);
+        dialog.add(btnConfirm, BorderLayout.EAST);
 
         btnSearch.addActionListener(this::searchClients);
         table.getSelectionModel().addListSelectionListener(e -> selectRoom());
@@ -81,7 +81,7 @@ public class CheckInUi {
         extraPanel.add(new JLabel("Nome dos hóspedes adicionais (se houver):"));
         extraPanel.add(new JScrollPane(txtAdditionalClients));
 
-        dialog.add(extraPanel, BorderLayout.EAST);
+        dialog.add(extraPanel, BorderLayout.CENTER);
     }
 
     private void searchClients(ActionEvent e) {
@@ -116,7 +116,8 @@ public class CheckInUi {
         tableModel.setRowCount(0);
         if (availableRooms != null) {
             for (HotelRoom room : availableRooms) {
-                tableModel.addRow(new Object[]{room.getRoomNumber(), room.getStatus()});
+                tableModel.addRow(new Object[]{room.getRoomNumber(), room.getStatus(),
+                        room.getDoubleBeds(), room.getSingleBeds()});
             }
         }
     }

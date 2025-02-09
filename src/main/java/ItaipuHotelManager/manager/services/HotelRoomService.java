@@ -25,8 +25,8 @@ public class HotelRoomService {
         return repository.findById(id).orElseThrow();
     }
 
-    public HotelRoom saveRoom(HotelRoom o){
-        return repository.save(o);
+    public void saveRoom(HotelRoom room){
+        repository.save(room);
     }
 
     public HotelRoom findByRoomNumber (String room){
