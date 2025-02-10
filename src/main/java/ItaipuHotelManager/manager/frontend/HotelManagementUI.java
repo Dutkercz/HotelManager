@@ -4,9 +4,6 @@ import ItaipuHotelManager.manager.frontend.checkin.CheckInUi;
 import ItaipuHotelManager.manager.frontend.checkout.CheckOutUi;
 import ItaipuHotelManager.manager.frontend.client.management.ClientUi;
 import ItaipuHotelManager.manager.frontend.room.management.RoomsUi;
-import ItaipuHotelManager.manager.services.HotelRoomService;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;

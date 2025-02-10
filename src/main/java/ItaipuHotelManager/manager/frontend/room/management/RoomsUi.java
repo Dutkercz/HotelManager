@@ -1,7 +1,6 @@
 package ItaipuHotelManager.manager.frontend.room.management;
 
 import ItaipuHotelManager.manager.entities.HotelRoom;
-import ItaipuHotelManager.manager.services.HotelRoomService;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
