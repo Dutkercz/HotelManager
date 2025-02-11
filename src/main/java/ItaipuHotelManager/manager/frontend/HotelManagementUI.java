@@ -17,7 +17,7 @@ public class HotelManagementUI {
         SwingUtilities.invokeLater(HotelManagementUI::createAndShowGUI);
     }
 
-    private static void createAndShowGUI() {
+    public static void createAndShowGUI() {
         JFrame frame = new JFrame("Gerenciamento Hotel Itaipu");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 650);

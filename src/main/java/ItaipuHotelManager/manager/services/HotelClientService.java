@@ -28,8 +28,14 @@ public class HotelClientService {
         return client;
     }
 
+    @Transactional
     public HotelClient insert(HotelClient o){
         return hotelClientRepository.save(o);
+    }
+
+    @Transactional
+    public void deleteByCpf(String cpf) {
+        hotelClientRepository.deleteByCpf(cpf);
     }
 }
 
