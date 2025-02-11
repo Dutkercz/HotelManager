@@ -9,7 +9,6 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
@@ -18,6 +17,7 @@ public class ClientUi {
     private final JFrame frame;
     private final JTable clienteTable;
     private final JTextField txtBuscarCpf;
+    private HotelClient client;
 
     public ClientUi() {
         frame = new JFrame("Clientes");
@@ -57,8 +57,8 @@ public class ClientUi {
         buttonPanel.add(btnHospedagens);
         buttonPanel.add(btnAtualizar);
 
-        btnCarregar.addActionListener(e -> carregarClientes(model));
-        btnCadastrar.addActionListener(e -> abrirCadastro());
+        btnCarregar.addActionListener(e -> loadClients(model));
+        btnCadastrar.addActionListener(e -> openRegistration());
         btnHospedagens.addActionListener(e -> new HostingClientsUi());
         btnAtualizar.addActionListener(e -> updateClient());
 
@@ -109,7 +109,7 @@ public class ClientUi {
         frame.setVisible(true);
     }
 
-    private void carregarClientes(DefaultTableModel model) {
+    private void loadClients(DefaultTableModel model) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8080/clients";
         try {
@@ -128,7 +128,7 @@ public class ClientUi {
             JOptionPane.showMessageDialog(frame, "Erro ao buscar clientes: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-    private void abrirCadastro() {
+    private void openRegistration() {
         JDialog cadastroDialog = new JDialog(frame, "Cadastro de Cliente", true);
         JPanel cadastroPanel = new JPanel();
         cadastroPanel.setLayout(new GridLayout(8, 2));
@@ -194,7 +194,6 @@ public class ClientUi {
                         "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
             if (!CpfValidation.isValidCPF(cpf)) {
                 JOptionPane.showMessageDialog(cadastroDialog, "CPF inválido. Por favor, digite um CPF válido.",
                         "Erro", JOptionPane.ERROR_MESSAGE);
@@ -212,12 +211,12 @@ public class ClientUi {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
                 HttpEntity<HotelClient> request = new HttpEntity<>(novoCliente, headers);
-                ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.POST, request, HotelClient.class);
-
+                ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.POST,
+                        request, HotelClient.class);
                 if (response.getStatusCode().is2xxSuccessful()) {
                     JOptionPane.showMessageDialog(cadastroDialog, "Cliente cadastrado com sucesso!");
                     cadastroDialog.dispose();
-                    carregarClientes((DefaultTableModel) clienteTable.getModel());
+                    loadClients((DefaultTableModel) clienteTable.getModel());
                 }
                 else {
                     JOptionPane.showMessageDialog(cadastroDialog, "Erro inesperado ao cadastrar cliente. Status: " + response.getStatusCode(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -240,7 +239,7 @@ public class ClientUi {
 
         JDialog updateDialog = new JDialog(frame, "Atualizar Cliente", true);
         JPanel updatePanel = new JPanel();
-        updatePanel.setLayout(new GridLayout(8, 2));
+        updatePanel.setLayout(new GridLayout(7, 2));
 
 
         JPanel searchPanel = new JPanel();
@@ -248,27 +247,30 @@ public class ClientUi {
         JButton btnFindClient = new JButton("Buscar");
         JTextField txtCpf = new JTextField(15);
         searchPanel.add(new JLabel("CPF:"));
+
         searchPanel.add(txtCpf);
         searchPanel.add(btnFindClient);
         updateDialog.add(searchPanel, BorderLayout.NORTH);
 
-        JLabel lblNewName = new JLabel("Nome Completo:");
         JTextField txtNewName = new JTextField(20);
-
-        JLabel lblNewAddress = new JLabel("Endereço:");
         JTextField txtNewAddress = new JTextField(20);
-
-        JLabel lblNewCity = new JLabel("Cidade:");
         JTextField txtNewCity = new JTextField(20);
-
-        JLabel lblNewPhone = new JLabel("Telefone:");
         JTextField txtNewPhone = new JTextField(20);
-
-        JLabel lblNewEmail = new JLabel("Email:");
         JTextField txtNewEmail = new JTextField(20);
-
-        JLabel lblNewCnpj = new JLabel("CNPJ:");
         JTextField txtNewCnpj = new JTextField(20);
+
+        updatePanel.add(new JLabel("Nome Completo:"));
+        updatePanel.add(txtNewName);
+        updatePanel.add(new JLabel("Endereço:"));
+        updatePanel.add(txtNewAddress);
+        updatePanel.add(new JLabel("Cidade:"));
+        updatePanel.add(txtNewCity);
+        updatePanel.add(new JLabel("Telefone:"));
+        updatePanel.add(txtNewPhone);
+        updatePanel.add(new JLabel("Email:"));
+        updatePanel.add(txtNewEmail);
+        updatePanel.add(new JLabel("CNPJ:"));
+        updatePanel.add(txtNewCnpj);
 
         JButton btnSalvar = new JButton("Salvar Alterações");
         btnSalvar.setBackground(new Color(42, 60, 72));
@@ -277,41 +279,67 @@ public class ClientUi {
         btnCancelar.setBackground(new Color(42, 60, 72));
         btnCancelar.setForeground(Color.white);
 
-        updatePanel.add(lblNewName);
-        updatePanel.add(txtNewName);
-        updatePanel.add(lblNewAddress);
-        updatePanel.add(txtNewAddress);
-        updatePanel.add(lblNewCity);
-        updatePanel.add(txtNewCity);
-        updatePanel.add(lblNewPhone);
-        updatePanel.add(txtNewPhone);
-        updatePanel.add(lblNewEmail);
-        updatePanel.add(txtNewEmail);
-        updatePanel.add(lblNewCnpj);
-        updatePanel.add(txtNewCnpj);
+
         updatePanel.add(btnSalvar);
+        btnSalvar.setVisible(false);
         updatePanel.add(btnCancelar);
         updateDialog.add(updatePanel, BorderLayout.CENTER);
         updateDialog.pack();
         updateDialog.setLocationRelativeTo(frame);
 
-        btnSalvar.addActionListener(e -> {
-            String Newnome = txtNewName.getText();
-            String Newendereco = txtNewAddress.getText();
-            String Newcidade = txtNewCity.getText();
-            String Newtelefone = txtNewPhone.getText();
-            String Newemail = txtNewEmail.getText();
-            String Newcnpj = txtNewCnpj.getText();
+        btnFindClient.addActionListener(x -> {
+            findClient(txtCpf.getText().trim());
         });
+        btnCancelar.addActionListener(x -> {
+            updateDialog.dispose();
+        });
+
+
+        btnSalvar.addActionListener(e -> {
+                client .setFullName(txtNewName.getText());
+                client.setAddress(txtNewAddress.getText());
+                client.setCity(txtNewCity.getText());
+                client.setPhone(txtNewPhone.getText());
+                client.setEmail(txtNewEmail.getText());
+                client.setCnpj(txtNewCnpj.getText());
+                saveUpdate(client);
+        });
+
         updateDialog.setVisible(true);
     }
-    private void findClient(){
+    private void findClient(String cpf){
+        if (cpf.isEmpty() || !CpfValidation.isValidCPF(cpf)) {
+            JOptionPane.showMessageDialog(frame, "Digite um CPF válido!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         RestTemplate restTemplate = new RestTemplate();
-         String url = "http://localhost:8080/clients/" + txtBuscarCpf;
-//         ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.GET, null,
-//                 new ParameterizedTypeReference<HotelClient>() {});
-        ResponseEntity<HotelClient> response = restTemplate.getForEntity(url, HotelClient.class);
-         HotelClient client = response.getBody();
+        String url = "http://localhost:8080/clients/" + cpf;
+        try{
+            ResponseEntity<HotelClient> response = restTemplate.getForEntity(url, HotelClient.class);
+            this.client = response.getBody();
+            System.out.println(client);
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(frame, "Erro ao buscar cliente: " +
+                    e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    private void saveUpdate(HotelClient client){
+        String url = "http://localhost:8080/clients/update" + client.getCpf();
+        RestTemplate restTemplate = new RestTemplate();
+        try{
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<HotelClient> request = new HttpEntity<>(client, headers);
+            ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.PUT,
+                    request, HotelClient.class);
+            if (response.getStatusCode().is2xxSuccessful()){
+                JOptionPane.showMessageDialog(frame, "Cliente atualizado com sucesso!", "Sucesso",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
     public static void main(String[] args) {
