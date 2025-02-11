@@ -26,6 +26,9 @@ public class HotelClient {
     @JsonIgnore
     private List<Hosting> hostingList;
 
+    @OneToMany(mappedBy = "client")
+    private List<HotelRoom> roomList;
+
     public HotelClient() {
     }
 
@@ -102,8 +105,8 @@ public class HotelClient {
         return hostingList;
     }
 
-    public void setHostingList(List<Hosting> hostingList) {
-        this.hostingList = hostingList;
+    public List<HotelRoom> getRoomList() {
+        return roomList;
     }
 
     @Override

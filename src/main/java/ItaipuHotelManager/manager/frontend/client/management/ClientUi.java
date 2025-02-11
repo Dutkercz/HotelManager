@@ -272,37 +272,39 @@ public class ClientUi {
         updatePanel.add(new JLabel("CNPJ:"));
         updatePanel.add(txtNewCnpj);
 
-        JButton btnSalvar = new JButton("Salvar Alterações");
-        btnSalvar.setBackground(new Color(42, 60, 72));
-        btnSalvar.setForeground(Color.white);
-        JButton btnCancelar = new JButton("Cancelar");
-        btnCancelar.setBackground(new Color(42, 60, 72));
-        btnCancelar.setForeground(Color.white);
+        JButton btnSave = new JButton("Salvar Alterações");
+        btnSave.setBackground(new Color(42, 60, 72));
+        btnSave.setForeground(Color.white);
+        JButton btnCancel = new JButton("Cancelar");
+        btnCancel.setBackground(new Color(42, 60, 72));
+        btnCancel.setForeground(Color.white);
 
 
-        updatePanel.add(btnSalvar);
-        btnSalvar.setVisible(false);
-        updatePanel.add(btnCancelar);
+        updatePanel.add(btnSave);
+        btnSave.setVisible(false);
+        updatePanel.add(btnCancel);
         updateDialog.add(updatePanel, BorderLayout.CENTER);
         updateDialog.pack();
         updateDialog.setLocationRelativeTo(frame);
 
         btnFindClient.addActionListener(x -> {
             findClient(txtCpf.getText().trim());
+            btnSave.setVisible(true);
         });
-        btnCancelar.addActionListener(x -> {
+        btnCancel.addActionListener(x -> {
             updateDialog.dispose();
         });
 
 
-        btnSalvar.addActionListener(e -> {
-                client .setFullName(txtNewName.getText());
-                client.setAddress(txtNewAddress.getText());
-                client.setCity(txtNewCity.getText());
-                client.setPhone(txtNewPhone.getText());
-                client.setEmail(txtNewEmail.getText());
-                client.setCnpj(txtNewCnpj.getText());
+        btnSave.addActionListener(e -> {
+                client.setFullName(WordUtils.capitalizeFully(txtNewName.getText().trim()));
+                client.setAddress(WordUtils.capitalizeFully(txtNewAddress.getText().trim()));
+                client.setCity(WordUtils.capitalizeFully(txtNewCity.getText().trim()));
+                client.setPhone(WordUtils.capitalizeFully(txtNewPhone.getText().trim()));
+                client.setEmail(WordUtils.capitalizeFully(txtNewEmail.getText().trim()));
+                client.setCnpj(WordUtils.capitalizeFully(txtNewCnpj.getText().trim()));
                 saveUpdate(client);
+                updateDialog.dispose();
         });
 
         updateDialog.setVisible(true);
@@ -324,7 +326,7 @@ public class ClientUi {
         }
     }
     private void saveUpdate(HotelClient client){
-        String url = "http://localhost:8080/clients/update" + client.getCpf();
+        String url = "http://localhost:8080/clients/update/" + client.getCpf();
         RestTemplate restTemplate = new RestTemplate();
         try{
             HttpHeaders headers = new HttpHeaders();
@@ -336,9 +338,8 @@ public class ClientUi {
                 JOptionPane.showMessageDialog(frame, "Cliente atualizado com sucesso!", "Sucesso",
                         JOptionPane.INFORMATION_MESSAGE);
             }
-
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(frame, "Erro ao atualizar cliente: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
 
     }
