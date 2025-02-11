@@ -9,6 +9,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
@@ -239,8 +240,17 @@ public class ClientUi {
 
         JDialog updateDialog = new JDialog(frame, "Atualizar Cliente", true);
         JPanel updatePanel = new JPanel();
-        updatePanel.setLayout(new GridLayout(7, 2));
+        updatePanel.setLayout(new GridLayout(8, 2));
 
+
+        JPanel searchPanel = new JPanel();
+        searchPanel.setLayout(new GridLayout(1, 2));
+        JButton btnFindClient = new JButton("Buscar");
+        JTextField txtCpf = new JTextField(15);
+        searchPanel.add(new JLabel("CPF:"));
+        searchPanel.add(txtCpf);
+        searchPanel.add(btnFindClient);
+        updateDialog.add(searchPanel, BorderLayout.NORTH);
 
         JLabel lblNewName = new JLabel("Nome Completo:");
         JTextField txtNewName = new JTextField(20);
@@ -281,7 +291,7 @@ public class ClientUi {
         updatePanel.add(txtNewCnpj);
         updatePanel.add(btnSalvar);
         updatePanel.add(btnCancelar);
-        updateDialog.add(updatePanel);
+        updateDialog.add(updatePanel, BorderLayout.CENTER);
         updateDialog.pack();
         updateDialog.setLocationRelativeTo(frame);
 
@@ -294,6 +304,15 @@ public class ClientUi {
             String Newcnpj = txtNewCnpj.getText();
         });
         updateDialog.setVisible(true);
+    }
+    private void findClient(){
+        RestTemplate restTemplate = new RestTemplate();
+         String url = "http://localhost:8080/clients/" + txtBuscarCpf;
+//         ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.GET, null,
+//                 new ParameterizedTypeReference<HotelClient>() {});
+        ResponseEntity<HotelClient> response = restTemplate.getForEntity(url, HotelClient.class);
+         HotelClient client = response.getBody();
+
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(ClientUi::new);
