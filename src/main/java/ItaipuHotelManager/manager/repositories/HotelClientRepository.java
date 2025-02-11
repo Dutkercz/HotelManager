@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface HotelClientRepository extends JpaRepository<HotelClient, Long> {
     HotelClient findByCpf(String cpf);
 
+    void deleteByCpf(String cpf);
 }

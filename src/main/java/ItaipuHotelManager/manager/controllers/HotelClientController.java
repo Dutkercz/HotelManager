@@ -35,7 +35,16 @@ public class HotelClientController {
     public ResponseEntity<HotelClient> findByCpf(@PathVariable String cpf){
         HotelClient client = clientService.findByCpf(cpf);
         return ResponseEntity.ok(client);
-
+    }
+    @DeleteMapping(value = "/delete/{cpf}")
+    public ResponseEntity<Void> deleteByCpf(@PathVariable String cpf){
+        clientService.deleteByCpf(cpf);
+        return ResponseEntity.noContent().build();
+    }
+    @PutMapping(value = "/update/{cpf}")
+    public ResponseEntity<HotelClient> updateClient (@PathVariable String cpf, @RequestBody HotelClient clientToUpdate){
+        HotelClient client = clientService.updateClient(cpf, clientToUpdate);
+        return ResponseEntity.ok().body(client);
     }
 
 }

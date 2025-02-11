@@ -9,42 +9,42 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
 public class ClientUi {
     private final JFrame frame;
-    private final JPanel panel;
-    private final JButton btnCarregar;
-    private final JButton btnCadastrar;
     private final JTable clienteTable;
-    private JTextField txtBuscarCpf;
-    private JButton btnBuscar;
-    private JButton btnHospedagens;
+    private final JTextField txtBuscarCpf;
 
     public ClientUi() {
         frame = new JFrame("Clientes");
-        panel = new JPanel();
+        JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        btnCarregar = new JButton("Carregar Clientes");
+        JButton btnCarregar = new JButton("Carregar Clientes");
         btnCarregar.setBackground(new Color(42, 60, 72));
         btnCarregar.setForeground(Color.white);
 
-        btnCadastrar = new JButton("Cadastrar Cliente");
+        JButton btnCadastrar = new JButton("Cadastrar Cliente");
         btnCadastrar.setBackground(new Color(42, 60, 72));
         btnCadastrar.setForeground(Color.white);
 
-        btnHospedagens = new JButton("Ver Hospedagens");
+        JButton btnAtualizar = new JButton("Atualizar Cliente");
+        btnAtualizar.setBackground(new Color(42, 60, 72));
+        btnAtualizar.setForeground(Color.white);
+
+        JButton btnHospedagens = new JButton("Ver Hospedagens");
         btnHospedagens.setBackground(new Color(42, 60, 72));
         btnHospedagens.setForeground(Color.white);
 
         txtBuscarCpf = new JTextField(15);
-        btnBuscar = new JButton("Buscar por CPF");
+        JButton btnBuscar = new JButton("Buscar por CPF");
         btnBuscar.setBackground(new Color(42, 60, 72));
         btnBuscar.setForeground(Color.white);
 
@@ -55,10 +55,12 @@ public class ClientUi {
         buttonPanel.add(btnCarregar);
         buttonPanel.add(btnCadastrar);
         buttonPanel.add(btnHospedagens);
+        buttonPanel.add(btnAtualizar);
 
         btnCarregar.addActionListener(e -> carregarClientes(model));
         btnCadastrar.addActionListener(e -> abrirCadastro());
         btnHospedagens.addActionListener(e -> new HostingClientsUi());
+        btnAtualizar.addActionListener(e -> updateClient());
 
         panel.add(buttonPanel, BorderLayout.NORTH);
         panel.add(new JScrollPane(clienteTable), BorderLayout.CENTER);
@@ -71,21 +73,17 @@ public class ClientUi {
 
         btnBuscar.addActionListener(e -> {
             String cpf = txtBuscarCpf.getText().trim();
-
             if (cpf.isEmpty()) {
                 JOptionPane.showMessageDialog(frame, "Digite um CPF para buscar!", "Aviso", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-
             RestTemplate restTemplate = new RestTemplate();
             String url = "http://localhost:8080/clients/" + cpf;
-
             try {
-                ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.GET, null, HotelClient.class);
-
+                ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.GET,
+                        null, HotelClient.class);
                 if (response.getStatusCode() == HttpStatus.OK) {
                     HotelClient cliente = response.getBody();
-
                     assert cliente != null;
                     JOptionPane.showMessageDialog(frame,
                             "Nome: " + cliente.getFullName() + "\n" +
@@ -114,15 +112,12 @@ public class ClientUi {
     private void carregarClientes(DefaultTableModel model) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8080/clients";
-
         try {
             ResponseEntity<List<HotelClient>> response = restTemplate.exchange(url,
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<HotelClient>>() {}
             );
-
             List<HotelClient> clientes = response.getBody();
             model.setRowCount(0);
-
             if (clientes != null) {
                 for (HotelClient cliente : clientes) {
                     Object[] row = {cliente.getId(), cliente.getFullName(), cliente.getCpf(), cliente.getAddress()};
@@ -240,6 +235,84 @@ public class ClientUi {
             cadastroDialog.dispose();
         });
         cadastroDialog.setVisible(true);
+    }
+    private void updateClient(){
+
+        JDialog updateDialog = new JDialog(frame, "Atualizar Cliente", true);
+        JPanel updatePanel = new JPanel();
+        updatePanel.setLayout(new GridLayout(8, 2));
+
+
+        JPanel searchPanel = new JPanel();
+        searchPanel.setLayout(new GridLayout(1, 2));
+        JButton btnFindClient = new JButton("Buscar");
+        JTextField txtCpf = new JTextField(15);
+        searchPanel.add(new JLabel("CPF:"));
+        searchPanel.add(txtCpf);
+        searchPanel.add(btnFindClient);
+        updateDialog.add(searchPanel, BorderLayout.NORTH);
+
+        JLabel lblNewName = new JLabel("Nome Completo:");
+        JTextField txtNewName = new JTextField(20);
+
+        JLabel lblNewAddress = new JLabel("Endereço:");
+        JTextField txtNewAddress = new JTextField(20);
+
+        JLabel lblNewCity = new JLabel("Cidade:");
+        JTextField txtNewCity = new JTextField(20);
+
+        JLabel lblNewPhone = new JLabel("Telefone:");
+        JTextField txtNewPhone = new JTextField(20);
+
+        JLabel lblNewEmail = new JLabel("Email:");
+        JTextField txtNewEmail = new JTextField(20);
+
+        JLabel lblNewCnpj = new JLabel("CNPJ:");
+        JTextField txtNewCnpj = new JTextField(20);
+
+        JButton btnSalvar = new JButton("Salvar Alterações");
+        btnSalvar.setBackground(new Color(42, 60, 72));
+        btnSalvar.setForeground(Color.white);
+        JButton btnCancelar = new JButton("Cancelar");
+        btnCancelar.setBackground(new Color(42, 60, 72));
+        btnCancelar.setForeground(Color.white);
+
+        updatePanel.add(lblNewName);
+        updatePanel.add(txtNewName);
+        updatePanel.add(lblNewAddress);
+        updatePanel.add(txtNewAddress);
+        updatePanel.add(lblNewCity);
+        updatePanel.add(txtNewCity);
+        updatePanel.add(lblNewPhone);
+        updatePanel.add(txtNewPhone);
+        updatePanel.add(lblNewEmail);
+        updatePanel.add(txtNewEmail);
+        updatePanel.add(lblNewCnpj);
+        updatePanel.add(txtNewCnpj);
+        updatePanel.add(btnSalvar);
+        updatePanel.add(btnCancelar);
+        updateDialog.add(updatePanel, BorderLayout.CENTER);
+        updateDialog.pack();
+        updateDialog.setLocationRelativeTo(frame);
+
+        btnSalvar.addActionListener(e -> {
+            String Newnome = txtNewName.getText();
+            String Newendereco = txtNewAddress.getText();
+            String Newcidade = txtNewCity.getText();
+            String Newtelefone = txtNewPhone.getText();
+            String Newemail = txtNewEmail.getText();
+            String Newcnpj = txtNewCnpj.getText();
+        });
+        updateDialog.setVisible(true);
+    }
+    private void findClient(){
+        RestTemplate restTemplate = new RestTemplate();
+         String url = "http://localhost:8080/clients/" + txtBuscarCpf;
+//         ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.GET, null,
+//                 new ParameterizedTypeReference<HotelClient>() {});
+        ResponseEntity<HotelClient> response = restTemplate.getForEntity(url, HotelClient.class);
+         HotelClient client = response.getBody();
+
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(ClientUi::new);

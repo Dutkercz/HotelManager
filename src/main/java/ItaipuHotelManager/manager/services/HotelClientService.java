@@ -28,8 +28,32 @@ public class HotelClientService {
         return client;
     }
 
+    @Transactional
     public HotelClient insert(HotelClient o){
         return hotelClientRepository.save(o);
+    }
+
+    @Transactional
+    public void deleteByCpf(String cpf) {
+        hotelClientRepository.deleteByCpf(cpf);
+    }
+
+    @Transactional
+    public HotelClient updateClient(String cpf, HotelClient clientToUpdate) {
+        try{
+            HotelClient client = findByCpf(cpf);
+            client.setFullName(clientToUpdate.getFullName());
+            client.setCity(clientToUpdate.getCity());
+            client.setAddress(clientToUpdate.getAddress());
+            client.setEmail(clientToUpdate.getEmail());
+            client.setPhone(clientToUpdate.getPhone());
+            client.setCnpj(clientToUpdate.getCnpj());
+            return hotelClientRepository.save(client);
+        } catch (NullPointerException e) {
+            throw new RuntimeException("Cliente não encontrado");
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 
