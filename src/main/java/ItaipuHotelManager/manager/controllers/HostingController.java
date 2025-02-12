@@ -45,9 +45,10 @@ public class HostingController {
         return ResponseEntity.ok().body(hostingList);
     }
 
-    @GetMapping(value = "/room/{roomNumber}")
+    @GetMapping(value = "/active/{roomNumber}")
     public ResponseEntity<Hosting> getByRoomNumber(@PathVariable String roomNumber){
-        return ResponseEntity.ok().body(hostingService.findByRoomNumber(roomNumber));
+        Hosting hosting = hostingService.findByRoomNumber(roomNumber);
+        return ResponseEntity.ok().body(hosting);
     }
 
 }

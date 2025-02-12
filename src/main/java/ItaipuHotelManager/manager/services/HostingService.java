@@ -64,6 +64,6 @@ public class HostingService {
 
     @Transactional
     public Hosting findByRoomNumber(String roomNumber){
-        return hostingRepository.findByRoomRoomNumber(roomNumber);
+        return hostingRepository.findByStatusAndRoomRoomNumber(RoomStatus.OCUPADO, roomNumber);
     }
 }

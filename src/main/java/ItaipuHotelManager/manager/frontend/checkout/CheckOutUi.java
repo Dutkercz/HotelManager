@@ -85,7 +85,7 @@ public class CheckOutUi {
         if (selectedRow != -1){
             String roomNumber = (String) tableModel.getValueAt(selectedRow, 0);
             RestTemplate restTemplate = new RestTemplate();
-            String url = "http://localhost:8080/allhosting/room/"+roomNumber;
+            String url = "http://localhost:8080/allhosting/active/"+roomNumber;
             ResponseEntity<Hosting> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<Hosting>() {});
             selectedHosting = response.getBody();
             assert selectedHosting != null;
