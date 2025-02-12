@@ -46,6 +46,7 @@ public class HostingService {
         return hostingRepository.findByClient(client);
     }
 
+    @Transactional
     public List<Hosting> findAll() {
         return hostingRepository.findAll();
     }
@@ -56,10 +57,12 @@ public class HostingService {
         roomService.updateRoomStatusOccupied(selectedRoom.getRoomNumber(), selectedClient);
     }
 
+    @Transactional
     public List<Hosting> findActiveHosting() {
-        return hostingRepository.findByRoomStatus(RoomStatus.OCUPADO);
+        return hostingRepository.findByStatus(RoomStatus.OCUPADO);
     }
 
+    @Transactional
     public Hosting findByRoomNumber(String roomNumber){
         return hostingRepository.findByRoomRoomNumber(roomNumber);
     }

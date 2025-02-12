@@ -21,9 +21,9 @@ public class HotelRoom {
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Hosting> hostings = new ArrayList<>();
+    private List<Hosting> hosting = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
@@ -93,8 +93,8 @@ public class HotelRoom {
         return status == RoomStatus.OCUPADO;
     }
 
-    public List<Hosting> getHostings() {
-        return hostings;
+    public List<Hosting> getHosting() {
+        return hosting;
     }
 
     @Override

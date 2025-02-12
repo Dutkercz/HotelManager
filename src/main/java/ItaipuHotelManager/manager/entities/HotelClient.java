@@ -3,6 +3,7 @@ package ItaipuHotelManager.manager.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,8 +27,9 @@ public class HotelClient {
     @JsonIgnore
     private List<Hosting> hostingList;
 
-    @OneToMany(mappedBy = "client")
-    private List<HotelRoom> roomList;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<HotelRoom> roomList = new ArrayList<>();
 
     public HotelClient() {
     }

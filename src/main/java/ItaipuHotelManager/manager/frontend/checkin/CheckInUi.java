@@ -130,14 +130,17 @@ public class CheckInUi {
             RestTemplate restTemplate = new RestTemplate();
             String url = "http://localhost:8080/rooms/" + roomNumber;
 
-            ResponseEntity<HotelRoom> getRoom = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<HotelRoom>() {});
-            selectedRoom = getRoom.getBody();
+            ResponseEntity<HotelRoom> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<HotelRoom>() {});
+            selectedRoom = response.getBody();
+            assert selectedRoom != null;
+            selectedRoom.setClient(null);
             btnConfirm.setEnabled(true);
         }
     }
 
     private void confirmCheckIn() {
         if (selectedClient != null && selectedRoom != null) {
+            HotelClient client = selectedClient;
             RestTemplate restTemplate = new RestTemplate();
             String url = "http://localhost:8080/allhosting/checkin";
             HttpHeaders headers = new HttpHeaders();
@@ -165,7 +168,7 @@ public class CheckInUi {
             LocalDateTime checkIn = LocalDateTime.now();
             LocalDateTime checkOut = checkIn.plusDays(numDiarias);
 
-            Hosting newHosting = new Hosting(null, numPessoas, numDiarias, selectedRoom, selectedClient,
+            Hosting newHosting = new Hosting(null, numPessoas, numDiarias, selectedRoom, client,
                     checkIn, checkOut, personsList, RoomStatus.OCUPADO);
 
             try {
