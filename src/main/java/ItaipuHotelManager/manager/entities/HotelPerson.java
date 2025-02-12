@@ -27,16 +27,16 @@ public class HotelPerson {
         this.hosting = hosting;
     }
 
+    public HotelPerson(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public HotelPerson(String name) {
-        this.name = name;
     }
 
     public String getName() {
@@ -71,7 +71,6 @@ public class HotelPerson {
     public String toString() {
         return name + " ";
     }
-
 
 
 }

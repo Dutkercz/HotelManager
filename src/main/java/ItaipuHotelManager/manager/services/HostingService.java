@@ -22,8 +22,7 @@ public class HostingService {
     @Autowired
     private HotelClientService clientService;
     @Autowired
-    HotelRoomService roomService;
-
+    private HotelRoomService roomService;
 
     @Transactional
     public void checkOut(Hosting hosting) {
@@ -38,9 +37,9 @@ public class HostingService {
     }
 
     @Transactional
-    public List<Hosting> findAllHosting(String cpf){
+    public List<Hosting> findAllHosting(String cpf) {
         HotelClient client = clientService.findByCpf(cpf);
-        if (client == null){
+        if (client == null) {
             System.out.println("Cliente não encontrado.");
         }
         return hostingRepository.findByClient(client);
@@ -63,7 +62,7 @@ public class HostingService {
     }
 
     @Transactional
-    public Hosting findByRoomNumber(String roomNumber){
+    public Hosting findByRoomNumber(String roomNumber) {
         return hostingRepository.findByStatusAndRoomRoomNumber(RoomStatus.OCUPADO, roomNumber);
     }
 }

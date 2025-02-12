@@ -111,8 +111,8 @@ public class HotelRoom {
 
     @Override
     public String toString() {
-        return "Apartamento: " + roomNumber + "\nSituação: " + status+ "\n\tCama casal > " + doubleBeds +
-                "\n\tCama de solteiro > " + singleBeds+"\n" + (client != null ? "Cliente " + client : "\n");
+        return "Apartamento: " + roomNumber + "\nSituação: " + status + "\n\tCama casal > " + doubleBeds +
+                "\n\tCama de solteiro > " + singleBeds + "\n" + (client != null ? "Cliente " + client : "\n");
     }
 }
 

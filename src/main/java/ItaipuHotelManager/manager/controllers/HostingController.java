@@ -13,42 +13,41 @@ import java.util.List;
 public class HostingController {
 
     @Autowired
-    HostingService hostingService;
+    private HostingService hostingService;
 
     @PostMapping(value = "/checkin")
-    public ResponseEntity<Hosting> checkIn(@RequestBody Hosting hosting){
+    public ResponseEntity<Hosting> checkIn(@RequestBody Hosting hosting) {
         hostingService.checkIn(hosting, hosting.getClient(), hosting.getRoom());
         return ResponseEntity.ok().body(hosting);
     }
 
     @PostMapping(value = "/checkout")
-    public ResponseEntity<Hosting> checkOut(@RequestBody Hosting hosting){
+    public ResponseEntity<Hosting> checkOut(@RequestBody Hosting hosting) {
         hostingService.checkOut(hosting);
         return ResponseEntity.ok().body(hosting);
     }
 
     @GetMapping
-    public ResponseEntity<List<Hosting>> findAllHosting (){
+    public ResponseEntity<List<Hosting>> findAllHosting() {
         List<Hosting> hostingList = hostingService.findAll();
         return ResponseEntity.ok().body(hostingList);
     }
 
     @GetMapping(value = "/{cpf}/all")
-    public ResponseEntity<List<Hosting>> findHostingByClient(@PathVariable String cpf){
+    public ResponseEntity<List<Hosting>> findHostingByClient(@PathVariable String cpf) {
         List<Hosting> hostingList = hostingService.findAllHosting(cpf);
         return ResponseEntity.ok().body(hostingList);
     }
 
     @GetMapping(value = "/active")
-    public ResponseEntity<List<Hosting>> getActiveHostig(){
+    public ResponseEntity<List<Hosting>> getActiveHostig() {
         List<Hosting> hostingList = hostingService.findActiveHosting();
         return ResponseEntity.ok().body(hostingList);
     }
 
     @GetMapping(value = "/active/{roomNumber}")
-    public ResponseEntity<Hosting> getByRoomNumber(@PathVariable String roomNumber){
+    public ResponseEntity<Hosting> getByRoomNumber(@PathVariable String roomNumber) {
         Hosting hosting = hostingService.findByRoomNumber(roomNumber);
         return ResponseEntity.ok().body(hosting);
     }
-
 }

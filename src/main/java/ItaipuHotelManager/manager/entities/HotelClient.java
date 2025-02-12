@@ -131,7 +131,7 @@ public class HotelClient {
                 "\nEndereço = " + address + '\'' +
                 "\nEmail = " + email + '\'' +
                 "\nTelefone = " + phone + '\'' +
-                "\nCnpj = " + cnpj + '\''+
+                "\nCnpj = " + cnpj + '\'' +
                 "\n Lista de hospedagens" + hostingList;
     }
 }

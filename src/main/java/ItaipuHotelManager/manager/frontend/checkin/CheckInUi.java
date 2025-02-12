@@ -25,9 +25,9 @@ public class CheckInUi {
     private final JButton btnConfirm;
     private final JTable table;
     private final DefaultTableModel tableModel;
+    private final JLabel lblClientName;
     private HotelClient selectedClient;
     private HotelRoom selectedRoom;
-    private final JLabel lblClientName;
     private JSpinner spinnerNumberDaily;
     private JSpinner spinnerNumberPeClients;
     private JTextArea txtAdditionalClients;
@@ -93,7 +93,8 @@ public class CheckInUi {
 
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8080/clients/" + cpf;
-        ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<HotelClient>() {});
+        ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<HotelClient>() {
+        });
 
         selectedClient = response.getBody();
         tableModel.setRowCount(0);
@@ -110,7 +111,8 @@ public class CheckInUi {
     private void loadAvailableRooms() {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8080/rooms/available";
-        ResponseEntity<List<HotelRoom>> getAvailableRooms = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<HotelRoom>>() {});
+        ResponseEntity<List<HotelRoom>> getAvailableRooms = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<HotelRoom>>() {
+        });
         List<HotelRoom> availableRooms = getAvailableRooms.getBody();
 
         tableModel.setRowCount(0);
@@ -130,7 +132,8 @@ public class CheckInUi {
             RestTemplate restTemplate = new RestTemplate();
             String url = "http://localhost:8080/rooms/" + roomNumber;
 
-            ResponseEntity<HotelRoom> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<HotelRoom>() {});
+            ResponseEntity<HotelRoom> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<HotelRoom>() {
+            });
             selectedRoom = response.getBody();
             assert selectedRoom != null;
             selectedRoom.setClient(null);
@@ -158,7 +161,7 @@ public class CheckInUi {
                     personsList.add(new HotelPerson(names.trim()));
                 }
             }
-            if (personsList.size()+1 != numPessoas) {
+            if (personsList.size() + 1 != numPessoas) {
                 JOptionPane.showMessageDialog(dialog,
                         "Número de pessoas não corresponde à quantidade informada!",
                         "Erro", JOptionPane.ERROR_MESSAGE);

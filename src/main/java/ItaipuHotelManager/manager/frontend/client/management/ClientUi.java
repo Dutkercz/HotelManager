@@ -109,12 +109,17 @@ public class ClientUi {
         frame.setVisible(true);
     }
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(ClientUi::new);
+    }
+
     private void loadClients(DefaultTableModel model) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8080/clients";
         try {
             ResponseEntity<List<HotelClient>> response = restTemplate.exchange(url,
-                    HttpMethod.GET, null, new ParameterizedTypeReference<List<HotelClient>>() {}
+                    HttpMethod.GET, null, new ParameterizedTypeReference<List<HotelClient>>() {
+                    }
             );
             List<HotelClient> clientes = response.getBody();
             model.setRowCount(0);
@@ -128,6 +133,7 @@ public class ClientUi {
             JOptionPane.showMessageDialog(frame, "Erro ao buscar clientes: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     private void openRegistration() {
         JDialog cadastroDialog = new JDialog(frame, "Cadastro de Cliente", true);
         JPanel cadastroPanel = new JPanel();
@@ -200,7 +206,7 @@ public class ClientUi {
                 return;
             }
 
-            HotelClient novoCliente = new HotelClient(null, WordUtils.capitalizeFully(nome) ,
+            HotelClient novoCliente = new HotelClient(null, WordUtils.capitalizeFully(nome),
                     cpf, WordUtils.capitalizeFully(cidade),
                     WordUtils.capitalizeFully(endereco), email, telefone, cnpj);
 
@@ -217,15 +223,13 @@ public class ClientUi {
                     JOptionPane.showMessageDialog(cadastroDialog, "Cliente cadastrado com sucesso!");
                     cadastroDialog.dispose();
                     loadClients((DefaultTableModel) clienteTable.getModel());
-                }
-                else {
+                } else {
                     JOptionPane.showMessageDialog(cadastroDialog, "Erro inesperado ao cadastrar cliente. Status: " + response.getStatusCode(), "Erro", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (HttpStatusCodeException ee){
+            } catch (HttpStatusCodeException ee) {
                 JOptionPane.showMessageDialog(cadastroDialog, "Cliente já cadastrado.");
 
-            }
-            catch (Exception eee) {
+            } catch (Exception eee) {
                 JOptionPane.showMessageDialog(cadastroDialog, "Erro ao cadastrar cliente: " + eee.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         });
@@ -235,7 +239,8 @@ public class ClientUi {
         });
         cadastroDialog.setVisible(true);
     }
-    private void updateClient(){
+
+    private void updateClient() {
 
         JDialog updateDialog = new JDialog(frame, "Atualizar Cliente", true);
         JPanel updatePanel = new JPanel();
@@ -297,44 +302,46 @@ public class ClientUi {
 
 
         btnSave.addActionListener(e -> {
-                client.setFullName(WordUtils.capitalizeFully(txtNewName.getText().trim()));
-                client.setAddress(WordUtils.capitalizeFully(txtNewAddress.getText().trim()));
-                client.setCity(WordUtils.capitalizeFully(txtNewCity.getText().trim()));
-                client.setPhone(WordUtils.capitalizeFully(txtNewPhone.getText().trim()));
-                client.setEmail(WordUtils.capitalizeFully(txtNewEmail.getText().trim()));
-                client.setCnpj(WordUtils.capitalizeFully(txtNewCnpj.getText().trim()));
-                saveUpdate(client);
-                updateDialog.dispose();
+            client.setFullName(WordUtils.capitalizeFully(txtNewName.getText().trim()));
+            client.setAddress(WordUtils.capitalizeFully(txtNewAddress.getText().trim()));
+            client.setCity(WordUtils.capitalizeFully(txtNewCity.getText().trim()));
+            client.setPhone(WordUtils.capitalizeFully(txtNewPhone.getText().trim()));
+            client.setEmail(WordUtils.capitalizeFully(txtNewEmail.getText().trim()));
+            client.setCnpj(WordUtils.capitalizeFully(txtNewCnpj.getText().trim()));
+            saveUpdate(client);
+            updateDialog.dispose();
         });
 
         updateDialog.setVisible(true);
     }
-    private void findClient(String cpf){
+
+    private void findClient(String cpf) {
         if (cpf.isEmpty() || !CpfValidation.isValidCPF(cpf)) {
             JOptionPane.showMessageDialog(frame, "Digite um CPF válido!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8080/clients/" + cpf;
-        try{
+        try {
             ResponseEntity<HotelClient> response = restTemplate.getForEntity(url, HotelClient.class);
             this.client = response.getBody();
             System.out.println(client);
-        }catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(frame, "Erro ao buscar cliente: " +
                     e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-    private void saveUpdate(HotelClient client){
+
+    private void saveUpdate(HotelClient client) {
         String url = "http://localhost:8080/clients/update/" + client.getCpf();
         RestTemplate restTemplate = new RestTemplate();
-        try{
+        try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<HotelClient> request = new HttpEntity<>(client, headers);
             ResponseEntity<HotelClient> response = restTemplate.exchange(url, HttpMethod.PUT,
                     request, HotelClient.class);
-            if (response.getStatusCode().is2xxSuccessful()){
+            if (response.getStatusCode().is2xxSuccessful()) {
                 JOptionPane.showMessageDialog(frame, "Cliente atualizado com sucesso!", "Sucesso",
                         JOptionPane.INFORMATION_MESSAGE);
             }
@@ -342,8 +349,5 @@ public class ClientUi {
             JOptionPane.showMessageDialog(frame, "Erro ao atualizar cliente: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
 
-    }
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(ClientUi::new);
     }
 }

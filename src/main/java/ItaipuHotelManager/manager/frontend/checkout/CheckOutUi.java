@@ -19,10 +19,10 @@ public class CheckOutUi {
     private final JDialog dialog;
     private final JTable table;
     private final DefaultTableModel tableModel;
-    private HotelRoom selectedRoom;
-    private Hosting selectedHosting;
     private final JComboBox<String> paymentMethod;
     private final JLabel lblTotalAmount;
+    private HotelRoom selectedRoom;
+    private Hosting selectedHosting;
 
     public CheckOutUi(JFrame parent) {
         dialog = new JDialog(parent, "Realizar Check-out", true);
@@ -67,26 +67,30 @@ public class CheckOutUi {
 
         dialog.setVisible(true);
     }
+
     private void loadHostingByOccupiedStatus() {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8080/allhosting/active";
-        ResponseEntity<List<Hosting>> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Hosting>>() {});
+        ResponseEntity<List<Hosting>> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Hosting>>() {
+        });
         List<Hosting> hostingList = response.getBody();
         assert hostingList != null;
         hostingList.sort(Comparator.comparing(x -> x.getRoom().getRoomNumber()));
         tableModel.setRowCount(0);
-        for (Hosting h : hostingList){
+        for (Hosting h : hostingList) {
             tableModel.addRow(new Object[]{h.getRoom().getRoomNumber(),
                     h.getClient().getFullName(), h.getTotalGuest(), h.getDailyNumber(), h.getBasePrice()});
         }
     }
+
     private void selectRoom() {
         int selectedRow = table.getSelectedRow();
-        if (selectedRow != -1){
+        if (selectedRow != -1) {
             String roomNumber = (String) tableModel.getValueAt(selectedRow, 0);
             RestTemplate restTemplate = new RestTemplate();
-            String url = "http://localhost:8080/allhosting/active/"+roomNumber;
-            ResponseEntity<Hosting> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<Hosting>() {});
+            String url = "http://localhost:8080/allhosting/active/" + roomNumber;
+            ResponseEntity<Hosting> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<Hosting>() {
+            });
             selectedHosting = response.getBody();
             assert selectedHosting != null;
             selectedRoom = selectedHosting.getRoom();
@@ -94,19 +98,21 @@ public class CheckOutUi {
         }
 
     }
+
     private void calculateTotalValue() {
         String paymentMethodSelectedItem = (String) paymentMethod.getSelectedItem();
         assert paymentMethodSelectedItem != null;
-        if (paymentMethodSelectedItem.equals("Crédito")){
-            selectedHosting.setTotalPrice(selectedHosting.getBasePrice()*1.05);
+        if (paymentMethodSelectedItem.equals("Crédito")) {
+            selectedHosting.setTotalPrice(selectedHosting.getBasePrice() * 1.05);
         } else if (paymentMethodSelectedItem.equals("Débito")) {
-            selectedHosting.setTotalPrice(selectedHosting.getBasePrice()*1.03);
-        }else {
+            selectedHosting.setTotalPrice(selectedHosting.getBasePrice() * 1.03);
+        } else {
             selectedHosting.setTotalPrice(selectedHosting.getBasePrice());
         }
         double total = selectedHosting.getTotalPrice();
         lblTotalAmount.setText("Total: R$" + String.format("%.2f", total));
     }
+
     private void confirmCheckOut(ActionEvent e) {
         if (selectedRoom != null && selectedHosting != null) {
 
@@ -122,7 +128,7 @@ public class CheckOutUi {
                     JOptionPane.showMessageDialog(dialog, "Check-out realizado com sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
                     dialog.dispose();
                 }
-            }catch (HttpServerErrorException ee){
+            } catch (HttpServerErrorException ee) {
                 JOptionPane.showMessageDialog(dialog, "Erro ao realizar check-out. Verifique o servidor.", "Erro!", JOptionPane.ERROR_MESSAGE);
             }
         }

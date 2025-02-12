@@ -15,21 +15,21 @@ public class HotelClientService {
     HotelClientRepository hotelClientRepository;
 
     @Transactional
-    public List<HotelClient> findAll(){
+    public List<HotelClient> findAll() {
         return hotelClientRepository.findAll();
     }
 
     @Transactional
-    public HotelClient findByCpf(String cpf){
+    public HotelClient findByCpf(String cpf) {
         HotelClient client = hotelClientRepository.findByCpf(cpf);
-        if(client != null){
+        if (client != null) {
             Hibernate.initialize(client);
         }
         return client;
     }
 
     @Transactional
-    public HotelClient insert(HotelClient o){
+    public HotelClient insert(HotelClient o) {
         return hotelClientRepository.save(o);
     }
 
@@ -40,7 +40,7 @@ public class HotelClientService {
 
     @Transactional
     public HotelClient updateClient(String cpf, HotelClient clientToUpdate) {
-        try{
+        try {
             HotelClient client = findByCpf(cpf);
             client.setFullName(clientToUpdate.getFullName());
             client.setCity(clientToUpdate.getCity());
@@ -56,5 +56,3 @@ public class HotelClientService {
         }
     }
 }
-
-

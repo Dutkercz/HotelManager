@@ -11,7 +11,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.List;
 
 public class HostingClientsUi {
@@ -46,6 +45,7 @@ public class HostingClientsUi {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
     }
+
     private void carregarHospedagens() {
         String cpf = txtCpf.getText().trim();
         if (cpf.isEmpty()) {
@@ -57,7 +57,8 @@ public class HostingClientsUi {
 
         try {
             ResponseEntity<List<Hosting>> response = restTemplate.exchange(url, HttpMethod.GET,
-                    null, new ParameterizedTypeReference<List<Hosting>>() {});
+                    null, new ParameterizedTypeReference<List<Hosting>>() {
+                    });
 
             List<Hosting> hosting = response.getBody();
             assert hosting != null;

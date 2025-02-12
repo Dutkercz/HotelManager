@@ -17,24 +17,24 @@ public class HotelRoomService {
     private HotelRoomRepository repository;
 
     @Transactional
-    public List<HotelRoom> findAll(){
+    public List<HotelRoom> findAll() {
         return repository.findAll();
     }
 
-    public HotelRoom findRoom(Long id){
+    public HotelRoom findRoom(Long id) {
         return repository.findById(id).orElseThrow();
     }
 
-    public void saveRoom(HotelRoom room){
+    public void saveRoom(HotelRoom room) {
         repository.save(room);
     }
 
-    public HotelRoom findByRoomNumber (String room){
+    public HotelRoom findByRoomNumber(String room) {
         return repository.findByRoomNumber(room);
     }
 
     @Transactional
-    public void updateRoomStatusOccupied(String roomNumber, HotelClient client){
+    public void updateRoomStatusOccupied(String roomNumber, HotelClient client) {
         HotelRoom room = repository.findByRoomNumber(roomNumber);
         room.setClient(client);
         room.setStatus(RoomStatus.OCUPADO);
@@ -45,12 +45,7 @@ public class HotelRoomService {
         return repository.findByStatus(RoomStatus.DISPONIVEL);
     }
 
-
     public List<HotelRoom> getOccupiedRooms() {
         return repository.findByStatus(RoomStatus.OCUPADO);
-    }
-
-    public List<HotelRoom> findByStatus(RoomStatus status){
-        return repository.findByStatus(status);
     }
 }

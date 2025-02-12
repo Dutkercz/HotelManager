@@ -42,7 +42,7 @@ public class Hosting {
     public Hosting() {
     }
 
-    public Hosting(Long id, Integer totalGuest, Integer dailyNumber,  HotelRoom room,
+    public Hosting(Long id, Integer totalGuest, Integer dailyNumber, HotelRoom room,
                    HotelClient client, LocalDateTime checkIn, LocalDateTime checkOut, List<HotelPerson> personList, RoomStatus status) {
         this.id = id;
         this.totalGuest = totalGuest;
@@ -51,14 +51,14 @@ public class Hosting {
         this.client = client;
         this.room = room;
         this.status = status;
-        if (checkIn.getHour() == 0 && checkIn.getMinute() == 0){
+        if (checkIn.getHour() == 0 && checkIn.getMinute() == 0) {
             this.checkIn = checkIn.minusDays(1);
-        }else {
+        } else {
             this.checkIn = checkIn;
         }
         this.checkOut = checkOut;
 
-        if( totalGuest > 1){
+        if (totalGuest > 1) {
             this.persons = personList;
         }
     }
@@ -151,8 +151,8 @@ public class Hosting {
         this.status = status;
     }
 
-    public Double hostingPrices(){
-        if (totalGuest == 1 ){
+    public Double hostingPrices() {
+        if (totalGuest == 1) {
             return this.basePrice = 125.00 * dailyNumber;
         } else if (totalGuest == 2) {
             return this.basePrice = 220.00 * dailyNumber;
@@ -184,8 +184,8 @@ public class Hosting {
                 "\nNumero de pessoas: " + totalGuest +
                 "\nNumero de diárias: " + dailyNumber +
                 "\nSub Total: R$ " + basePrice +
-                "\nApartamento nº: " + room.getRoomNumber()+
-                "\nCheck-in: " + checkIn + " / Check-out: " + checkOut+
+                "\nApartamento nº: " + room.getRoomNumber() +
+                "\nCheck-in: " + checkIn + " / Check-out: " + checkOut +
                 "\nStatus da diária: " + status;
     }
 }

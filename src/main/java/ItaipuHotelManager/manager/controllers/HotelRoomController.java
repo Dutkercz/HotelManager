@@ -20,9 +20,8 @@ public class HotelRoomController {
     @Autowired
     private HotelRoomService roomService;
 
-
     @GetMapping
-    public ResponseEntity<Map<String, List<HotelRoom>>> getRoomByStatus(){
+    public ResponseEntity<Map<String, List<HotelRoom>>> getRoomByStatus() {
         List<HotelRoom> availableRooms = roomService.getAvailableRooms();
         List<HotelRoom> occupiedRooms = roomService.getOccupiedRooms();
 
@@ -34,23 +33,23 @@ public class HotelRoomController {
     }
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<HotelRoom>> findAll(){
+    public ResponseEntity<List<HotelRoom>> findAll() {
         List<HotelRoom> hotelRooms = roomService.findAll();
         return ResponseEntity.ok().body(hotelRooms);
     }
 
     @GetMapping(value = "/available")
-    public ResponseEntity<List<HotelRoom>> getAvailableRooms(){
+    public ResponseEntity<List<HotelRoom>> getAvailableRooms() {
         return ResponseEntity.ok().body(roomService.getAvailableRooms());
     }
+
     @GetMapping(value = "/occupied")
-    ResponseEntity<List<HotelRoom>> getOccupiedRooms(){
+    ResponseEntity<List<HotelRoom>> getOccupiedRooms() {
         return ResponseEntity.ok().body(roomService.getOccupiedRooms());
     }
 
     @GetMapping(value = "/{roomNumber}")
-    public ResponseEntity<HotelRoom> findByRoomNumber(@PathVariable String roomNumber){
+    public ResponseEntity<HotelRoom> findByRoomNumber(@PathVariable String roomNumber) {
         return ResponseEntity.ok().body(roomService.findByRoomNumber(roomNumber));
     }
-
 }
