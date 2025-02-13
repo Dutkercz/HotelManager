@@ -1,80 +1,104 @@
-Observção, este é um projeto pessoal.
-Desenvolvido por mim a medida em que posso trabalhar nele.
-Este sistema será implementado aos poucos no local onde trabalho.
-E pode, ou deve, ainda apresentar algumas funcionalidades com erros ou em construção.
-É meu primeiro projeto sozinho, usando os conceitos que aprendi durante meu tempo de estudo.
-Ficarei imensamente feliz em receber feedbacks, opiniões e conselhos.
+# HotelManager 🏨
 
-Hotel Manager 🏨
-📌 Tecnologias: Java 21, Spring Boot 3, H2 Database, JPA, Maven
+**Observação:** Este é um projeto pessoal.  
+É meu primeiro projeto, e meu desejo é que ele se torne útil no meu dia a dia, facilitando o acesso ao histórico de hospedagens e armazenamento de dados.  
+Utilizei alguns dos conceitos que aprendi durante meu tempo de aprendizado. Ficarei imensamente feliz em receber feedbacks, opiniões e conselhos.
 
-📌 Sobre o Projeto
-O Hotel Manager é um sistema de gerenciamento de hotelaria desenvolvido em Java 21 e Spring Boot 3.
-Ele permite a administração de clientes , quartos e no futuro reservas, garantindo um controle eficiente dos hóspedes e acomodações.
+---
 
-🚀 Tecnologias Utilizadas
-Java 21 - Linguagem principal
-Spring Boot 3 - Framework para aplicações web
-Spring Data JPA - Para interação com o banco de dados
-H2 Database - Banco de dados em memória para testes locais e inicialmente será o banco de dados utilizado na aplicação
-Maven - Gerenciador de dependências
+## Desenvolvedor
 
-📦 Instalação e Execução
-Pré-requisitos
-Certifique-se de ter instalado:
-✅ Java 21
-✅ Instale um editor de código, como o [IntelliJ IDEA]
+Este projeto foi desenvolvido por [Cristian Dutkercz](https://github.com/Dutkercz)
 
-1️⃣ Clonar o repositório
+## Contato
+- **GitHub**: [Dutkercz](https://github.com/Dutkercz)
+- **LinkedIn**: [Cristian T. Dutkercz Rosa](https://linkedin.com/in/seu-perfil)
+- **E-mail**: dutkercz@gmail.com  
+- **Instagram**: [Cristian Dutkercz](https://www.instagram.com/cristiandutkercz)  
 
-git clone https://github.com/Dutkercz/HotelManager.git
-cd HotelManager
+---
 
-🗄️ Banco de Dados
-O projeto utiliza H2 Database em memória, com a pasta "data" criada para armazenar os arquivos temporários.
+## Sobre o Projeto
 
-📌 Configuração no application.properties
+HotelManager é um sistema de gerenciamento de hotel que combina um **frontend em Java Swing** com um **backend em Spring Boot**.  
+Este projeto permite o gerenciamento de apartamentos, clientes e hospedagens, incluindo funcionalidades como check-in, check-out e visualização do status dos apartamentos.
 
-# URL para salvar os dados em um arquivo no disco
-spring.datasource.url=jdbc:h2:file:./data/testhotel
-spring.datasource.driver-class-name=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-📌 Acessando o Console H2:
+---
 
-Após iniciar a aplicação, acesse:
-➡️ http://localhost:8080/h2-console
+## Funcionalidades 🚀
+- **Gerenciamento de apartamentos**: Visualização de apartamentos livres e ocupados, com o nome do hóspede nos ocupados.
+- **Gerenciamento de clientes**: Cadastro, edição e visualização de informações dos clientes.
+- **Gerenciamento de hospedagens**:
+  - Check-in: Seleção de apartamento e registro da hospedagem.
+  - Check-out: Resumo de cobrança, liberação do apartamento e finalização da hospedagem.
 
-JDBC URL: jdbc:h2:mem:hotel_db
-Usuário: sa
-Senha: (vazia por padrão)
+---
 
-📂 Alimentação Inicial do Banco
-Para popular o banco de dados com os apartamentos, execute uma unica vez com a aplicação,
-o arquivo seedroom que está na pasta test. fazendo a modificações a seus gosto,
-mas senguindo o padrão do arquivo.
+## Tecnologias Utilizadas 🚀
+- **Java Swing**: Interface gráfica.
+- **Spring Boot**: Backend para gerenciamento de dados e lógica de negócio.
+- **Spring Data JPA**: Para interação com o banco de dados.
+- **Banco de Dados H2**: Persistência em modo de arquivo, com criação automática da pasta `data` para armazenamento dos dados.
 
+---
 
-HotelManager/
+## Requisitos 🚀
+Certifique-se de ter as seguintes dependências instaladas:
+- Java 21
+- Maven
+- IDE (caso queira executar diretamente do editor de código)
 
-│── src/
+---
 
-  │   ├── main/java/com/hotel/  
-  │   │   ├── controllers/   # Controladores da API  
-  │   │   ├── entities/      # Lógica de negócios  
-  │   │   ├── repositories/   # Acesso ao banco de dados  
-  │   │   ├── services/       # Modelos de dados (JPA)  
-  │   │   ├── ui/            # Menu e sub menus  
-  │   │   ├── config/  
-  │   ├── resources/  
-  │   │   ├── application.properties  # defina como: spring.profiles.active=${APP_PROFILE:test}  
-  │   │   ├── application-test.properties # Configurações para test  
-  │── pom.xml  # Arquivo Maven com dependências  
-  │── README.md  # Documentação do projeto
+## Configuração do Banco de Dados 🚀
+O sistema utiliza o banco de dados **H2** no modo de arquivo.  
+A primeira execução do projeto cria automaticamente a pasta `data` para armazenar os dados persistentes.
 
+---
 
+## Como Executar 🚀
 
+### Opção 1: Através da IDE
+1. Abra o projeto em sua IDE preferida (por exemplo, IntelliJ ou Eclipse).
+2. Localize a classe `Application` no pacote principal do projeto.
+3. Execute a classe `Application` para iniciar o sistema.
 
-;
-;
+### Opção 2: Via Terminal
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/Dutkercz/HotelManager.git
+
+   cd HotelManager
+
+   mvn clean package
+
+   java -jar target/HotelManager.jar
+
+## Estrutura do Projeto 🚀
+
+Frontend (Swing): Gerencia a interface com o usuário para interação com os apartamentos, clientes e hospedagens.
+Backend (Spring Boot): Fornece serviços e persistência de dados, conectando-se ao banco de dados H2.
+Banco de Dados H2: Configurado para persistir os dados no diretório data.
+
+## Instruções de Uso 🚀
+
+Tela inicial:  
+  - Navegue pelas opções de clientes, apartamentos ou hospedagens.
+
+Gerenciamento de apartamentos:  
+  - Visualize apartamentos livres ou ocupados.
+  - Veja o nome do hóspede nos apartamentos ocupados.
+
+Gerenciamento de hospedagens:  
+  - Realize check-in escolhendo o apartamento e registrando a hospedagem.
+  - Realize check-out escolhendo o apartamento ocupado, visualize o resumo de cobrança e finalize a hospedagem.
+
+Gerenciamento de clientes:  
+  - Cadastre novos clientes, edite informações ou consulte dados existentes.
+
+## Planejamento Futuro 🚀
+  - Adicionar cobranças extras ao check-out, como consumo do bar.
+  - Melhorar o design da interface utilizando ferramentas mais modernas.
+  - Implementar relatórios gerenciais.
+
+## ============================================================
