@@ -12,7 +12,7 @@ Este projeto foi desenvolvido por [Cristian Dutkercz](https://github.com/Dutkerc
 
 ## Contato
 - **GitHub**: [Dutkercz](https://github.com/Dutkercz)
-- **LinkedIn**: [Cristian T. Dutkercz Rosa](https://linkedin.com/in/seu-perfil)
+- **LinkedIn**: [Cristian T. Dutkercz Rosa](https://linkedin.com/in/cristiandutkercz)
 - **E-mail**: dutkercz@gmail.com  
 - **Instagram**: [Cristian Dutkercz](https://www.instagram.com/cristiandutkercz)  
 
