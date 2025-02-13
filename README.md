@@ -13,6 +13,7 @@ Este projeto foi desenvolvido por [Cristian Dutkercz](https://github.com/Dutkerc
 ## Contato
 - **GitHub**: [Dutkercz](https://github.com/Dutkercz)
 - **LinkedIn**: [Cristian T. Dutkercz Rosa](https://linkedin.com/in/cristiandutkercz)
+- **WhatsApp**: +55 55-996450829
 - **E-mail**: dutkercz@gmail.com  
 - **Instagram**: [Cristian Dutkercz](https://www.instagram.com/cristiandutkercz)  
 
@@ -101,4 +102,3 @@ Gerenciamento de clientes:
   - Melhorar o design da interface utilizando ferramentas mais modernas.
   - Implementar relatórios gerenciais.
 
-## ============================================================
