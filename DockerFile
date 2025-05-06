@@ -1,0 +1,26 @@
+# Etapa de build
+FROM maven:3.9.6-eclipse-temurin-17 AS build
+WORKDIR /app
+
+# Copia os arquivos do projeto
+COPY pom.xml .
+COPY src ./src
+
+# Empacota a aplicação (sem rodar os testes)
+RUN mvn clean package -DskipTests
+
+# Etapa de execução com JDK leve
+FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+
+# Copia o JAR gerado
+COPY --from=build /app/target/manager-0.0.1-SNAPSHOT.jar app.jar
+
+# Expõe a porta (Railway injeta a PORT via env)
+EXPOSE 8080
+
+# Usa a variável de ambiente PORT se existir (Railway define isso)
+ENV PORT=8080
+
+# Comando de execução
+ENTRYPOINT ["java", "-jar", "app.jar"]
